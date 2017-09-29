@@ -1,0 +1,20 @@
+// Este archivo contiene todas las funciones y variables globales que son 
+// necesarias para crear la hoja de estilo para las vistas del proyecto
+@tabletScreenWidth: 600px;
+@desktopScreenWidth: 992px;
+@largeDesktopScreenWidth: 1200px;
+@pageBgColor: rgb(245, 245, 245);
+@sideNavWidth: 300px;
+
+// Cambia el color de fondo de la pagina
+body {
+  background-color: @pageBgColor;
+}
+
+// Esta clase permitira a cualquier boton, flotar permanentemente en la esquina 
+// inferior derecha de la pantalla
+.floating-btn {
+  position: fixed !important;
+  bottom: 10px;
+  right: 10px;
+}

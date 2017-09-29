@@ -1,0 +1,19 @@
+include globals.pug
+
+div.row
+  div.col.s12
+    h4
+      i.mdi.mdi-upload
+      ='{{ langManager.messages.upload.title }}'
+
+div.row
+  div.col.s12
+    +select(
+      'document-type',
+      'langManager.messages.upload.typeLabel',
+      'langManager.messages.global.selectPlaceholder',
+      'documents', '.name', '',
+      'onDocumentTypeSelected()'
+    )(
+      '[(ngModel)]'='selectedDocument'
+    )

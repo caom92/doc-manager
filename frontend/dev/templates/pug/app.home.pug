@@ -1,0 +1,53 @@
+include globals.pug
+
+//- Barra de navegacion en la parte superior de la pagina
+-
+  var navBarConfig = {
+    sideNavButton: {
+      id: "'sidenav-activation-btn'",
+      icon: 'mdi mdi-menu white-text',
+      showFlag: "global.showSideNav === true"
+    }
+  };
++navBar(navBarConfig)('[navbarClass]'="'green'")
+  mz-navbar-item
+    +link('http://www.jfdc.tech/')
+      i.mdi.mdi-home
+  mz-navbar-item
+    +link()('[id]'="'translation-button'")
+      i.mdi.mdi-translate
+    +dropdownMenu("'language-options'", "'translation-button'")
+      mz-dropdown-item
+        +link()(
+          '(click)'='onLanguageButtonClicked("es")'
+          click-stop-propagation
+        )='Español'
+      mz-dropdown-item
+        +link()(
+          '(click)'='onLanguageButtonClicked("en")'
+          click-stop-propagation
+        )='English'
+
+//- Menu de navegacion lateral
++sideNav("'sidenav'", "'sidenav-activation-btn'")(
+  '[fixed]'="'true'"
+  '*ngIf'="global.showSideNav === true"
+)
+  div.logo-area
+  mz-sidenav-link
+    +link()(class='side-menu-link waves-effect waves-green')
+      i.mdi.mdi-magnify.mdi-24px
+      ='{{ langManager.messages.sideNav.search }}'
+  mz-sidenav-link
+    +uiRouterLink('upload')(class='side-menu-link waves-effect waves-green')
+      i.mdi.mdi-upload.mdi-24px
+      ='{{ langManager.messages.sideNav.upload }}'
+
+//- Area principal de la pagina
+div.container(
+  '[ngClass]'="{ 'with-sidenav': global.showSideNav }"
+) 
+  ui-view('[hidden]'='global.showSpinner')
+  div.row('[hidden]'='!global.showSpinner')
+    div.col.s12.m12.center-align
+      mz-spinner('[size]'="'big'")
