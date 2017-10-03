@@ -101,7 +101,7 @@ class ServiceProvider
 
         // creamos la funcion que contiene las acciones a ejecutar cuando se
         // llama este servicio
-        $callback = function(Request $request, Response $response) 
+        $callback = function(Request $request, Response $response, $args) 
           use ($import, $name)
         {
           // revisamos que el archivo donde se definio el servicio exista
@@ -193,11 +193,11 @@ class ServiceProvider
             // validamos los datos de entrada recibidos por el servicio desde el
             // cliente
             ServiceProvider::validateServiceInputArguments(
-              $this, $data, $service['requirements_desc']
+              $this, $data, $args, $service['requirements_desc']
             );
 
             // ejecutamos el servicio
-            $result = $service['callback']($this, $data);
+            $result = $service['callback']($this, $data, $args);
 
             // preparamos la respuesta a enviar al cliente
             $result = ServiceProvider::prepareResponse($result);
@@ -218,27 +218,24 @@ class ServiceProvider
 
         // configuramos el servicio dependiendo del metodo HTTP que debe 
         // utilizar
+        // https://www.slimframework.com/docs/objects/router.html#how-to-create-routes
         switch ($method) {
           // Para lectura de datos de la BD
-          // http://docs.slimframework.com/routing/get/
           case 'GET':
             $this->app->get($name, $callback);
           break;
 
           // Para crear elementos en la BD
-          // http://docs.slimframework.com/routing/put/
-          case 'PUT':
-            $this->app->put($name, $callback);
-          break;
-
-          // Para modificacion de elementos en la BD
-          // http://docs.slimframework.com/routing/post/
           case 'POST':
             $this->app->post($name, $callback);
           break;
 
+          // Para modificacion de elementos en la BD
+          case 'PUT':
+            $this->app->put($name, $callback);
+          break;
+
           // Para borrar elementos de la BD
-          // http://docs.slimframework.com/routing/delete/
           case 'DELETE':
             $this->app->delete($name, $callback);
           break;
@@ -322,7 +319,7 @@ class ServiceProvider
   //        el dato que no cumplio con las reglas y la regla especifica que
   //        fallo la prueba
   private static function validateServiceInputArguments(
-    $scope, $request, $requirementsDesc)
+    $scope, $request, $args, $requirementsDesc)
   {
     // validamos los datos de entrada segun fueron especificadas las reglas de
     // validacion
@@ -332,10 +329,14 @@ class ServiceProvider
       $hasOptionalFlag = 
         isset($options['optional']) && array_key_exists('optional', $options);
       $isOptional = ($hasOptionalFlag) ? $options['optional'] : false;
-      // luego revisamos que el cliente haya enviado el argumento esperado
-      $hasAttribute = 
-        isset($request[$attribute]) && array_key_exists($attribute, $request);
 
+      // luego revisamos que el cliente haya enviado el argumento esperado
+      $isInRequest =  
+        isset($request[$attribute]) && array_key_exists($attribute, $request);
+      $isInArgs = 
+        isset($args[$attribute]) && array_key_exists($attribute, $args);
+      $hasAttribute = $isInRequest || $isInArgs;
+      
       // despues revisamos si la regla que vamos a evaluar se decide con el
       // atributo type
       $isTypedRule = isset($options['type']) 
@@ -351,7 +352,7 @@ class ServiceProvider
         if ($hasAttribute) {
           // obtenemos el nombre del validador y el valor a evaluar adecuados
           $rule = $options['type'];
-          $value = $request[$attribute];
+          $value = ($isInRequest) ? $request[$attribute] : $args[$attribute];
         } else if (!$isOptional) {
           // si el argumento no fue enviado desde el cliente y no fue declarado 
           // como opcional, entonces hay que lanzar una excepcion

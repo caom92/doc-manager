@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core'
-import { BackendService } from '../services/app.backend'
+import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
-import { StateService } from '@uirouter/angular'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
 import { MzModalService } from 'ng2-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
+import { ComponentData } from './app.dynamic'
+import { DefaultDocumentUploadComponent } from './document.upload.default'
 
 // Componente que define el comportamiento de la pagina donde el usuario puede 
 // capturar nuevos documentos
@@ -20,11 +21,13 @@ export class UploadComponent implements OnInit
   // La lista de los diferentes tipos de documentos que estan en el sistema
   documents = []
 
+  // Los datos del componente que sera inyectado
+  componentData: ComponentData = null
+
   // El constructor de este componente, inyectando los servicios requeridos
   constructor(
     private server: BackendService,
     private toastManager: ToastService,
-    private router: StateService,
     private global: GlobalElementsService,
     private langManager: LanguageService,
     private modalManager: MzModalService
@@ -39,8 +42,8 @@ export class UploadComponent implements OnInit
     // enviamos los datos al servidor
     this.server.read(
       'list-documents',
-      null,
-      (response: any) => {
+      {},
+      (response: BackendResponse) => {
         // cuando el servidor responda, cerramos el modal de espera
         modal.instance.modalComponent.close()
         
@@ -64,6 +67,16 @@ export class UploadComponent implements OnInit
   // Esta funcion se invoca cuando el usuario elije un documento de la lista de 
   // seleccion
   onDocumentTypeSelected(): void {
-    console.log(this.selectedDocument)
-  }
-}
+    // dependiendo del tipo de documento elegido, se cargara el componente que 
+    // le corresponde donde el usuario podra capturar el documento y la info. 
+    // relacionada con el
+    switch (this.selectedDocument.name) {
+      default:
+        this.componentData = {
+          component: DefaultDocumentUploadComponent,
+          inputs: {}
+        }
+      break
+    } // switch (this.selectedDocument.name)
+  } // onDocumentTypeSelected(): void
+} // export class UploadComponent implements OnInit

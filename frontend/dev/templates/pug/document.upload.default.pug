@@ -1,0 +1,38 @@
+include globals.pug
+
+div.row
+  form
+    div.col.s12
+      +dateInput(
+        'document-date', 
+        '{{ langManager.messages.upload.docDateLabel }}'
+      )
+
+    div.col.s12.m4
+      +textInput(
+        'zone',
+        'langManager.messages.upload.zoneLabel'
+      )(
+        '[autocomplete]'='zoneSuggestions'
+        '[(ngModel)]'='selectedZone'
+        '(change)'='onZoneSelected($event)'
+      )
+
+    div.col.s12.m4
+      +textInput(
+        'ranch',
+        'langManager.messages.upload.ranchLabel'
+      )(
+        '[autocomplete]'='ranchSuggestions'
+        '[(ngModel)]'='selectedRanch'
+        '(change)'='onRanchSelected($event)'
+      )
+
+    div.col.s12.m4
+      +textInput(
+        'producers',
+        'langManager.messages.upload.producerLabel'
+      )(
+        '[autocomplete]'='producerSuggestions'
+        '[(ngModel)]'='selectedProducer'
+      )

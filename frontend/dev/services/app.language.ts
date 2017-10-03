@@ -17,7 +17,11 @@ export class LanguageService
       },
       upload: {
         title: 'Captura de Documento',
-        typeLabel: 'Tipo de Documento'
+        typeLabel: 'Tipo de Documento',
+        zoneLabel: 'Zona',
+        ranchLabel: 'Rancho',
+        producerLabel: 'Productor',
+        docDateLabel: 'Fecha del Documento'
       },
       100: 'No se pudo reconocer el servicio solicitado',
       101: 'Faltó enviar una entrada al servidor',
@@ -48,7 +52,11 @@ export class LanguageService
       },
       upload: {
         title: 'Document Upload',
-        typeLabel: 'Document Type'
+        typeLabel: 'Document Type',
+        zoneLabel: 'Zone',
+        ranchLabel: 'Ranch',
+        producerLabel: 'Producer',
+        docDateLabel: 'Document Date'
       },
       100: 'Unable to recognize the requested service',
       101: 'A server input argument was not send',
@@ -83,7 +91,11 @@ export class LanguageService
     },
     upload: {
       title: null,
-      typeLabel: null
+      typeLabel: null,
+      zoneLabel: null,
+      ranchLabel: null,
+      producerLabel: null,
+      docDateLabel: null
     },
   }
 

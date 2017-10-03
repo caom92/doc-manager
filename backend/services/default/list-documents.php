@@ -2,7 +2,7 @@
 
 $service = [
   'requirements_desc' => [],
-  'callback' => function($scope, $request) {
+  'callback' => function($scope, $request, $args) {
     return $scope->docManagerTableFactory->get('DocumentTypes')
       ->selectAll();
   }

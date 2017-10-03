@@ -18,17 +18,18 @@ use \DataBase\TableFactory as TableFactory;
 // Instanciamos el provedor de servicios
 $controller = new ServiceProvider(
   [
-    'docManagerTableFactory' => function($config) use ($documents) {
+    'docManagerTableFactory' => function($config) 
+    use ($default) {
       return new TableFactory(
         'DocManager',
         'DataBase\\',
-        $documents['tables']
+        $default['tables']
       );
     }
   ],
   [
     'GET' => 
-      $documents['services']['GET'],
+      $default['services']['GET'],
     'PUT' => [
       // 'nombre del servicio' => function($scope, $request) {
       // }

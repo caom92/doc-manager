@@ -2,6 +2,19 @@ import { Injectable } from '@angular/core'
 import { Http, Response, Headers, RequestOptions, URLSearchParams } from '@angular/http'
 import { Observable } from 'rxjs/Rx'
 
+// El tipo de objeto que es retornado del servidor como respuesta a cualquier 
+// peticion
+export type BackendResponse = {
+  meta: {
+    message: string
+    return_code: number
+  },
+  data: any
+}
+
+// Tipo auxiliar para definir el callback que atendera la respuesta del servidor
+type OnSuccessCallback = (response: BackendResponse) => void
+
 // Servicio que proporciona la interfaz con la cual el backend puede 
 // comunicarse con el backend de la aplicacion
 @Injectable()
@@ -40,16 +53,16 @@ export class BackendService
   //        comunicacion con el servidor haya fallado
   create(
     service: string, 
-    data: URLSearchParams, 
-    successCallback: (response: any) => void, 
+    data: FormData, 
+    successCallback: OnSuccessCallback, 
     errorCallback = BackendService.defaultErrorCallback
   ): void {
     this.http
-      .put(
+      .post(
         BackendService.url + service,
+        data,
         new RequestOptions({
           headers: BackendService.headers,
-          body: data,
           withCredentials: true
         })
       )
@@ -73,16 +86,27 @@ export class BackendService
   //        comunicacion con el servidor haya fallado
   read(
     service: string, 
-    data: URLSearchParams, 
-    successCallback: (response: any) => void, 
+    data: any, 
+    successCallback: OnSuccessCallback, 
     errorCallback = BackendService.defaultErrorCallback
   ): void {
+    // debido a que el metodo GET debe ser enviado con un cuerpo vacio, habra 
+    // que pasar los parametros del servicio en el URL, sin embargo, debido a 
+    // que el backend esta implementado utilizando Slim PHP, este solo puede 
+    // configurar rutas con parametros, es decir, no puede enrutar peticiones 
+    // que contengan query strings en su URL, debido a esto, hay que desglozar 
+    // los parametros ingresados y adjuntarlos a la URL del servicio 
+    // dividiendolos con diagonales
+    let params = ''
+    for (let i in data) {
+      params += '/' + data[i]
+    }
+
     this.http
       .get(
-        BackendService.url + service,
-        new RequestOptions({
+        BackendService.url + service + params,
+        new RequestOptions({ 
           headers: BackendService.headers,
-          body: data,
           withCredentials: true
         })
       )
@@ -107,11 +131,11 @@ export class BackendService
   update(
     service: string, 
     data: FormData, 
-    successCallback: (response: any) => void, 
+    successCallback: OnSuccessCallback, 
     errorCallback = BackendService.defaultErrorCallback
   ): void {
     this.http
-      .post(
+      .put(
         BackendService.url + service,
         data,
         new RequestOptions({
@@ -139,16 +163,22 @@ export class BackendService
   //        comunicacion con el servidor haya fallado
   delete(
     service: string, 
-    data: URLSearchParams, 
-    successCallback: (response: any) => void, 
+    data: any, 
+    successCallback: OnSuccessCallback, 
     errorCallback = BackendService.defaultErrorCallback
   ): void {
+    // se sigue el mismo proceso de desglozamiento de parametros del servicio 
+    // seguido en la funcion read() de esta clase
+    let params = ''
+    for (let i in data) {
+      params += '/' + data[i]
+    }
+
     this.http
-      .get(
-        BackendService.url + service,
+      .delete(
+        BackendService.url + service + params,
         new RequestOptions({
           headers: BackendService.headers,
-          body: data,
           withCredentials: true
         })
       )

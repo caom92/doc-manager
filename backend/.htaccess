@@ -15,7 +15,7 @@ RewriteCond %{REQUEST_FILENAME} !-l
 RewriteRule ^$ frontend/layouts/index.html [NC,L,QSA]
 
 # Redireccionamos las peticiones de servicio al backend
-RewriteRule ^services/([a-zA-Z0-9_-]+)$ backend/main.php [NC,L,QSA]
+RewriteRule ^services\/([a-zA-Z0-9\_\-\/]+)$ backend/main.php [NC,L,QSA]
 
 # Evitamos que el usuario pueda navegar en los archivos del sitio
 Options -Indexes 

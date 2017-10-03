@@ -10,6 +10,8 @@ import { HttpModule } from '@angular/http'
 // Importamos los componentes de cada pagina de nuestra aplicacion
 import { HomeComponent } from './app.home'
 import { UploadComponent } from './app.upload'
+import { DynamicComponent } from './app.dynamic'
+import { DefaultDocumentUploadComponent } from './document.upload.default'
 
 // Importamos los componentes de los modales
 import { ProgressModalComponent } from './modal.please.wait'
@@ -62,11 +64,14 @@ import { ToastService } from '../services/app.toast'
     HomeComponent,
     KeysPipe,
     ProgressModalComponent,
-    UploadComponent
+    UploadComponent,
+    DynamicComponent,
+    DefaultDocumentUploadComponent
   ],
   // declaramos cualquier componente que sera inyectado dinamicamente
   entryComponents: [
     ProgressModalComponent,
+    DefaultDocumentUploadComponent
   ],
   // indicamos cual es el componente raiz
   bootstrap: [ HomeComponent ]
