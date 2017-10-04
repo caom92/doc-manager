@@ -20,7 +20,7 @@ class Ranches extends DataBaseTable
   function selectByZoneID($zoneID) {
     $query = $this->getStatement(
       'select_by_zone',
-      "SELECT * FROM `$this->table` WHERE zone_id = :zone_id"
+      "SELECT * FROM `$this->table` WHERE parent_id = :zone_id"
     );
     $query->execute([
       ':zone_id' => $zoneID
@@ -42,6 +42,19 @@ class Ranches extends DataBaseTable
     ]);
     $rows = $query->fetchAll();
     return (count($rows) > 0) ? $rows[0]['id'] : NULL;
+  }
+
+  // Inserta uno o varios renglones nuevos en la tabla en la base de datos
+  // [in]   row (dictionary): los datos a insertar en la tabla, organizados en 
+  //        renglones y columnas
+  // [out]  return (uint): el ID del ultimo renglon insertado
+  function insert($row) {
+    $query = $this->getStatement(
+      'insert_row',
+      "INSERT INTO `$this->table` (name, parent_id) VALUES (:name, :zoneID)"
+    );
+    $query->execute($row);
+    return $this->db->lastInsertId();
   }
 }
 

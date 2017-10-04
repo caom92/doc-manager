@@ -74,7 +74,9 @@ export class UploadComponent implements OnInit
       default:
         this.componentData = {
           component: DefaultDocumentUploadComponent,
-          inputs: {}
+          inputs: {
+            document_type_id: this.selectedDocument.id
+          }
         }
       break
     } // switch (this.selectedDocument.name)

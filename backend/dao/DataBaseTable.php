@@ -26,6 +26,14 @@ class DataBaseTable
     $this->table = $table;
   }
 
+  // Retorna verdadero si la consulta con el indice especificado fue creado 
+  // anteriormente y esta guardado en cache o falso en caso contrario
+  protected function isStatementCached($index) {
+    return 
+      isset($this->cachedQueries[$index])
+      && array_key_exists($index, $this->cachedQueries);
+  }
+
   // Retorna una instancia del PDOStatement que corresponde a la consulta SQL 
   // especificada
   // [in]   index (string): el indice que se utilizara para buscar la consulta 
@@ -34,11 +42,7 @@ class DataBaseTable
   // [out]  return (PDOStatement): la interfaz que representa los datos 
   //        obtenidos al ejecutar la consulta especificada en la base de datos
   protected function getStatement($index, $query) {
-    $isQueryCached =
-      isset($this->cachedQueries[$index])
-      && array_key_exists($index, $this->cachedQueries);
-
-    if (!$isQueryCached) {
+    if (!$this->isStatementCached($index)) {
       $this->cachedQueries[$index] = $this->db->prepare($query);
     }
 

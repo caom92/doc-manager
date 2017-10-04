@@ -143,7 +143,7 @@ function isBitmapFile($file)
 // otherwise
 function isDateTime($string, $format)
 {
-  $dateTime = DateTime::createFromFormat($format, $string);
+  $dateTime = \DateTime::createFromFormat($format, $string);
   return $dateTime !== FALSE;
 }
 

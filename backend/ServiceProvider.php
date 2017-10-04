@@ -353,7 +353,7 @@ class ServiceProvider
           // obtenemos el nombre del validador y el valor a evaluar adecuados
           $rule = $options['type'];
           $value = ($isInRequest) ? $request[$attribute] : $args[$attribute];
-        } else if (!$isOptional) {
+        } else if (!$isOptional && $options['type'] != 'files') {
           // si el argumento no fue enviado desde el cliente y no fue declarado 
           // como opcional, entonces hay que lanzar una excepcion
           throw new Exception("Input argument $attribute is undefined", 101);

@@ -9,7 +9,32 @@ export class LanguageService
   private translations = {
     es: { // Español
       global: {
-        selectPlaceholder: 'Elija una opción'
+        selectPlaceholder: 'Elija una opción',
+        submit: 'Enviar',
+        datePickerConfig: {
+          monthsFull: [
+            'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
+            'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+          ],
+          monthsShort: [
+            'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep',
+            'Oct', 'Nov', 'Dec'
+          ],
+          weekdaysFull: [
+            'Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes',
+            'Sábado'
+          ],
+          weekdaysShort: [
+            'Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'
+          ],
+          weekdaysLetter: [
+            'D', 'L', 'M', 'R', 'J', 'V', 'S'
+          ],
+          today: 'Hoy',
+          clear: 'Borrar',
+          close: 'Cerrar',
+          formatSubmit: "yyyy-mm-dd"
+        }
       },
       sideNav: {
         search: 'Buscar',
@@ -21,7 +46,31 @@ export class LanguageService
         zoneLabel: 'Zona',
         ranchLabel: 'Rancho',
         producerLabel: 'Productor',
-        docDateLabel: 'Fecha del Documento'
+        docDateLabel: 'Fecha del Documento',
+        fileLabel: 'Archivo del Documento',
+        fileButtonLabel: 'Subir',
+        errors: {
+          documentDate: {
+            required: 'Este campo es obligatorio'
+          },
+          zone: {
+            required: 'Este campo es obligatorio',
+            minlength: 'Este campo debe ser de 3 caracteres de largo',
+            maxlength: 'Este campo debe ser de 3 caracteres de largo'
+          },
+          ranch: {
+            required: 'Este campo es obligatorio',
+            maxlength: 'Este campo no debe ser mas de 255 caracteres de largo'
+          },
+          producer: {
+            required: 'Este campo es obligatorio',
+            maxlength: 'Este campo no debe ser mas de 255 caracteres de largo'
+          }
+        }
+      },
+      'capture-default': {
+        0: 'Documento capturado con éxito',
+        1: 'Error al subir el documento'
       },
       100: 'No se pudo reconocer el servicio solicitado',
       101: 'Faltó enviar una entrada al servidor',
@@ -44,7 +93,11 @@ export class LanguageService
     },
     en: { // Ingles
       global: {
-        selectPlaceholder: 'Choose an option'
+        selectPlaceholder: 'Choose an option',
+        submit: 'Send',
+        datePickerConfig: {
+          formatSubmit: "yyyy-mm-dd"
+        }
       },
       sideNav: {
         search: 'Search',
@@ -56,7 +109,31 @@ export class LanguageService
         zoneLabel: 'Zone',
         ranchLabel: 'Ranch',
         producerLabel: 'Producer',
-        docDateLabel: 'Document Date'
+        docDateLabel: 'Document Date',
+        fileLabel: 'Document File',
+        fileButtonLabel: 'Upload',
+        errors: {
+          documentDate: {
+            required: 'This field is required'
+          },
+          zone: {
+            required: 'This field is required',
+            minlength: 'This field must be 3 characters long',
+            maxlength: 'This field must be 3 characters long'
+          },
+          ranch: {
+            required: 'This field is required',
+            maxlength: 'This field must not be longer than 255 characters'
+          },
+          producer: {
+            required: 'This field is required',
+            maxlength: 'This field must not be longer than 255 characters'
+          }
+        }
+      },
+      'capture-default': {
+        0: 'Document uploaded successfully',
+        1: 'Failed to upload the document file'
       },
       100: 'Unable to recognize the requested service',
       101: 'A server input argument was not send',
@@ -83,7 +160,9 @@ export class LanguageService
   // desplegara cualquier texto que este almacenado aqui
   messages = {
     global: {
-      selectPlaceholder: null
+      selectPlaceholder: null,
+      submit: null,
+      datePickerConfig: null
     },
     sideNav: {
       search: null,
@@ -95,8 +174,28 @@ export class LanguageService
       zoneLabel: null,
       ranchLabel: null,
       producerLabel: null,
-      docDateLabel: null
-    },
+      docDateLabel: null,
+      fileLabel: null,
+      fileButtonLabel: null,
+      errors: {
+        documentDate: {
+          required: null
+        },
+        zone: {
+          required: null,
+          minlength: null,
+          maxlength: null
+        },
+        ranch: {
+          required: null,
+          maxlength: null
+        },
+        producer: {
+          required: null,
+          maxlength: null
+        }
+      }
+    }
   }
 
   // Inicializa todos los textos de la aplicacion con el idioma que este 

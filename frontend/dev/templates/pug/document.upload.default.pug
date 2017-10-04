@@ -1,11 +1,26 @@
 include globals.pug
 
-div.row
-  form
+form(
+  '[formGroup]'='defaultDocumentUploadForm'
+  '(ngSubmit)'='onDefaultDocumentUpload()'
+  novalidate
+)
+  div.row
     div.col.s12
       +dateInput(
         'document-date', 
         '{{ langManager.messages.upload.docDateLabel }}'
+      )(
+        formControlName='documentDate'
+        mz-validation
+        required
+        '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
+      )
+      input(
+        id='document-date'
+        name='document-date'
+        type='hidden'
+        formControlName='documentDate'
       )
 
     div.col.s12.m4
@@ -14,8 +29,12 @@ div.row
         'langManager.messages.upload.zoneLabel'
       )(
         '[autocomplete]'='zoneSuggestions'
-        '[(ngModel)]'='selectedZone'
         '(change)'='onZoneSelected($event)'
+        formControlName='zone'
+        '[errorMessageResource]'='langManager.messages.upload.errors.zone'
+        mz-validation
+        required
+        length='3'
       )
 
     div.col.s12.m4
@@ -24,8 +43,12 @@ div.row
         'langManager.messages.upload.ranchLabel'
       )(
         '[autocomplete]'='ranchSuggestions'
-        '[(ngModel)]'='selectedRanch'
         '(change)'='onRanchSelected($event)'
+        formControlName='ranch'
+        mz-validation
+        required
+        length='255'
+        '[errorMessageResource]'='langManager.messages.upload.errors.ranch'
       )
 
     div.col.s12.m4
@@ -33,6 +56,31 @@ div.row
         'producers',
         'langManager.messages.upload.producerLabel'
       )(
+        '(change)'='onProducerSelected($event)'
         '[autocomplete]'='producerSuggestions'
-        '[(ngModel)]'='selectedProducer'
+        formControlName='producer'
+        mz-validation
+        required
+        length='255'
+        '[errorMessageResource]'='langManager.messages.upload.errors.producer'
+      )
+
+    div.col.s12
+      +fileInput(
+        'document',
+        '{{ langManager.messages.upload.fileLabel }}',
+        '{{ langManager.messages.upload.fileButtonLabel }}'
+      )(
+        '(change)'='onDocumentFileSelected($event)'
+      )
+
+  div.row
+    div.col.s12
+      +button(
+        'submit',
+        'submit-document',
+        '{{ langManager.messages.global.submit }}',
+        'mdi mdi-send'
+      )(
+        '[disabled]'='!defaultDocumentUploadForm.valid || !selectedDocumentFile'
       )

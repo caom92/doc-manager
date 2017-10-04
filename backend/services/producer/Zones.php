@@ -37,6 +37,19 @@ class Zones extends DataBaseTable
     $rows = $query->fetchAll();
     return (count($rows) > 0) ? $rows[0]['id'] : NULL;
   }
+
+  // Inserta uno o varios renglones nuevos en la tabla en la base de datos
+  // [in]   row (dictionary): los datos a insertar en la tabla, organizados en 
+  //        renglones y columnas
+  // [out]  return (uint): el ID del ultimo renglon insertado
+  function insert($row) {
+    $query = $this->getStatement(
+      'insert_row',
+      "INSERT INTO `$this->table` (name) VALUES (:name)"
+    );
+    $query->execute($row);
+    return $this->db->lastInsertId();
+  }
 }
 
 ?>
