@@ -87,44 +87,47 @@ $service = [
     ]);
 
     // obtenemos una instancia a los DAOs que vamos a necesitar
+    $zoneName = strtoupper($request['zone']);
+    $ranchName = strtoupper($request['ranch']);
+    $producerName = strtoupper($request['producer']);
     $zones = $ranches = NULL;
     $producers = $scope->docManagerTableFactory->get('Producers');
 
     // primero hay que revisar si el productor ingresado existe en la BD
-    $producerID = $producers->getIDByName($request['producer']);
+    $producerID = $producers->getIDByName($producerName);
 
     // si el productor no existe, necesitamos crearlo en la BD
     if (!isset($producerID)) {
       // para agregar al productor, primero es necesario revisar si el rancho 
       // existe en la BD
       $ranches = $scope->docManagerTableFactory->get('Ranches');
-      $ranchID = $ranches->getIDByName($request['ranch']);
+      $ranchID = $ranches->getIDByName($ranchName);
 
       // si el rancho no existe, debemos agregarlo
       if (!isset($ranchID)) {
         // para agregar el rancho, primero debemos revisar si la zona existe en 
         // la BD
         $zones = $scope->docManagerTableFactory->get('Zones');
-        $zoneID = $zones->getIDByName($request['zone']);
+        $zoneID = $zones->getIDByName($zoneName);
 
         // si la zona no existe, debemos agregarla a la BD
         if (!isset($zoneID)) {
           // agregamos la zona a la BD
           $zoneID = $zones->insert([
-            ':name' => strtoupper($request['zone'])
+            ':name' => $zoneName
           ]);
         } // if (!isset($zoneID))
 
         // agregamos el rancho a la BD
         $ranchID = $ranches->insert([
-          ':name' => strtoupper($request['ranch']),
+          ':name' => $ranchName,
           ':zoneID' => $zoneID
         ]);
       } // if (!isset($ranchID))
 
       // agregamos el productor
       $producerID = $producers->insert([
-        ':name' => strtoupper($request['producer']),
+        ':name' => $producerName,
         ':ranchID' => $ranchID
       ]);
     } // if (!isset($producerID))

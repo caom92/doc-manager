@@ -9,8 +9,9 @@ $service = [
     ]
   ],
   'callback' => function($scope, $request, $args) {
+    $typeName = strtoupper($request['name']);
     $types = $scope->docManagerTableFactory->get('DocumentTypes');
-    $isNameRepeated = $types->getIDByName($request['name']) != NULL;
+    $isNameRepeated = $types->getIDByName($typeName) != NULL;
 
     if ($isNameRepeated) {
       throw new \Exception(
@@ -20,7 +21,7 @@ $service = [
     }
 
     return $types->insert([
-      ':name' => strtoupper($request['name'])
+      ':name' => $typeName
     ]);
   } // 'callback' => function($scope, $request, $args)
 ];
