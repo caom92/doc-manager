@@ -10,11 +10,17 @@ import { HttpModule } from '@angular/http'
 // Importamos los componentes de cada pagina de nuestra aplicacion
 import { HomeComponent } from './app.home'
 import { UploadComponent } from './app.upload'
-import { DynamicComponent } from './app.dynamic'
-import { DefaultDocumentUploadComponent } from './document.upload.default'
+import { SearchComponent } from './app.search'
+import { DocumentsComponent } from './app.documents'
 
 // Importamos los componentes de los modales
 import { ProgressModalComponent } from './modal.please.wait'
+import { ProducerDocumentUploadModalComponent } from './modal.upload.producer'
+import { ProducerDocumentSearchModalComponent } from './modal.search.producer'
+import { ProducerDocumentDisplayModalComponent } from './modal.display.producer'
+import { LabDocumentUploadModalComponent } from './modal.upload.lab'
+import { LabDocumentSearchModalComponent } from './modal.search.lab'
+import { LabDocumentDisplayModalComponent } from './modal.display.lab'
 
 // Importamos los servicios que van a ser necesitados por cada pagina del 
 // sistema
@@ -45,6 +51,16 @@ import { ToastService } from '../services/app.toast'
           name: 'upload',
           url: '/upload',
           component: UploadComponent
+        },
+        {
+          name: 'search',
+          url: '/search',
+          component: SearchComponent
+        },
+        {
+          name: 'document-types',
+          url: '/document-types',
+          component: DocumentsComponent
         }
       ],
       useHash: true,
@@ -65,13 +81,24 @@ import { ToastService } from '../services/app.toast'
     KeysPipe,
     ProgressModalComponent,
     UploadComponent,
-    DynamicComponent,
-    DefaultDocumentUploadComponent
+    SearchComponent,
+    DocumentsComponent,
+    ProducerDocumentUploadModalComponent,
+    ProducerDocumentSearchModalComponent,
+    ProducerDocumentDisplayModalComponent,
+    LabDocumentUploadModalComponent,
+    LabDocumentSearchModalComponent,
+    LabDocumentDisplayModalComponent
   ],
   // declaramos cualquier componente que sera inyectado dinamicamente
   entryComponents: [
     ProgressModalComponent,
-    DefaultDocumentUploadComponent
+    ProducerDocumentUploadModalComponent,
+    ProducerDocumentSearchModalComponent,
+    ProducerDocumentDisplayModalComponent,
+    LabDocumentUploadModalComponent,
+    LabDocumentSearchModalComponent,
+    LabDocumentDisplayModalComponent
   ],
   // indicamos cual es el componente raiz
   bootstrap: [ HomeComponent ]

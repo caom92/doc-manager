@@ -2,7 +2,6 @@
 
 $producer = [
   'tables' => [
-    'DocumentTypes' => realpath(__DIR__.'/DocumentTypes.php'),
     'Zones' => realpath(__DIR__.'/Zones.php'),
     'Ranches' => realpath(__DIR__.'/Ranches.php'),
     'Producers' => realpath(__DIR__.'/Producers.php'),
@@ -11,7 +10,6 @@ $producer = [
   ],
   'services' => [
     'GET' => [
-      'list-documents' => realpath(__DIR__.'/list-documents.php'),
       'list-zones' => realpath(__DIR__.'/list-zones.php')
     ],
     'POST' => [
@@ -19,7 +17,8 @@ $producer = [
         realpath(__DIR__.'/list-ranches-of-zone.php'),
       'list-producers-of-ranch' =>
         realpath(__DIR__.'/list-producers-of-ranch.php'),
-      'capture-default' => realpath(__DIR__.'/capture-default.php')
+      'capture-default' => realpath(__DIR__.'/capture-default.php'),
+      'search-default' => realpath(__DIR__.'/search-default.php')
     ]
   ]
 ];

@@ -1,0 +1,27 @@
+include globals.pug
+
+mz-modal(
+  '[options]'='modalOptions'
+  '[fixedFooter]'='true'
+  '[fullscreen]'='true'
+  '[bottomSheet]'='true'
+)
+  mz-modal-header
+    ='{{ langManager.messages.display.title }}'
+  mz-modal-content
+    div.row
+      div.col.s12
+        h6='{{ documentType }} - {{ fileDate }}'
+    
+    div.row
+      div.col.s12.viewerjs-container
+        +viewerJSDoc('sanitizedPath')
+  mz-modal-footer
+    +button(
+      'button',
+      'close-modal',
+      '{{ langManager.messages.global.close }}'
+    )(
+      mz-modal-close
+      '[flat]'='true'
+    )

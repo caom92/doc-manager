@@ -31,6 +31,40 @@ class ProducersDocuments extends DataBaseTable
     $query->execute($row);
     return $this->db->lastInsertId();
   }
+
+  function selectByTypeProducerAndDateInterval(
+    $typeID,
+    $producerID, 
+    $startDate, 
+    $endDate
+  ) {
+    $query = $this->getStatement(
+      'select_by_date_interval',
+      "SELECT
+        d.upload_date AS upload_date,
+        d.file_date AS file_date,
+        d.file_path AS file_path
+      FROM
+        `$this->table`
+      INNER JOIN
+        `documents` AS d
+        ON
+          d.id = document_id
+      WHERE
+        d.file_date >= :startDate AND d.file_date <= :endDate
+        AND d.type_id = :typeID
+        AND producer_id = :producerID
+      ORDER BY
+        d.file_date"
+    );
+    $query->execute([
+      ':typeID' => $typeID,
+      ':producerID' => $producerID,
+      ':startDate' => $startDate,
+      ':endDate' => $endDate
+    ]);
+    return $query->fetchAll();
+  }
 }
 
 ?>

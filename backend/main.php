@@ -19,23 +19,28 @@ use \DataBase\TableFactory as TableFactory;
 $controller = new ServiceProvider(
   [
     'docManagerTableFactory' => function($config) 
-    use ($producer) {
+    use ($producer, $lab, $types) {
       return new TableFactory(
         'DocManager',
         'DataBase\\',
-        $producer['tables']
+        $producer['tables'] + 
+        $lab['tables'] +
+        $types['tables']
       );
     }
   ],
   [
     'GET' => 
-      $producer['services']['GET'],
+      $producer['services']['GET'] +
+      $types['services']['GET'],
     'PUT' => [
       // 'nombre del servicio' => function($scope, $request) {
       // }
     ],
     'POST' => 
-      $producer['services']['POST'],
+      $producer['services']['POST'] +
+      $lab['services']['POST'] +
+      $types['services']['POST'],
     'DELETE' => [
       // 'nombre del servicio' => function($scope, $request) {
       // }

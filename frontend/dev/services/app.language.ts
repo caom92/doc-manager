@@ -9,8 +9,10 @@ export class LanguageService
   private translations = {
     es: { // Español
       global: {
+        wait: 'Por favor espere...',
         selectPlaceholder: 'Elija una opción',
         submit: 'Enviar',
+        close: 'Cerrar',
         datePickerConfig: {
           monthsFull: [
             'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
@@ -38,9 +40,14 @@ export class LanguageService
       },
       sideNav: {
         search: 'Buscar',
-        upload: 'Capturar'
+        upload: 'Capturar',
+        documents: 'Tipos de Documento'
       },
       upload: {
+        lab: {
+          analysisLabel: 'Solicitud de Estudio',
+          resultLabel: 'Resultado de Estudio'
+        },
         title: 'Captura de Documento',
         typeLabel: 'Tipo de Documento',
         zoneLabel: 'Zona',
@@ -68,9 +75,47 @@ export class LanguageService
           }
         }
       },
+      search: {
+        title: 'Buscar Documento',
+        startDateLabel: 'Fecha de Inicio',
+        endDateLabel: 'Fecha Final',
+        buttonLabel: 'Buscar',
+        noSearchResults: 'No se encontraron documentos con esas características'
+      },
+      display: {
+        title: 'Visualizar Documento',
+        lab: {
+          tabs: [
+            'Solicitud',
+            'Resultados'
+          ]
+        }
+      },
+      documents: {
+        title: 'Tipos de Documento',
+        tableHeaders: [
+          'Nombre'
+        ],
+        nameLabel: 'Nombre del Tipo',
+        addButtonLabel: 'Agregar',
+        errors: {
+          name: {
+            required: 'Este campo es obligatorio',
+            maxlength: 'Este campo no debe tener más de 255 caracteres'
+          }
+        }
+      },
       'capture-default': {
         0: 'Documento capturado con éxito',
         1: 'Error al subir el documento'
+      },
+      'capture-lab': {
+        0: 'Documento capturado con éxito',
+        1: 'Error al subir el documento'
+      },
+      'add-doc-type': {
+        0: 'Tipo de documento agregado con éxito',
+        1: 'Error al crear el tipo; el nombre ya está ocupado'
       },
       100: 'No se pudo reconocer el servicio solicitado',
       101: 'Faltó enviar una entrada al servidor',
@@ -93,17 +138,24 @@ export class LanguageService
     },
     en: { // Ingles
       global: {
+        wait: 'Please wait...',
         selectPlaceholder: 'Choose an option',
         submit: 'Send',
+        close: 'Close',
         datePickerConfig: {
           formatSubmit: "yyyy-mm-dd"
         }
       },
       sideNav: {
         search: 'Search',
-        upload: 'Upload'
+        upload: 'Upload',
+        documents: 'Document Types'
       },
       upload: {
+        lab: {
+          analysisLabel: 'Analysis Request Document',
+          resultLabel: 'Result Document'
+        },
         title: 'Document Upload',
         typeLabel: 'Document Type',
         zoneLabel: 'Zone',
@@ -131,9 +183,47 @@ export class LanguageService
           }
         }
       },
+      search: {
+        title: 'Search Document',
+        startDateLabel: 'Start Date',
+        endDateLabel: 'End Date',
+        buttonLabel: 'Search',
+        noSearchResults: 'No documents with those criteria were found'
+      },
+      display: {
+        title: 'Display Document',
+        lab: {
+          tabs: [
+            'Request',
+            'Results'
+          ]
+        }
+      },
+      documents: {
+        title: 'Document Types',
+        tableHeaders: [
+          'Name'
+        ],
+        nameLabel: 'Type Name',
+        addButtonLabel: 'Add',
+        errors: {
+          name: {
+            required: 'This field is required',
+            maxlength: 'This field must not exceed 255 characters length'
+          }
+        }
+      },
       'capture-default': {
         0: 'Document uploaded successfully',
         1: 'Failed to upload the document file'
+      },
+      'capture-lab': {
+        0: 'Document uploaded successfully',
+        1: 'Failed to upload the document file'
+      },
+      'add-doc-type': {
+        0: 'Document type added successfully',
+        1: 'Failed to add document type; the name is already taken'
       },
       100: 'Unable to recognize the requested service',
       101: 'A server input argument was not send',
@@ -166,9 +256,14 @@ export class LanguageService
     },
     sideNav: {
       search: null,
-      upload: null
+      upload: null,
+      documents: null
     },
     upload: {
+      lab: {
+        analysisLabel: null,
+        resultLabel: null
+      },
       title: null,
       typeLabel: null,
       zoneLabel: null,
@@ -195,7 +290,33 @@ export class LanguageService
           maxlength: null
         }
       }
-    }
+    },
+    search: {
+      title: null,
+      startDateLabel: null,
+      endDateLabel: null,
+      buttonLabel: null,
+      noSearchResults: null
+    },
+    display: {
+      title: null,
+      lab: {
+        tabs: [ null, null ]
+      }
+    },
+    documents: {
+      title: null,
+      tableHeaders: [ null ],
+      nameLabel: null,
+      addButtonLabel: null,
+      errors: {
+        name: {
+          required: null,
+          maxlength: null
+        }
+      }
+    },
+
   }
 
   // Inicializa todos los textos de la aplicacion con el idioma que este 

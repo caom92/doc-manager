@@ -1,0 +1,40 @@
+include globals.pug
+
+div.row
+  div.col.s12
+    h4
+      i.mdi.mdi-file-document-box
+      ='{{ langManager.messages.documents.title }}'
+
+div.row
+  form(
+    '[formGroup]'='typeForm'
+    '(ngSubmit)'='onDocumentTypeFormSubmit()'
+    novalidate
+  )
+    div.col.s12.m6
+      +textInput(
+        'type-name',
+        'langManager.messages.documents.nameLabel'
+      )(
+        formControlName='name'
+        '[errorMessageResource]'='langManager.messages.documents.errors.name'
+        mz-validation
+        required
+        length='255'
+      )
+    div.col.s12.m4
+      +button(
+        'submit',
+        'add-type',
+        '{{ langManager.messages.documents.addButtonLabel }}',
+        'mdi mdi-plus'
+      )(
+        '[disabled]'='!typeForm.valid'
+      )
+
+div.row
+  div.col.s12
+    +responsiveTable('langManager.messages.documents.tableHeaders')
+      tr('*ngFor'='let document of documents')
+        td='{{ document.name }}'

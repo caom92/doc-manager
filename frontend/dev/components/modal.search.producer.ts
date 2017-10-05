@@ -1,102 +1,98 @@
-import { Component, OnInit, Injector } from '@angular/core'
+import { Component, OnInit, Input } from '@angular/core'
 import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
-import { MzModalService } from 'ng2-materialize'
+import { MzModalService, MzBaseModal } from 'ng2-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-
-// Tipo auxiliar que declara la estructura necesaria para implementar 
-// sugerencias de autocompletado en los campos de texto del formulario
-type AutoCompleteObject = {
-  data: {
-    [key: string]: string
-  },
-  limit: number
-}
+import { SearchComponent } from './app.search'
 
 // Este componente define el comportamiento por defecto necesario para que el 
-// usuario capture un documento en el sistema
+// usuario busque un documento en el sistema
 @Component({
-  selector: 'default-document-upload',
-  templateUrl: '../templates/document.upload.default.html'
+  templateUrl: '../templates/modal.search.producer.html'
 })
-export class DefaultDocumentUploadComponent implements OnInit
+export class ProducerDocumentSearchModalComponent
+  extends MzBaseModal 
+  implements OnInit
 { 
   // El ID del tipo de documento elegido por el usuario
+  @Input()
   selectedDocumentTypeID: number = null
 
-  // El archivo del documento que sera subido al servidor
-  selectedDocumentFile: any = null
-
-  // Las sugerencias de autocompletado del campo de zonas
-  zoneSuggestions: AutoCompleteObject = {
-    data: {},
-    limit: 4
+  // Las opciones de configuracion del modal
+  modalOptions = {
   }
+  
+  // La lista de zonas a elegir por el usuario
+  zones: Array<{
+    id: number,
+    name: string
+  }> = []
 
-  // Las sugerencias de autocompletado del campo de ranchos
-  ranchSuggestions: AutoCompleteObject = {
-    data: {},
-    limit: 4
-  }
+  // La lista de ranchos a elegir por el usuario
+  ranches: Array<{
+    id: number,
+    parent_id: number,
+    name: string
+  }> = []
 
-  // Las sugerencias de autocompletado del campo de productores
-  producerSuggestions: AutoCompleteObject = {
-    data: {},
-    limit: 4
-  }
+  // La lista de productores a elegir por el usuario
+  producers: Array<{
+    id: number,
+    parent_id: number,
+    name: string
+  }> = []
+
+  // El componente que invoco este componente
+  parent: SearchComponent = null
 
   // Instancia que representa el formulario de captura donde el usuario subira 
   // el documento
-  defaultDocumentUploadForm: FormGroup = null
+  defaultDocumentSearchForm: FormGroup = null
 
   // El constructor de este componente, inyectando los servicios requeridos
   constructor(
-    private injector: Injector,
-    private server: BackendService,
-    private toastManager: ToastService,
-    private global: GlobalElementsService,
-    private langManager: LanguageService,
-    private modalManager: MzModalService,
-    private formBuilder: FormBuilder
+    protected server: BackendService,
+    protected toastManager: ToastService,
+    protected global: GlobalElementsService,
+    protected langManager: LanguageService,
+    protected modalManager: MzModalService,
+    protected formBuilder: FormBuilder
   ) {
-    // obtenemos el ID del tipo de documento elegido por el usuario
-    this.selectedDocumentTypeID = injector.get('document_type_id')
+    // invocamos el constructor de la clase padre
+    super()
   }
 
   // Esta funcion se ejecuta al iniciar la vista
   ngOnInit(): void {
     // configuramos las reglas de validacion del formulario de captura
-    this.defaultDocumentUploadForm = this.formBuilder.group({
-      documentDate: [ null, Validators.required ],
-      zone: [ null, Validators.compose([
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(3)
-      ])],
-      ranch: [ null, Validators.compose([
-        Validators.required,
-        Validators.maxLength(255)
-      ])],
-      producer: [ null, Validators.compose([
-        Validators.required,
-        Validators.maxLength(255)
-      ])]
+    this.defaultDocumentSearchForm = this.formBuilder.group({
+      startDate: [ null, Validators.required ],
+      endDate: [ null, Validators.required ],
+      zone: [ null, Validators.required ],
+      ranch: [ null, Validators.required ],
+      producer: [ null, Validators.required ]
     })
 
     // inicializamos el selector de fecha
-    $('#document-date').pickadate(
+    $('.datepicker').pickadate(
       this.langManager.messages.global.datePickerConfig
     )
 
     // cada vez que el selector de fecha cambie, recuperamos la fecha elegida 
     // formateada 
-    $('#document-date').change(
-      this.defaultDocumentUploadForm, 
+    $('#start-date').change(
+      this.defaultDocumentSearchForm, 
       function(event: any): void {
-        event.data.controls.documentDate.setValue(event.target.value)
+        event.data.controls.startDate.setValue(event.target.value)
+      }
+    )
+    $('#end-date').change(
+      this.defaultDocumentSearchForm, 
+      function(event: any): void {
+        event.data.controls.endDate.setValue(event.target.value)
       }
     )
 
@@ -109,13 +105,7 @@ export class DefaultDocumentUploadComponent implements OnInit
         if (response.meta.return_code == 0) {
           // si el servidor respondio con exito, cargamos la respuesta al 
           // objeto de sugerencias de zonas
-          this.zoneSuggestions = {
-            data: {},
-            limit: 4
-          }
-          for (let zone of response.data) {
-            this.zoneSuggestions.data[zone.name] = null
-          }
+          this.zones = response.data
         } else {
           // si el servidor respondio con error, notificamos al usuario
           this.toastManager.showText(
@@ -131,20 +121,18 @@ export class DefaultDocumentUploadComponent implements OnInit
 
   // Esta funcion se invoca cuando el usuario ingreso el nombre de una zona
   onZoneSelected(event: any): void {
-    // guardamos la zona ingresada por el usuario
-    this.defaultDocumentUploadForm.controls.zone.setValue(event.target.value)
-
     // borramos los valores del rancho y productor en caso que ya hayan tenido 
     // algun valor previamente y el usuario este cambiando de zona
-    this.defaultDocumentUploadForm.controls.ranch.setValue(null)
-    this.defaultDocumentUploadForm.controls.producer.setValue(null)
+    this.defaultDocumentSearchForm.controls.ranch.setValue(null)
+    this.defaultDocumentSearchForm.controls.producer.setValue(null)
+    this.producers = []
 
     // si la zona es valida, mandamos una peticion al servidor para recuperar 
     // los ranchos de esta zona
-    if (this.defaultDocumentUploadForm.controls.zone.valid) {
+    if (this.defaultDocumentSearchForm.controls.zone.valid) {
       // preparamos los datos que seran enviados al usuario
       let data = new FormData()
-      data.append('zone_name', event.target.value)
+      data.append('zone_name', event.target.value.split(': ')[1])
 
       // recuperamos los ranchos del servidor
       this.server.create(
@@ -155,13 +143,7 @@ export class DefaultDocumentUploadComponent implements OnInit
           if (response.meta.return_code == 0) {
             // si asi fue, ingresamos los ranchos recuperados al objeto de 
             // sugerencias de ranchos
-            this.ranchSuggestions = {
-              data: {},
-              limit: 4
-            }
-            for (let ranch of response.data) {
-              this.ranchSuggestions.data[ranch.name] = null
-            }
+            this.ranches = response.data
           } else {
             // si el servidor repondio con error, notificamos al usuario
             this.toastManager.showText(
@@ -173,23 +155,20 @@ export class DefaultDocumentUploadComponent implements OnInit
           } // if (response.meta.return_code == 0)
         } // (response: BackendResponse)
       ) // this.server.create
-    } // if (this.defaultDocumentUploadForm.controls.zone.valid)
+    } // if (this.defaultDocumentSearchForm.controls.zone.valid)
   } // onZoneSelected(event: any): void
 
   // Esta funcion se invoca cuando el usuario ingresa el nombre de un rancho
   onRanchSelected(event: any): void {
-    // almacenamos el nombre del rancho ingresado
-    this.defaultDocumentUploadForm.controls.ranch.setValue(event.target.value)
-
     // borramos el valor del productor elegido en caso de que haya tenido un 
     // valor previo y el usuario este cambiando de rancho
-    this.defaultDocumentUploadForm.controls.producer.setValue(null)
+    this.defaultDocumentSearchForm.controls.producer.setValue(null)
 
     // si el rancho ingresado es valido
-    if (this.defaultDocumentUploadForm.controls.ranch.valid) {
+    if (this.defaultDocumentSearchForm.controls.ranch.valid) {
       // preparamos los datos que seran enviados al servidor
       let data = new FormData()
-      data.append('ranch_name', event.target.value)
+      data.append('ranch_name', event.target.value.split(': ')[1])
 
       // enviamos la peticion al servidor para recuperar los productores de 
       // este rancho
@@ -201,13 +180,7 @@ export class DefaultDocumentUploadComponent implements OnInit
           if (response.meta.return_code == 0) {
             // si asi fue guardamos los productores en el objeto de sugerencias 
             // del campo de productores
-            this.producerSuggestions = {
-              data: {},
-              limit: 4
-            }
-            for (let producer of response.data) {
-              this.producerSuggestions.data[producer.name] = null
-            }
+            this.producers = response.data
           } else {
             // en caso de que el servidor responda con error, hay que notificar 
             // al usuario
@@ -220,79 +193,50 @@ export class DefaultDocumentUploadComponent implements OnInit
           } // if (response.meta.return_code == 0)
         } // (response: BackendResponse)
       ) // this.server.create
-    } // if (this.defaultDocumentUploadForm.controls.ranch.valid)
+    } // if (this.defaultDocumentSearchForm.controls.ranch.valid)
   } // onRanchSelected(event: any): void 
-
-  // Esta funcion se invoca cuando el usuario ingresa un productor
-  onProducerSelected(event: any): void {
-    // guardamos el productor ingresado
-    this.defaultDocumentUploadForm.controls.producer.setValue(
-      event.target.value
-    )
-  }
-
-
-  // Esta funcion se invoca cuando el usuario elije un archivo para subirlo al 
-  // servidor
-  onDocumentFileSelected(event: any): void {
-    // borramos el archivo elegido anteriormente
-    this.selectedDocumentFile = null
-
-    // recuperamos el archivo elegido
-    let files = event.srcElement.files
-    
-    // si el usuario subio un archivo, lo guardamos para su futuro uso
-    if (files.length > 0) {
-      this.selectedDocumentFile = files[0]
-    }
-  }
 
   // Esta funcion se invoca cuando el formulario de captura de documento es 
   // enviado al servidor
-  onDefaultDocumentUpload(): void {
-    // preparamos los datos que seran enviados al servidor
+  onDefaultDocumentSearch(): void {
     let data = new FormData()
     data.append('document_type_id', this.selectedDocumentTypeID.toString())
-    data.append('capture_date', this.global.getFormattedDate())
     data.append(
-      'file_date', 
-      $('input[type="hidden"][name="document-date_submit"]').val()
-    )
-    data.append('zone', this.defaultDocumentUploadForm.controls.zone.value)
-    data.append('ranch', this.defaultDocumentUploadForm.controls.ranch.value)
-    data.append(
-      'producer', 
-      this.defaultDocumentUploadForm.controls.producer.value
+      'start_date', 
+      $('input[type="hidden"][name="start-date_submit"]').val()
     )
     data.append(
-      'document_file', 
-      this.selectedDocumentFile, 
-      this.selectedDocumentFile.name
+      'end_date', 
+      $('input[type="hidden"][name="end-date_submit"]').val()
+    )
+    data.append(
+      'producer_id', 
+      this.defaultDocumentSearchForm.controls.producer.value
     )
 
     // mostramos el modal de espera
     let modal = this.modalManager.open(ProgressModalComponent)
-
+    
     // enviamos los datos al servidor
     this.server.create(
-      'capture-default',
+      'search-default',
       data,
       (response: BackendResponse) => {
         // al responder el servidor, cerramos el modal de espera
         modal.instance.modalComponent.close()
 
-        // notificamos al usuario del resultado obtenido
-        this.toastManager.showText(
-          this.langManager.getServiceMessage(
-            'capture-default',
-            response.meta.return_code
-          )
-        )
-
         // si el servidor respondio con exito, reiniciamos el formulario para 
         // que el usuario capture un nuevo documento
         if (response.meta.return_code == 0) {
-          this.defaultDocumentUploadForm.reset()
+          this.parent.searchResults = response.data
+        } else {
+          // notificamos al usuario del resultado obtenido
+          this.toastManager.showText(
+            this.langManager.getServiceMessage(
+              'search-default',
+              response.meta.return_code
+            )
+          )
         }
       } // (response: BackendResponse)
     ) // this.server.create

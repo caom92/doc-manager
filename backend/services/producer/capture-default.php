@@ -85,20 +85,20 @@ $service = [
         if (!isset($zoneID)) {
           // agregamos la zona a la BD
           $zoneID = $zones->insert([
-            ':name' => $request['zone']
+            ':name' => strtoupper($request['zone'])
           ]);
         } // if (!isset($zoneID))
 
         // agregamos el rancho a la BD
         $ranchID = $ranches->insert([
-          ':name' => $request['ranch'],
+          ':name' => strtoupper($request['ranch']),
           ':zoneID' => $zoneID
         ]);
       } // if (!isset($ranchID))
 
       // agregamos el productor
       $producerID = $producers->insert([
-        ':name' => $request['producer'],
+        ':name' => strtoupper($request['producer']),
         ':ranchID' => $ranchID
       ]);
     } // if (!isset($producerID))

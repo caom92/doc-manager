@@ -5,8 +5,8 @@ import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
 import { MzModalService } from 'ng2-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
-import { ComponentData } from './app.dynamic'
-import { DefaultDocumentUploadComponent } from './document.upload.default'
+import { ProducerDocumentUploadModalComponent } from './modal.upload.producer'
+import { LabDocumentUploadModalComponent } from './modal.upload.lab'
 
 // Componente que define el comportamiento de la pagina donde el usuario puede 
 // capturar nuevos documentos
@@ -19,10 +19,7 @@ export class UploadComponent implements OnInit
   selectedDocument: any = null
 
   // La lista de los diferentes tipos de documentos que estan en el sistema
-  documents = []
-
-  // Los datos del componente que sera inyectado
-  componentData: ComponentData = null
+  documents: Array<any> = []
 
   // El constructor de este componente, inyectando los servicios requeridos
   constructor(
@@ -71,13 +68,16 @@ export class UploadComponent implements OnInit
     // le corresponde donde el usuario podra capturar el documento y la info. 
     // relacionada con el
     switch (this.selectedDocument.name) {
+      case 'LABORATORIOS':
+        this.modalManager.open(LabDocumentUploadModalComponent, {
+          selectedDocumentTypeID: this.selectedDocument.id
+        })
+      break
+
       default:
-        this.componentData = {
-          component: DefaultDocumentUploadComponent,
-          inputs: {
-            document_type_id: this.selectedDocument.id
-          }
-        }
+        this.modalManager.open(ProducerDocumentUploadModalComponent, {
+          selectedDocumentTypeID: this.selectedDocument.id
+        })
       break
     } // switch (this.selectedDocument.name)
   } // onDocumentTypeSelected(): void

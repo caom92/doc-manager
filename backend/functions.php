@@ -10,8 +10,7 @@ namespace Core;
 // [in]   [uid] (string): identificador adicional unico que ayudara a mitigar 
 //        la probabilidad de que haya una colision de nombre con otro archivo 
 //        que ya exista en el sistema
-// [out]  return (string): la direccion completa en donde fue movido el archivo 
-//        o nulo en caso de que el archivo no haya podido ser movido
+// [out]  return (string): el nombre asignado al archivo despues de moverlo
 function saveUploadedFileTo(
   $sourceFileName, 
   $sourceFilePath,
@@ -41,7 +40,7 @@ function saveUploadedFileTo(
     move_uploaded_file($sourceFilePath, $uploadDir);
 
   // retornamos el resultado al usuario
-  return ($wasMoveSuccessful) ? $uploadDir : NULL;
+  return ($wasMoveSuccessful) ? $fileName : NULL;
 }
 
 // Revisa si el arreglo contiene llaves que no sean numericas (y por ende sea 

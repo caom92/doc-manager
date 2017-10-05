@@ -1,0 +1,37 @@
+include globals.pug
+
+mz-modal(
+  '[options]'='modalOptions'
+  '[fixedFooter]'='true'
+  '[fullscreen]'='true'
+  '[bottomSheet]'='true'
+)
+  mz-modal-header
+    ='{{ langManager.messages.display.title }}'
+  mz-modal-content
+    div.row
+      div.col.s12
+        h6='{{ documentType }} - {{ requestFileDate }}'
+    
+    div.row
+      div.col.s12
+        ul.tabs
+          li.tab.col.s6
+            +link('#requestDoc')(class='active')
+              ='{{ langManager.messages.display.lab.tabs[0] }}'
+          li.tab.col.s6
+            +link('#resultDoc')
+              ='{{ langManager.messages.display.lab.tabs[1] }}'
+      div#requestDoc.col.s12.viewerjs-container
+        +viewerJSDoc('sanitizedRequestPath')
+      div#resultDoc.col.s12.viewerjs-container
+        +viewerJSDoc('sanitizedResultPath')
+  mz-modal-footer
+    +button(
+      'button',
+      'close-modal',
+      '{{ langManager.messages.global.close }}'
+    )(
+      mz-modal-close
+      '[flat]'='true'
+    )

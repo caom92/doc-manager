@@ -1,0 +1,95 @@
+include globals.pug
+
+mz-modal(
+  '[options]'='modalOptions'
+  '[fixedFooter]'='true'
+  '[fullscreen]'='true'
+)
+  mz-modal-header
+    ='{{ langManager.messages.upload.title }}'
+  mz-modal-content
+    form(
+      '[formGroup]'='defaultDocumentUploadForm'
+      novalidate
+    )
+      div.row
+        div.col.s12
+          +dateInput(
+            'document-date', 
+            '{{ langManager.messages.upload.docDateLabel }}'
+          )(
+            formControlName='documentDate'
+            mz-validation
+            required
+            '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
+          )
+
+        div.col.s12.m4
+          +textInput(
+            'zone',
+            'langManager.messages.upload.zoneLabel'
+          )(
+            '[autocomplete]'='zoneSuggestions'
+            '(change)'='onZoneSelected($event)'
+            formControlName='zone'
+            '[errorMessageResource]'='langManager.messages.upload.errors.zone'
+            mz-validation
+            required
+            length='3'
+          )
+
+        div.col.s12.m4
+          +textInput(
+            'ranch',
+            'langManager.messages.upload.ranchLabel'
+          )(
+            '[autocomplete]'='ranchSuggestions'
+            '(change)'='onRanchSelected($event)'
+            formControlName='ranch'
+            mz-validation
+            required
+            length='255'
+            '[errorMessageResource]'='langManager.messages.upload.errors.ranch'
+          )
+
+        div.col.s12.m4
+          +textInput(
+            'producers',
+            'langManager.messages.upload.producerLabel'
+          )(
+            '(change)'='onProducerSelected($event)'
+            '[autocomplete]'='producerSuggestions'
+            formControlName='producer'
+            mz-validation
+            required
+            length='255'
+            '[errorMessageResource]'='langManager.messages.upload.errors.producer'
+          )
+
+        div.col.s12
+          +fileInput(
+            'analysis-document',
+            '{{ langManager.messages.upload.lab.analysisLabel }}',
+            '{{ langManager.messages.upload.fileButtonLabel }}'
+          )(
+            '(change)'='onAnalysisFileSelected($event)'
+          )
+        div.col.s12
+          +fileInput(
+            'result-document',
+            '{{ langManager.messages.upload.lab.resultLabel }}',
+            '{{ langManager.messages.upload.fileButtonLabel }}'
+          )(
+            '(change)'='onResultFileSelected($event)'
+          )
+  mz-modal-footer
+    +button(
+      'submit',
+      'submit-document',
+      '{{ langManager.messages.global.submit }}',
+      'mdi mdi-send'
+    )(
+      '[disabled]'='!defaultDocumentUploadForm.valid || !selectedAnalysisFile || !selectedResultFile'
+      '(click)'='onLabDocumentUpload()'
+      mz-modal-close
+    )
