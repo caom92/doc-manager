@@ -14,6 +14,8 @@ export class LanguageService
         submit: 'Enviar',
         close: 'Cerrar',
         datePickerConfig: {
+          closeOnSelect: true,
+          closeOnClear: false,
           monthsFull: [
             'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
             'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
@@ -143,6 +145,8 @@ export class LanguageService
         submit: 'Send',
         close: 'Close',
         datePickerConfig: {
+          closeOnSelect: true,
+          closeOnClear: false,
           formatSubmit: "yyyy-mm-dd"
         }
       },
