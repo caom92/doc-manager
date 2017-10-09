@@ -2,8 +2,8 @@
 frontend/node_modules/
 *.backup
 frontend/prod/
-frontend/stylesheets/*.css
-frontend/templates/*.html
+frontend/dev/stylesheets/*.css
+frontend/dev/templates/*.html
 frontend/*.css
 backend/vendor/
 backend/tests/

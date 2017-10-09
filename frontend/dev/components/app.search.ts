@@ -5,7 +5,7 @@ import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
 import { MzModalService } from 'ng2-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
-import { ProducerDocumentSearchModalComponent } from './modal.search.producer'
+import { AreaDocumentSearchModalComponent } from './modal.search.area'
 import { LabDocumentSearchModalComponent } from './modal.search.lab'
 import { ProducerDocumentDisplayModalComponent } from './modal.display.producer'
 import { LabDocumentDisplayModalComponent } from './modal.display.lab'
@@ -90,7 +90,7 @@ export class SearchComponent implements OnInit
       break
 
       default:
-        this.modalManager.open(ProducerDocumentSearchModalComponent, {
+        this.modalManager.open(AreaDocumentSearchModalComponent, {
           parent: this,
           selectedDocumentTypeID: this.selectedDocument.id
         })

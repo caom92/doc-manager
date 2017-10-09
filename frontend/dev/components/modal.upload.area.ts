@@ -19,9 +19,9 @@ export type AutoCompleteObject = {
 // Este componente define el comportamiento por defecto necesario para que el 
 // usuario capture un documento en el sistema
 @Component({
-  templateUrl: '../templates/modal.upload.producer.html'
+  templateUrl: '../templates/modal.upload.area.html'
 })
-export class ProducerDocumentUploadModalComponent 
+export class AreaDocumentUploadModalComponent 
   extends MzBaseModal 
   implements OnInit
 { 
@@ -50,6 +50,12 @@ export class ProducerDocumentUploadModalComponent
 
   // Las sugerencias de autocompletado del campo de productores
   producerSuggestions: AutoCompleteObject = {
+    data: {},
+    limit: 4
+  }
+
+  // Las sugerencias de autocompletado del campo de areas o productos
+  areaSuggestions: AutoCompleteObject = {
     data: {},
     limit: 4
   }
@@ -88,29 +94,18 @@ export class ProducerDocumentUploadModalComponent
       producer: [ null, Validators.compose([
         Validators.required,
         Validators.maxLength(255)
-      ])]
+      ])],
+      area: [ null, Validators.compose([
+        Validators.required,
+        Validators.maxLength(255)
+      ])],
+      notes: [ null, Validators.maxLength(65535)]
     })
   }
 
-  // Esta funcion se ejecuta al iniciar la vista
-  ngOnInit(): void {
-    // configuramos las reglas de validacion del formulario de captura
-    this.initForm()
-
-    // inicializamos el selector de fecha
-    $('.datepicker').pickadate(
-      this.langManager.messages.global.datePickerConfig
-    )
-
-    // cada vez que el selector de fecha cambie, recuperamos la fecha elegida 
-    // formateada 
-    $('#document-date').change(
-      this.defaultDocumentUploadForm, 
-      function(event: any): void {
-        event.data.controls.documentDate.setValue(event.target.value)
-      }
-    )
-
+  // Esta funcion se encarga de solicitar al servidor los datos iniciales que 
+  // necesita este formulario para comenzar su captura
+  retrieveInitialData(): void {
     // obtenemos la lista de zonas del servidor
     this.server.read(
       'list-zones',
@@ -138,6 +133,29 @@ export class ProducerDocumentUploadModalComponent
         } // if (response.meta.return_code == 0)
       } // (response: BackendResponse)
     ) // this.server.read
+  } // retrieveInitialData(): void
+
+  // Esta funcion se ejecuta al iniciar la vista
+  ngOnInit(): void {
+    // configuramos las reglas de validacion del formulario de captura
+    this.initForm()
+
+    // inicializamos el selector de fecha
+    $('.datepicker').pickadate(
+      this.langManager.messages.global.datePickerConfig
+    )
+
+    // cada vez que el selector de fecha cambie, recuperamos la fecha elegida 
+    // formateada 
+    $('#document-date').change(
+      this.defaultDocumentUploadForm, 
+      function(event: any): void {
+        event.data.controls.documentDate.setValue(event.target.value)
+      }
+    )
+
+    // recuperamos los datos iniciales del servidor
+    this.retrieveInitialData()
   } // ngOnInit(): void
 
   // Esta funcion se invoca cuando el usuario ingreso el nombre de una zona
@@ -149,6 +167,7 @@ export class ProducerDocumentUploadModalComponent
     // algun valor previamente y el usuario este cambiando de zona
     this.defaultDocumentUploadForm.controls.ranch.setValue(null)
     this.defaultDocumentUploadForm.controls.producer.setValue(null)
+    this.defaultDocumentUploadForm.controls.area.setValue(null)
 
     // si la zona es valida, mandamos una peticion al servidor para recuperar 
     // los ranchos de esta zona
@@ -195,6 +214,7 @@ export class ProducerDocumentUploadModalComponent
     // borramos el valor del productor elegido en caso de que haya tenido un 
     // valor previo y el usuario este cambiando de rancho
     this.defaultDocumentUploadForm.controls.producer.setValue(null)
+    this.defaultDocumentUploadForm.controls.area.setValue(null)
 
     // si el rancho ingresado es valido
     if (this.defaultDocumentUploadForm.controls.ranch.valid) {
@@ -240,8 +260,56 @@ export class ProducerDocumentUploadModalComponent
     this.defaultDocumentUploadForm.controls.producer.setValue(
       event.target.value
     )
-  }
+    
+    // borramos el valor del productor elegido en caso de que haya tenido un 
+    // valor previo y el usuario este cambiando de rancho
+    this.defaultDocumentUploadForm.controls.area.setValue(null)
 
+    // si el rancho ingresado es valido
+    if (this.defaultDocumentUploadForm.controls.producer.valid) {
+      // preparamos los datos que seran enviados al servidor
+      let data = new FormData()
+      data.append('producer_name', event.target.value)
+
+      // enviamos la peticion al servidor para recuperar los productores de 
+      // este rancho
+      this.server.create(
+        'list-areas-of-producer',
+        data,
+        (response: BackendResponse) => {
+          // revisamos si el rancho respondio con exito
+          if (response.meta.return_code == 0) {
+            // si asi fue guardamos los productores en el objeto de sugerencias 
+            // del campo de productores
+            this.areaSuggestions = {
+              data: {},
+              limit: 4
+            }
+            for (let area of response.data) {
+              this.areaSuggestions.data[area.name] = null
+            }
+          } else {
+            // en caso de que el servidor responda con error, hay que notificar 
+            // al usuario
+            this.toastManager.showText(
+              this.langManager.getServiceMessage(
+                'list-areas-of-producer',
+                response.meta.return_code
+              )
+            )
+          } // if (response.meta.return_code == 0)
+        } // (response: BackendResponse)
+      ) // this.server.create
+    } // if (this.defaultDocumentUploadForm.controls.ranch.valid)
+  } // onProducerSelected(event: any): void
+
+  // Esta funcion se invoca cuando el usuario ingresa un area o producto
+  onAreaSelected(event: any): void {
+    // guardamos el productor ingresado
+    this.defaultDocumentUploadForm.controls.area.setValue(
+      event.target.value
+    )
+  } // onAreaSelected(event: any): void
 
   // Esta funcion se invoca cuando el usuario elije un archivo para subirlo al 
   // servidor
@@ -275,6 +343,18 @@ export class ProducerDocumentUploadModalComponent
       'producer', 
       this.defaultDocumentUploadForm.controls.producer.value
     )
+    data.append(
+      'area',
+      this.defaultDocumentUploadForm.controls.area.value
+    )
+
+    if (this.defaultDocumentUploadForm.controls.notes.value) {
+      data.append(
+        'notes',
+        this.defaultDocumentUploadForm.controls.notes.value
+      )
+    }
+
     data.append(
       'document_file', 
       this.selectedDocumentFile, 

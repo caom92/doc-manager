@@ -14,7 +14,7 @@ class DataBaseTable
 
   // La lista de las consultas SQL que fueron cacheadas para ser reutilizadas
   // luego
-  private $cachedQueries = [];
+  static private $cachedQueries = [];
  
   // Crea una interfaz para interactuar con la tabla en la base de datos que 
   // tenga el nombre especificado
@@ -28,25 +28,23 @@ class DataBaseTable
 
   // Retorna verdadero si la consulta con el indice especificado fue creado 
   // anteriormente y esta guardado en cache o falso en caso contrario
-  protected function isStatementCached($index) {
+  protected function isStatementCached($query) {
     return 
-      isset($this->cachedQueries[$index])
-      && array_key_exists($index, $this->cachedQueries);
+      isset($this->cachedQueries[$query])
+      && array_key_exists($query, $this->cachedQueries);
   }
 
   // Retorna una instancia del PDOStatement que corresponde a la consulta SQL 
   // especificada
-  // [in]   index (string): el indice que se utilizara para buscar la consulta 
-  //        en la lista de consultas cacheadas
   // [in]   query (string): la consulta SQL cuyo PDOStatement deseamos obtener
   // [out]  return (PDOStatement): la interfaz que representa los datos 
   //        obtenidos al ejecutar la consulta especificada en la base de datos
-  protected function getStatement($index, $query) {
-    if (!$this->isStatementCached($index)) {
-      $this->cachedQueries[$index] = $this->db->prepare($query);
+  protected function getStatement($query) {
+    if (!$this->isStatementCached($query)) {
+      $this->cachedQueries[$query] = $this->db->prepare($query);
     }
 
-    return $this->cachedQueries[$index];
+    return $this->cachedQueries[$query];
   }
 }   // class DataBaseTable
 

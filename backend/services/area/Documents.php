@@ -18,7 +18,6 @@ class Documents extends DataBaseTable
   // [out]  return (uint): el ID del ultimo renglon insertado
   function insert($row) {
     $query = $this->getStatement(
-      'insert_row',
       "INSERT INTO `$this->table` (
         type_id,
         upload_date,

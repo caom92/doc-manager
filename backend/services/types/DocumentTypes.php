@@ -15,7 +15,6 @@ class DocumentTypes extends DataBaseTable
   // Retorna todos los elementos de la tabla organizado en renglones y columnas
   function selectAll() {
     $query = $this->getStatement(
-      'select_all',
       "SELECT * FROM `$this->table`"
     );
     $query->execute();
@@ -28,7 +27,6 @@ class DocumentTypes extends DataBaseTable
   // [out]  return (uint): el ID del ultimo renglon insertado
   function insert($row) {
     $query = $this->getStatement(
-      'insert_row',
       "INSERT INTO `$this->table` (
         name
       ) 
@@ -46,7 +44,6 @@ class DocumentTypes extends DataBaseTable
   //        en la tabla, o nulo en caso contrario
   function getIDByName($name) {
     $query = $this->getStatement(
-      'select_id_by_name',
       "SELECT id FROM `$this->table` WHERE name = :name"
     );
     $query->execute([

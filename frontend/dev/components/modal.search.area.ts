@@ -11,9 +11,9 @@ import { SearchComponent } from './app.search'
 // Este componente define el comportamiento por defecto necesario para que el 
 // usuario busque un documento en el sistema
 @Component({
-  templateUrl: '../templates/modal.search.producer.html'
+  templateUrl: '../templates/modal.search.area.html'
 })
-export class ProducerDocumentSearchModalComponent
+export class AreaDocumentSearchModalComponent
   extends MzBaseModal 
   implements OnInit
 { 

@@ -2,10 +2,12 @@
 
 $lab = [
   'tables' => [
-    'Lab\Documents' => realpath(__DIR__.'/Documents.php')
+    'Lab\Documents' => realpath(__DIR__.'/Documents.php'),
+    'Lab\Laboratories' => realpath(__DIR__.'/Laboratories.php')
   ],
   'services' => [
     'GET' => [
+      'list-labs' => realpath(__DIR__.'/list-labs.php')
     ],
     'POST' => [
       'capture-lab' => realpath(__DIR__.'/capture-lab.php'),

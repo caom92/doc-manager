@@ -13,7 +13,7 @@ $service = [
 
     return (isset($ranchID)) ? 
       $scope->docManagerTableFactory->get('Producers')
-        ->selectByRanchID($ranchID)
+        ->selectByParentID($ranchID)
       : [];
   }
 ];

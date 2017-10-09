@@ -48,12 +48,15 @@ export class LanguageService
       upload: {
         lab: {
           analysisLabel: 'Solicitud de Estudio',
-          resultLabel: 'Resultado de Estudio'
+          resultLabel: 'Resultado de Estudio',
+          labNameLabel: 'Nombre del Laboratorio'
         },
         title: 'Captura de Documento',
         typeLabel: 'Tipo de Documento',
         zoneLabel: 'Zona',
         ranchLabel: 'Rancho',
+        areaLabel: 'Área o Producto',
+        notesLabel: 'Notas o Comentarios',
         producerLabel: 'Productor',
         docDateLabel: 'Fecha del Documento',
         fileLabel: 'Archivo del Documento',
@@ -71,9 +74,8 @@ export class LanguageService
             required: 'Este campo es obligatorio',
             maxlength: 'Este campo no debe ser mas de 255 caracteres de largo'
           },
-          producer: {
-            required: 'Este campo es obligatorio',
-            maxlength: 'Este campo no debe ser mas de 255 caracteres de largo'
+          notes: {
+            maxlength: 'Este campo no debe ser mas de 65535 caracteres de largo'
           }
         }
       },
@@ -158,12 +160,15 @@ export class LanguageService
       upload: {
         lab: {
           analysisLabel: 'Analysis Request Document',
-          resultLabel: 'Result Document'
+          resultLabel: 'Result Document',
+          labNameLabel: "Lab's Name"
         },
         title: 'Document Upload',
         typeLabel: 'Document Type',
         zoneLabel: 'Zone',
         ranchLabel: 'Ranch',
+        areaLabel: 'Area or Product',
+        notesLabel: 'Notes or Comments',
         producerLabel: 'Producer',
         docDateLabel: 'Document Date',
         fileLabel: 'Document File',
@@ -181,9 +186,8 @@ export class LanguageService
             required: 'This field is required',
             maxlength: 'This field must not be longer than 255 characters'
           },
-          producer: {
-            required: 'This field is required',
-            maxlength: 'This field must not be longer than 255 characters'
+          notes: {
+            maxlength: 'This field must not be longer than 65535 characters'
           }
         }
       },
@@ -266,13 +270,16 @@ export class LanguageService
     upload: {
       lab: {
         analysisLabel: null,
-        resultLabel: null
+        resultLabel: null,
+        labNameLabel: null
       },
       title: null,
       typeLabel: null,
       zoneLabel: null,
       ranchLabel: null,
+      areaLabel: null,
       producerLabel: null,
+      notesLabel: null,
       docDateLabel: null,
       fileLabel: null,
       fileButtonLabel: null,
@@ -289,8 +296,7 @@ export class LanguageService
           required: null,
           maxlength: null
         },
-        producer: {
-          required: null,
+        notes: {
           maxlength: null
         }
       }

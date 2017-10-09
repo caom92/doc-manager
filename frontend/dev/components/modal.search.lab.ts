@@ -7,7 +7,7 @@ import { MzModalService, MzBaseModal } from 'ng2-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { SearchComponent } from './app.search'
-import { ProducerDocumentSearchModalComponent } from './modal.search.producer'
+import { AreaDocumentSearchModalComponent } from './modal.search.area'
 
 // Este componente define el comportamiento de la pagina donde el usuario puede 
 // visualizar los documentos de laboratorios
@@ -15,7 +15,7 @@ import { ProducerDocumentSearchModalComponent } from './modal.search.producer'
   templateUrl: '../templates/modal.search.lab.html'
 })
 export class LabDocumentSearchModalComponent 
-  extends ProducerDocumentSearchModalComponent
+  extends AreaDocumentSearchModalComponent
 {
   // El constructor de este componente, inyectando los servicios requeridos
   constructor(
@@ -33,7 +33,6 @@ export class LabDocumentSearchModalComponent
   // Esta funcion se invoca cuando el formulario de captura de documento es 
   // enviado al servidor
   onLabDocumentSearch(): void {
-    console.log(this.defaultDocumentSearchForm.controls.producer.value)
     let data = new FormData()
     data.append(
       'start_date', 

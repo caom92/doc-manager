@@ -15,8 +15,8 @@ import { DocumentsComponent } from './app.documents'
 
 // Importamos los componentes de los modales
 import { ProgressModalComponent } from './modal.please.wait'
-import { ProducerDocumentUploadModalComponent } from './modal.upload.producer'
-import { ProducerDocumentSearchModalComponent } from './modal.search.producer'
+import { AreaDocumentUploadModalComponent } from './modal.upload.area'
+import { AreaDocumentSearchModalComponent } from './modal.search.area'
 import { ProducerDocumentDisplayModalComponent } from './modal.display.producer'
 import { LabDocumentUploadModalComponent } from './modal.upload.lab'
 import { LabDocumentSearchModalComponent } from './modal.search.lab'
@@ -83,8 +83,8 @@ import { ToastService } from '../services/app.toast'
     UploadComponent,
     SearchComponent,
     DocumentsComponent,
-    ProducerDocumentUploadModalComponent,
-    ProducerDocumentSearchModalComponent,
+    AreaDocumentUploadModalComponent,
+    AreaDocumentSearchModalComponent,
     ProducerDocumentDisplayModalComponent,
     LabDocumentUploadModalComponent,
     LabDocumentSearchModalComponent,
@@ -93,8 +93,8 @@ import { ToastService } from '../services/app.toast'
   // declaramos cualquier componente que sera inyectado dinamicamente
   entryComponents: [
     ProgressModalComponent,
-    ProducerDocumentUploadModalComponent,
-    ProducerDocumentSearchModalComponent,
+    AreaDocumentUploadModalComponent,
+    AreaDocumentSearchModalComponent,
     ProducerDocumentDisplayModalComponent,
     LabDocumentUploadModalComponent,
     LabDocumentSearchModalComponent,

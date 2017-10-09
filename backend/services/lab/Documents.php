@@ -19,16 +19,17 @@ class Documents extends DataBaseTable
   // [out]  return (uint): el ID del ultimo renglon insertado
   function insert($row) {
     $query = $this->getStatement(
-      'insert_row',
       "INSERT INTO `$this->table` (
-        analysis_document_id, 
-        result_document_id,
-        producer_id
+        analysis_document_id,
+        lab_id,
+        area_id,
+        notes
       ) 
       VALUES (
-        :analysisDocumentID, 
-        :resultDocumentID,
-        :producerID
+        :analysisDocumentID,
+        :labID,
+        :areaID,
+        :notes
       )"
     );
     $query->execute($row);
@@ -45,7 +46,6 @@ class Documents extends DataBaseTable
   //        renglones y columnas
   function selectByProducerAndDateInterval($producerID, $startDate, $endDate) {
     $query = $this->getStatement(
-      'select_by_producer_&_date_interval',
       "SELECT
         a.upload_date AS upload_date,
         a.file_date AS file_date,

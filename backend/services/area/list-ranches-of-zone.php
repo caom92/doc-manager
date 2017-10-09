@@ -12,7 +12,7 @@ $service = [
       ->getIDByName($request['zone_name']);
 
     return (isset($zoneID)) ? 
-      $scope->docManagerTableFactory->get('Ranches')->selectByZoneID($zoneID)
+      $scope->docManagerTableFactory->get('Ranches')->selectByParentID($zoneID)
       : [];
   }
 ];

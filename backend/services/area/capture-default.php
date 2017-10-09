@@ -16,11 +16,6 @@ $service = [
       'type' => 'datetime',
       'format' => 'Y-m-d'
     ],
-    'lab_name' => [
-      'type' => 'string',
-      'min_length' => 1,
-      'max_length' => 255
-    ],
     'zone' => [
       'type' => 'string',
       'length' => 3
@@ -45,46 +40,35 @@ $service = [
       'max_length' => 65535,
       'optional' => TRUE
     ],
-    'analysis_file' => [
+    'document_file' => [
       'type' => 'files',
       'format' => 'document'
     ]
   ],
   'callback' => function($scope, $request, $args) {
     // guardamos el archivo subido de forma permanente
-    $analysisFile = Core\saveUploadedFileTo(
-      $_FILES['analysis_file']['name'],
-      $_FILES['analysis_file']['tmp_name'],
-      realpath(__DIR__.'/../../documents/lab'),
-      "Analysis_{$request['producer']}"
+    $filePath = Core\saveUploadedFileTo(
+      $_FILES['document_file']['name'],
+      $_FILES['document_file']['tmp_name'],
+      realpath(__DIR__.'/../../documents/producer'),
+      $request['producer']
     );
 
     // si el archivo no pudo ser subido, truncamos el programa con un error
-    if (!isset($analysisFile)) {
+    if (!isset($filePath)) {
       throw new \Exception(
-        "Failed to save upload {$_FILES['analysis_file']['name']}",
+        "Failed to save upload {$_FILES['document_file']['name']}",
         1
       );
     }
 
     // si el archivo se subio con exito, actualizamos la base de datos
-    $analysisID =  $scope->docManagerTableFactory->get('Documents')->insert([
+    $documentID = $scope->docManagerTableFactory->get('Documents')->insert([
       ':typeID' => $request['document_type_id'],
       ':uploadDate' => $request['capture_date'],
       ':fileDate' => $request['file_date'],
-      ':filePath' => $analysisFile
+      ':filePath' => $filePath
     ]);
-
-    // obtenemos el ID del laboratorio
-    $labName = strtoupper($request['lab_name']);
-    $labs = $scope->docManagerTableFactory->get('Lab\Laboratories');
-    $labID = $labs->getIDByName($labName);
-    
-    // si el ID no pudo ser recuperado, significa que el lab no existe en la BD,
-    // tenemos que agregarlo
-    if (!isset($labID)) {
-      $labID = $labs->insert([ ':name' => $labName ]);
-    }
 
     // obtenemos el ID del area, agregando la zona, rancho, productor y/o area 
     // si estas no estan ya almacenadas en la BD en el proceso
@@ -111,14 +95,11 @@ $service = [
     );
 
     // finalmente, capturamos los comentarios adicionales si estos fueron
-    // proveidos
-    $notesID = NULL;
+    // proveidos y guardamos el registro
     $hasNotes = isset($request['notes']) && array_key_exists('notes', $request);
 
-    // guardamos el registro
-    return $scope->docManagerTableFactory->get('Lab\Documents')->insert([
-      ':analysisDocumentID' => $analysisID,
-      ':labID' => $labID,
+    return $scope->docManagerTableFactory->get('AreasDocuments')->insert([
+      ':documentID' => $documentID,
       ':areaID' => $areaID,
       ':notes' => ($hasNotes) ? $request['notes'] : ''
     ]);

@@ -6,20 +6,24 @@ import { LanguageService } from '../services/app.language'
 import { MzModalService, MzBaseModal } from 'ng2-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { ProducerDocumentUploadModalComponent, AutoCompleteObject } from './modal.upload.producer'
+import { AreaDocumentUploadModalComponent, AutoCompleteObject } from './modal.upload.area'
 
 // Este componente define el comportamiento de la pagina donde el usuario 
 // capturara un archivo de laboratorio
 @Component({
   templateUrl: '../templates/modal.upload.lab.html'
 })
-export class LabDocumentUploadModalComponent extends ProducerDocumentUploadModalComponent
+export class LabDocumentUploadModalComponent 
+  extends AreaDocumentUploadModalComponent
 {
+  // Las sugerencias de autocompletado del campo de laboratorio
+  labSuggestions: AutoCompleteObject = {
+    data: {},
+    limit: 4
+  }
+
   // El archivo de solicitud elegido por el usuario
   selectedAnalysisFile: any = null
-
-  // El archivo de resultado elegido por el usuario
-  selectedResultFile: any = null
 
   // El constructor de este componente, inyectando los servicios requeridos
   constructor(
@@ -33,6 +37,96 @@ export class LabDocumentUploadModalComponent extends ProducerDocumentUploadModal
     // invocamos el constructor de la clase padre
     super(server, toastManager, global, langManager, modalManager, formBuilder)
   }
+
+  // Esta funcion inicializa el formulario de captura
+  initForm(): void {
+    // configuramos las reglas de validacion del formulario de captura
+    this.defaultDocumentUploadForm = this.formBuilder.group({
+      documentDate: [ null, Validators.required ],
+      labName: [ null, Validators.compose([
+        Validators.required,
+        Validators.maxLength(255)
+      ])],
+      zone: [ null, Validators.compose([
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(3)
+      ])],
+      ranch: [ null, Validators.compose([
+        Validators.required,
+        Validators.maxLength(255)
+      ])],
+      producer: [ null, Validators.compose([
+        Validators.required,
+        Validators.maxLength(255)
+      ])],
+      area: [ null, Validators.compose([
+        Validators.required,
+        Validators.maxLength(255)
+      ])],
+      notes: [ null, Validators.maxLength(65535)]
+    })
+  }
+
+  // Esta funcion se encarga de solicitar al servidor los datos iniciales que 
+  // necesita este formulario para comenzar su captura
+  retrieveInitialData(): void {
+    // obtenemos la lista de zonas del servidor
+    this.server.read(
+      'list-zones',
+      {},
+      (response: BackendResponse) => {
+        // revisamos si el servidor respondio con exito
+        if (response.meta.return_code == 0) {
+          // si el servidor respondio con exito, cargamos la respuesta al 
+          // objeto de sugerencias de zonas
+          this.zoneSuggestions = {
+            data: {},
+            limit: 4
+          }
+          for (let zone of response.data) {
+            this.zoneSuggestions.data[zone.name] = null
+          }
+        } else {
+          // si el servidor respondio con error, notificamos al usuario
+          this.toastManager.showText(
+            this.langManager.getServiceMessage(
+              'list-zones',
+              response.meta.return_code
+            )
+          )
+        } // if (response.meta.return_code == 0)
+      } // (response: BackendResponse)
+    ) // this.server.read
+
+    // obtenemos la lista de laboratorios del servidor
+    this.server.read(
+      'list-labs',
+      {},
+      (response: BackendResponse) => {
+        // revisamos si el servidor respondio con exito
+        if (response.meta.return_code == 0) {
+          // si el servidor respondio con exito, cargamos la respuesta al 
+          // objeto de sugerencias de zonas
+          this.labSuggestions = {
+            data: {},
+            limit: 4
+          }
+          for (let lab of response.data) {
+            this.labSuggestions.data[lab.name] = null
+          }
+        } else {
+          // si el servidor respondio con error, notificamos al usuario
+          this.toastManager.showText(
+            this.langManager.getServiceMessage(
+              'list-labs',
+              response.meta.return_code
+            )
+          )
+        } // if (response.meta.return_code == 0)
+      } // (response: BackendResponse)
+    ) // this.server.read
+  } // retrieveInitialData(): void
 
   // Esta funcion se invoca cuando el usuario elije un archivo de solicitud
   onAnalysisFileSelected(event: any): void {
@@ -48,20 +142,6 @@ export class LabDocumentUploadModalComponent extends ProducerDocumentUploadModal
     }
   }
 
-  // Esta funcion se invoca cuando el usuario elije un archivo de resultado
-  onResultFileSelected(event: any): void {
-    // borramos el archivo elegido anteriormente
-    this.selectedResultFile = null
-    
-    // recuperamos el archivo elegido
-    let files = event.srcElement.files
-    
-    // si el usuario subio un archivo, lo guardamos para su futuro uso
-    if (files.length > 0) {
-      this.selectedResultFile = files[0]
-    }
-  }
-
   // Esta funcion se invoca cuando el usuario hace clic en el boton de capturar 
   // documento
   onLabDocumentUpload(): void {
@@ -73,6 +153,10 @@ export class LabDocumentUploadModalComponent extends ProducerDocumentUploadModal
       'file_date', 
       $('input[type="hidden"][name="document-date_submit"]').val()
     )
+    data.append(
+      'lab_name', 
+      this.defaultDocumentUploadForm.controls.labName.value
+    )
     data.append('zone', this.defaultDocumentUploadForm.controls.zone.value)
     data.append('ranch', this.defaultDocumentUploadForm.controls.ranch.value)
     data.append(
@@ -80,14 +164,21 @@ export class LabDocumentUploadModalComponent extends ProducerDocumentUploadModal
       this.defaultDocumentUploadForm.controls.producer.value
     )
     data.append(
+      'area',
+      this.defaultDocumentUploadForm.controls.area.value
+    )
+
+    if (this.defaultDocumentUploadForm.controls.notes.value) {
+      data.append(
+        'notes',
+        this.defaultDocumentUploadForm.controls.notes.value
+      )
+    }
+
+    data.append(
       'analysis_file', 
       this.selectedAnalysisFile, 
       this.selectedAnalysisFile.name
-    )
-    data.append(
-      'result_file', 
-      this.selectedResultFile, 
-      this.selectedResultFile.name
     )
 
     // mostramos el modal de espera
@@ -116,5 +207,5 @@ export class LabDocumentUploadModalComponent extends ProducerDocumentUploadModal
         }
       } // (response: BackendResponse)
     ) // this.server.create
-  }
-}
+  } // onLabDocumentUpload(): void
+} // export class LabDocumentUploadModalComponent extends AreaDocumentUploadModalComponent

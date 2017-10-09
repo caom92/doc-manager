@@ -13,7 +13,7 @@ mz-modal(
       novalidate
     )
       div.row
-        div.col.s12
+        div.col.s12.m6
           +dateInput(
             'document-date', 
             '{{ langManager.messages.upload.docDateLabel }}'
@@ -23,8 +23,21 @@ mz-modal(
             required
             '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
           )
+        div.col.s12.m6
+          +textInput(
+            'lab-name', 
+            'langManager.messages.upload.lab.labNameLabel'
+          )(
+            formControlName='labName'
+            mz-validation
+            required
+            '[errorMessageResource]'='langManager.messages.upload.errors.ranch'
+            length='255'
+            '[autocomplete]'='labSuggestions'
+          )
 
-        div.col.s12.m4
+      div.row
+        div.col.s12.m6.l3
           +textInput(
             'zone',
             'langManager.messages.upload.zoneLabel'
@@ -38,7 +51,7 @@ mz-modal(
             length='3'
           )
 
-        div.col.s12.m4
+        div.col.s12.m6.l3
           +textInput(
             'ranch',
             'langManager.messages.upload.ranchLabel'
@@ -52,7 +65,7 @@ mz-modal(
             '[errorMessageResource]'='langManager.messages.upload.errors.ranch'
           )
 
-        div.col.s12.m4
+        div.col.s12.m6.l3
           +textInput(
             'producers',
             'langManager.messages.upload.producerLabel'
@@ -66,6 +79,30 @@ mz-modal(
             '[errorMessageResource]'='langManager.messages.upload.errors.producer'
           )
 
+        div.col.s12.m6.l3
+          +textInput(
+            'areas',
+            'langManager.messages.upload.areaLabel'
+          )(
+            '(change)'='onAreaSelected($event)'
+            '[autocomplete]'='areaSuggestions'
+            formControlName='area'
+            mz-validation
+            required
+            length='255'
+            '[errorMessageResource]'='langManager.messages.upload.errors.ranch'
+          )
+
+        div.col.s12
+          +textArea(
+            'notes',
+            65535,
+            'langManager.messages.upload.notesLabel'
+          )(
+            formControlName='notes'
+            mz-validation
+            '[errorMessageResource]'='langManager.messages.upload.errors.notes'
+          )
         div.col.s12
           +fileInput(
             'analysis-document',
@@ -74,14 +111,6 @@ mz-modal(
           )(
             '(change)'='onAnalysisFileSelected($event)'
           )
-        div.col.s12
-          +fileInput(
-            'result-document',
-            '{{ langManager.messages.upload.lab.resultLabel }}',
-            '{{ langManager.messages.upload.fileButtonLabel }}'
-          )(
-            '(change)'='onResultFileSelected($event)'
-          )
   mz-modal-footer
     +button(
       'submit',
@@ -89,7 +118,7 @@ mz-modal(
       '{{ langManager.messages.global.submit }}',
       'mdi mdi-send'
     )(
-      '[disabled]'='!defaultDocumentUploadForm.valid || !selectedAnalysisFile || !selectedResultFile'
+      '[disabled]'='!defaultDocumentUploadForm.valid || !selectedAnalysisFile'
       '(click)'='onLabDocumentUpload()'
       mz-modal-close
     )
