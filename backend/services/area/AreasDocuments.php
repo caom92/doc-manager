@@ -53,7 +53,8 @@ class AreasDocuments extends DataBaseTable
       "SELECT
         d.upload_date AS upload_date,
         d.file_date AS file_date,
-        d.file_path AS file_path
+        d.file_path AS file_path,
+        notes
       FROM
         `$this->table`
       INNER JOIN
@@ -63,13 +64,13 @@ class AreasDocuments extends DataBaseTable
       WHERE
         d.file_date >= :startDate AND d.file_date <= :endDate
         AND d.type_id = :typeID
-        AND producer_id = :producerID
+        AND area_id = :areaID
       ORDER BY
         d.file_date"
     );
     $query->execute([
       ':typeID' => $typeID,
-      ':producerID' => $producerID,
+      ':areaID' => $areaID,
       ':startDate' => $startDate,
       ':endDate' => $endDate
     ]);

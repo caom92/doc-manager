@@ -37,42 +37,54 @@ class Documents extends DataBaseTable
   }
 
   // Retorna los renglones que tengan registrados los valores especificados
-  // [in]   producerID (uint): el ID del productor cuyos documentos van a ser 
+  // [in]   typeID (uint): el ID del tipo de documento cuyos elementos seran 
+  //        recuperados
+  // [in]   labID (uint): el ID del laboratorio cuyos elementos seran 
+  //        recuperados
+  // [in]   areaID (uint): el ID del area o producto cuyos elementos seran 
   //        recuperados
   // [in]   startDate (string): la fecha de inicio de la busqueda
   // [in]   endDate (string): la fecha de fin de la busqueda
   // [out]  return (dictionary): la lista de los documentos encontrados que 
   //        cumplen con las caracteristicas especificadas organizados en 
   //        renglones y columnas
-  function selectByProducerAndDateInterval($producerID, $startDate, $endDate) {
+  function selectByLabAreaAndDateInterval(
+    $typeID,
+    $labID, 
+    $areaID, 
+    $startDate, 
+    $endDate
+  ) {
     $query = $this->getStatement(
       "SELECT
         a.upload_date AS upload_date,
         a.file_date AS file_date,
         a.file_path AS file_path,
-        r.upload_date AS result_upload_date,
-        r.file_date AS result_file_date,
-        r.file_path AS result_file_path
+        notes
       FROM
         `$this->table`
       INNER JOIN
-        documents AS a
+        `documents` AS a
         ON 
           analysis_document_id = a.id
       INNER JOIN
-        documents AS r
-        ON 
-          result_document_id = r.id
+        `laboratories` AS l
+        ON
+          lab_id = l.id
       WHERE
         a.file_date >= :startDate AND a.file_date <= :endDate
-        AND producer_id = :producerID
+        AND lab_id = :labID
+        AND area_id = :areaID
+        AND a.type_id = :documentTypeID
       ORDER BY
         a.file_date"
     );
     $query->execute([
       ':startDate' => $startDate,
       ':endDate' => $endDate,
-      ':producerID' => $producerID
+      ':labID' => $labID,
+      ':areaID' => $areaID,
+      ':documentTypeID' => $typeID
     ]);
     return $query->fetchAll();
   }

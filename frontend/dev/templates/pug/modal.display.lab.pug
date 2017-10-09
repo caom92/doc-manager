@@ -11,21 +11,22 @@ mz-modal(
   mz-modal-content
     div.row
       div.col.s12
-        h6='{{ documentType }} - {{ requestFileDate }}'
-    
+        h6='{{ documentType }} - {{ fileDate }}'
+
     div.row
       div.col.s12
-        ul.tabs
-          li.tab.col.s6
-            +link('#requestDoc')(class='active')
-              ='{{ langManager.messages.display.lab.tabs[0] }}'
-          li.tab.col.s6
-            +link('#resultDoc')
-              ='{{ langManager.messages.display.lab.tabs[1] }}'
-      div#requestDoc.col.s12.viewerjs-container
-        +viewerJSDoc('sanitizedRequestPath')
-      div#resultDoc.col.s12.viewerjs-container
-        +viewerJSDoc('sanitizedResultPath')
+        +textArea(
+          'notes',
+          65535,
+          'langManager.messages.upload.notesLabel'
+        )(
+          '[(ngModel)]'='notes'
+          '[readonly]'='true'
+        )
+    
+    div.row
+      div.col.s12.viewerjs-container
+        +viewerJSDoc('sanitizedPath')
   mz-modal-footer
     +button(
       'button',

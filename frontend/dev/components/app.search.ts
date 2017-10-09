@@ -7,7 +7,7 @@ import { MzModalService } from 'ng2-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
 import { AreaDocumentSearchModalComponent } from './modal.search.area'
 import { LabDocumentSearchModalComponent } from './modal.search.lab'
-import { ProducerDocumentDisplayModalComponent } from './modal.display.producer'
+import { AreaDocumentDisplayModalComponent } from './modal.display.area'
 import { LabDocumentDisplayModalComponent } from './modal.display.lab'
 
 // Componente que define el comportamiento de la pagina donde el usuario puede 
@@ -104,18 +104,18 @@ export class SearchComponent implements OnInit
       case 'LABORATORIOS':
         this.modalManager.open(LabDocumentDisplayModalComponent, {
           documentType: this.selectedDocument.name,
-          requestFileName: document.file_path,
-          requestFileDate: document.file_date,
-          resultFileName: document.result_file_path,
-          resultFileDate: document.result_file_date
+          fileName: document.file_path,
+          fileDate: document.file_date,
+          notes: document.notes
         })
       break
 
       default:
-        this.modalManager.open(ProducerDocumentDisplayModalComponent, {
+        this.modalManager.open(AreaDocumentDisplayModalComponent, {
           documentType: this.selectedDocument.name,
           fileName: document.file_path,
-          fileDate: document.file_date
+          fileDate: document.file_date,
+          notes: document.notes
         })
       break
     }

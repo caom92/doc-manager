@@ -357,7 +357,7 @@ export class LanguageService
     // inicializamos el almacenamiento temporal para el mensaje resultante
     let message = null
     
-    if (this.translations[localStorage.lang][service][code] !== undefined) {
+    if (this.translations[localStorage.lang][service] !== undefined) {
       // si existe la combinacion de servicio y codigo de resultado 
       // especificados, retornamos ese
       message = this.translations[localStorage.lang][service][code]

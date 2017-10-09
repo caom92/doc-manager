@@ -5,9 +5,9 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser'
 
 // El componente del modal que despliega el archivo buscado por el usuario
 @Component({
-  templateUrl: '../templates/modal.display.producer.html'
+  templateUrl: '../templates/modal.display.area.html'
 })
-export class ProducerDocumentDisplayModalComponent 
+export class AreaDocumentDisplayModalComponent 
   extends MzBaseModal 
   implements OnInit
 {
@@ -27,14 +27,18 @@ export class ProducerDocumentDisplayModalComponent
   @Input()
   fileName: string = null
 
+  // Las notas o comentarios escritos al capturar el documento
+  @Input()
+  notes: string = null
+
   // El URL al documento que sera desplegado
   sanitizedPath: SafeResourceUrl = null
 
   // Constructor del componente donde importaremos una instancia del servicio 
   // de idioma
   constructor(
-    private langManager: LanguageService,
-    private sanitizer: DomSanitizer
+    protected langManager: LanguageService,
+    protected sanitizer: DomSanitizer
   ) {
     super() // invocamos el constructor de la clase padre
   }

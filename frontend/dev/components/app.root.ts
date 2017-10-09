@@ -17,7 +17,7 @@ import { DocumentsComponent } from './app.documents'
 import { ProgressModalComponent } from './modal.please.wait'
 import { AreaDocumentUploadModalComponent } from './modal.upload.area'
 import { AreaDocumentSearchModalComponent } from './modal.search.area'
-import { ProducerDocumentDisplayModalComponent } from './modal.display.producer'
+import { AreaDocumentDisplayModalComponent } from './modal.display.area'
 import { LabDocumentUploadModalComponent } from './modal.upload.lab'
 import { LabDocumentSearchModalComponent } from './modal.search.lab'
 import { LabDocumentDisplayModalComponent } from './modal.display.lab'
@@ -85,7 +85,7 @@ import { ToastService } from '../services/app.toast'
     DocumentsComponent,
     AreaDocumentUploadModalComponent,
     AreaDocumentSearchModalComponent,
-    ProducerDocumentDisplayModalComponent,
+    AreaDocumentDisplayModalComponent,
     LabDocumentUploadModalComponent,
     LabDocumentSearchModalComponent,
     LabDocumentDisplayModalComponent
@@ -95,7 +95,7 @@ import { ToastService } from '../services/app.toast'
     ProgressModalComponent,
     AreaDocumentUploadModalComponent,
     AreaDocumentSearchModalComponent,
-    ProducerDocumentDisplayModalComponent,
+    AreaDocumentDisplayModalComponent,
     LabDocumentUploadModalComponent,
     LabDocumentSearchModalComponent,
     LabDocumentDisplayModalComponent

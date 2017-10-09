@@ -14,16 +14,16 @@ $service = [
       'type' => 'datetime',
       'format' => 'Y-m-d'
     ],
-    'producer_id' => [
+    'area_id' => [
       'type' => 'int',
       'min' => 1
     ]
   ],
   'callback' => function($scope, $request, $args) {
-    return $scope->docManagerTableFactory->get('ProducersDocuments')
-      ->selectByTypeProducerAndDateInterval(
+    return $scope->docManagerTableFactory->get('AreasDocuments')
+      ->selectByTypeAreaAndDateInterval(
         $request['document_type_id'],
-        $request['producer_id'],
+        $request['area_id'],
         $request['start_date'],
         $request['end_date']
       );
