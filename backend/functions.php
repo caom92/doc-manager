@@ -56,8 +56,8 @@ function hasStringKeys($array) {
 // de la ultima categoria de la jerarquia
 // [in]   daoFactory (TableFactory): instancia a la interfaz que permite crear 
 //        interfaces a las tablas individuales de la base de datos
-// [in]   current (dictionary): arreglo asociativo que define la jerarquia de 
-//        categorias, cada nivel tiene los siguientes atributos:
+// [in]   categoryStack (dictionary): arreglo asociativo que define la 
+//        jerarquia de categorias, cada nivel tiene los siguientes atributos:
 //        * name (string): el valor de la categoria actual que sera buscado en 
 //          la base de datos; si este valor no se encuentra en la BD, sera 
 //          agregado
@@ -67,11 +67,11 @@ function hasStringKeys($array) {
 // [in]   parentID (uint): el ID del valor de la categoria a la cual pertenece 
 //        el valor de la categoria actual
 // [out]  return (uint): el ID del valor de la ultima categoria de la jerarquia 
-//        defindina en current
-function getLastCategoryID($daoFactory, $current, $parentID) {
+//        defindina en categoryStack
+function getLastCategoryID($daoFactory, $categoryStack, $parentID) {
   // primero revisamos si esta categoria existe en la BD
-  $table = $daoFactory->get($current['table']);
-  $currentName = strtoupper($current['name']);
+  $table = $daoFactory->get($categoryStack['table']);
+  $currentName = strtoupper($categoryStack['name']);
   $currentID = $table->getIDByName($currentName);
   if (!isset($currentID)) {
     // si no existe, tenemos que agregarla
@@ -88,8 +88,8 @@ function getLastCategoryID($daoFactory, $current, $parentID) {
   }
 
   // una vez que tenemos el ID de esta categoria, nos recorremos a la sig.
-  return isset($current['child']) ? 
-    getLastCategoryID($daoFactory, $current['child'], $currentID)
+  return isset($categoryStack['child']) ? 
+    getLastCategoryID($daoFactory, $categoryStack['child'], $currentID)
     : $currentID;
 }
 

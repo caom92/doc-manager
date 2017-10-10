@@ -41,7 +41,7 @@ include globals.pug
       //-   +link()('(click)'='parent.onDocumentLinkClicked(document)')
       //-     ='{{ langManager.messages.list.view }}'
 
-div.col.s12
+div.col.s12('*ngIf'='data.hasSearchResults != false')
   +responsiveTable('langManager.messages.list.area.tableHeaders')
     tr(
       '*ngFor'='let document of data.searchResults'

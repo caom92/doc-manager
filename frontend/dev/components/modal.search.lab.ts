@@ -7,7 +7,7 @@ import { MzModalService, MzBaseModal } from 'ng2-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { LabSearchResultsListComponent } from './list.lab'
-import { AreaDocumentSearchModalComponent } from './modal.search.area'
+import { AreaDocumentSearchModalComponent, ElementWithoutParent, ElementWithParent } from './modal.search.area'
 
 // Este componente define el comportamiento de la pagina donde el usuario puede 
 // visualizar los documentos de laboratorios
@@ -18,7 +18,9 @@ export class LabDocumentSearchModalComponent
   extends AreaDocumentSearchModalComponent
 {
   // La lista de laboratorios a elegir por el usuario
-  labs: Array<any> = []
+  labs: Array<ElementWithoutParent> = [
+    this.zoneOptionAll
+  ]
 
   // El constructor de este componente, inyectando los servicios requeridos
   constructor(
@@ -39,11 +41,11 @@ export class LabDocumentSearchModalComponent
     this.defaultDocumentSearchForm = this.formBuilder.group({
       startDate: [ null, Validators.required ],
       endDate: [ null, Validators.required ],
-      zone: [ null, Validators.required ],
-      ranch: [ null, Validators.required ],
-      producer: [ null, Validators.required ],
-      area: [ null, Validators.required ],
-      lab: [ null, Validators.required ]
+      zone: [ null ],
+      ranch: [ null ],
+      producer: [ null ],
+      area: [ null ],
+      lab: [ null ]
     })
   } // initForm(): void
 
@@ -59,7 +61,7 @@ export class LabDocumentSearchModalComponent
         if (response.meta.return_code == 0) {
           // si el servidor respondio con exito, cargamos la respuesta al 
           // objeto de sugerencias de zonas
-          this.zones = response.data
+          this.zones = this.zones.concat(response.data)
         } else {
           // si el servidor respondio con error, notificamos al usuario
           this.toastManager.showText(
@@ -81,7 +83,7 @@ export class LabDocumentSearchModalComponent
         if (response.meta.return_code == 0) {
           // si el servidor respondio con exito, cargamos la respuesta al 
           // objeto de sugerencias de zonas
-          this.labs = response.data
+          this.labs = this.labs.concat(response.data)
         } else {
           // si el servidor respondio con error, notificamos al usuario
           this.toastManager.showText(
@@ -111,14 +113,36 @@ export class LabDocumentSearchModalComponent
       'end_date', 
       $('input[type="hidden"][name="end-date_submit"]').val()
     )
-    data.append(
-      'lab_id', 
-      this.defaultDocumentSearchForm.controls.lab.value
-    )
-    data.append(
-      'area_id', 
-      this.defaultDocumentSearchForm.controls.area.value
-    )
+
+    let selectedLab =
+      <ElementWithoutParent>this.defaultDocumentSearchForm.controls.lab.value
+    if (selectedLab && selectedLab != this.zoneOptionAll) {
+      data.append('lab_id', selectedLab.id.toString())
+    }
+
+    let selectedZone = 
+      <ElementWithoutParent>this.defaultDocumentSearchForm.controls.zone.value
+    if (selectedZone && selectedZone != this.zoneOptionAll) {
+      data.append('zone_id', selectedZone.id.toString())
+    }
+
+    let selectedRanch = 
+      <ElementWithParent>this.defaultDocumentSearchForm.controls.ranch.value
+    if (selectedRanch && selectedRanch != this.optionAll) {
+      data.append('ranch_id', selectedRanch.id.toString())
+    }
+
+    let selectedProducer = 
+      <ElementWithParent>this.defaultDocumentSearchForm.controls.producer.value
+    if (selectedProducer && selectedProducer != this.optionAll) {
+      data.append('producer_id', selectedProducer.id.toString())
+    }
+
+    let selectedArea = 
+      <ElementWithParent>this.defaultDocumentSearchForm.controls.area.value
+    if (selectedArea && selectedArea != this.optionAll) {
+      data.append('area_id', selectedArea.id.toString())
+    }
 
     // mostramos el modal de espera
     let modal = this.modalManager.open(ProgressModalComponent)

@@ -36,60 +36,45 @@ mz-modal(
         div.col.s12.m4
           +select(
             'lab', 'langManager.messages.upload.lab.labNameLabel', 'langManager.messages.global.selectPlaceholder',
-            'labs', '.name', '.id'
+            'labs', '.name', ''
           )(
             formControlName='lab'
-            '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
-            mz-validation
-            required
           )
       
       div.row
         div.col.s12.m3
           +select(
             'zone', 'langManager.messages.upload.zoneLabel', 'langManager.messages.global.selectPlaceholder',
-            'zones', '.name', '.name',
-            'onZoneSelected($event)'
+            'zones', '.name', '',
+            'onZoneSelected()'
           )(
             formControlName='zone'
-            '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
-            mz-validation
-            required
           )
 
         div.col.s12.m3
           +select(
             'ranch', 'langManager.messages.upload.ranchLabel', 'langManager.messages.global.selectPlaceholder',
-            'ranches', '.name', '.name',
-            'onRanchSelected($event)'
+            'ranches', '.name', '',
+            'onRanchSelected()'
           )(
             formControlName='ranch'
-            '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
-            mz-validation
-            required
           )
 
         div.col.s12.m3
           +select(
-            'producer', 'langManager.messages.upload.ranchLabel', 'langManager.messages.global.selectPlaceholder',
-            'producers', '.name', '.name',
-            'onProducerSelected($event)'
+            'producer', 'langManager.messages.upload.producerLabel', 'langManager.messages.global.selectPlaceholder',
+            'producers', '.name', '',
+            'onProducerSelected()'
           )(
             formControlName='producer'
-            '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
-            mz-validation
-            required
           )
         
         div.col.s12.m3
           +select(
             'area', 'langManager.messages.upload.areaLabel', 'langManager.messages.global.selectPlaceholder',
-            'areas', '.name', '.id'
+            'areas', '.name', ''
           )(
             formControlName='area'
-            '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
-            mz-validation
-            required
           )
   mz-modal-footer
     +button(

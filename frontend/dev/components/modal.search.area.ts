@@ -8,6 +8,21 @@ import { ProgressModalComponent } from './modal.please.wait'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { AreaSearchResultsListComponent } from './list.area'
 
+// Tipo auxiliar que define los elementos recuperados del servidor que no 
+// posean un padre en la BD
+export type ElementWithoutParent = {
+  id: number,
+  name: string
+}
+
+// Tipo auxiliar que define los elementos recuperados del servidor que
+// poseen un padre en la BD
+export type ElementWithParent = {
+  id: number,
+  name: string,
+  parent_id: number
+}
+
 // Este componente define el comportamiento por defecto necesario para que el 
 // usuario busque un documento en el sistema
 @Component({
@@ -24,18 +39,40 @@ export class AreaDocumentSearchModalComponent
   // Las opciones de configuracion del modal
   modalOptions = {
   }
+
+  // Valores de la opcion para elegir todas las zonas de la lista de seleccion
+  zoneOptionAll: ElementWithoutParent = {
+    id: null,
+    name: 'ALL - TODOS'
+  }
+
+  // Valores de la opcion para elegir todos los ranchos/productores/areas de la 
+  // lista de seleccion
+  optionAll: ElementWithParent = {
+    id: null,
+    name: 'ALL - TODOS',
+    parent_id: null
+  }
   
   // La lista de zonas a elegir por el usuario
-  zones: Array<any> = []
+  zones: Array<ElementWithoutParent> = [
+    this.zoneOptionAll
+  ]
 
   // La lista de ranchos a elegir por el usuario
-  ranches: Array<any> = []
+  ranches: Array<ElementWithParent> = [
+    this.optionAll
+  ]
 
   // La lista de productores a elegir por el usuario
-  producers: Array<any> = []
+  producers: Array<ElementWithParent> = [
+    this.optionAll
+  ]
 
   // La lista de areas a elegir por el usuario
-  areas: Array<any> = []
+  areas: Array<ElementWithParent> = [
+    this.optionAll
+  ]
 
   // El componente que invoco este componente
   parent: any = null
@@ -63,10 +100,10 @@ export class AreaDocumentSearchModalComponent
     this.defaultDocumentSearchForm = this.formBuilder.group({
       startDate: [ null, Validators.required ],
       endDate: [ null, Validators.required ],
-      zone: [ null, Validators.required ],
-      ranch: [ null, Validators.required ],
-      producer: [ null, Validators.required ],
-      area: [ null, Validators.required ]
+      zone: [ null ],
+      ranch: [ null ],
+      producer: [ null ],
+      area: [ null ]
     })
   } // initForm(): void
 
@@ -82,7 +119,7 @@ export class AreaDocumentSearchModalComponent
         if (response.meta.return_code == 0) {
           // si el servidor respondio con exito, cargamos la respuesta al 
           // objeto de sugerencias de zonas
-          this.zones = response.data
+          this.zones = this.zones.concat(response.data)
         } else {
           // si el servidor respondio con error, notificamos al usuario
           this.toastManager.showText(
@@ -126,20 +163,24 @@ export class AreaDocumentSearchModalComponent
   } // ngOnInit(): void
 
   // Esta funcion se invoca cuando el usuario ingreso el nombre de una zona
-  onZoneSelected(event: any): void {
+  onZoneSelected(): void {
     // borramos los valores del rancho y productor en caso que ya hayan tenido 
     // algun valor previamente y el usuario este cambiando de zona
     this.defaultDocumentSearchForm.controls.ranch.setValue(null)
     this.defaultDocumentSearchForm.controls.producer.setValue(null)
     this.defaultDocumentSearchForm.controls.area.setValue(null)
-    this.producers = this.areas = []
+    this.ranches = this.producers = this.areas = [
+      this.optionAll
+    ]
 
     // si la zona es valida, mandamos una peticion al servidor para recuperar 
     // los ranchos de esta zona
-    if (this.defaultDocumentSearchForm.controls.zone.valid) {
+    let selectedZone = 
+      <ElementWithoutParent>this.defaultDocumentSearchForm.controls.zone.value
+    if (selectedZone.id) {
       // preparamos los datos que seran enviados al usuario
       let data = new FormData()
-      data.append('zone_name', event.target.value.split(': ')[1])
+      data.append('zone_name', selectedZone.name)
 
       // recuperamos los ranchos del servidor
       this.server.create(
@@ -150,7 +191,7 @@ export class AreaDocumentSearchModalComponent
           if (response.meta.return_code == 0) {
             // si asi fue, ingresamos los ranchos recuperados al objeto de 
             // sugerencias de ranchos
-            this.ranches = response.data
+            this.ranches = this.ranches.concat(response.data)
           } else {
             // si el servidor repondio con error, notificamos al usuario
             this.toastManager.showText(
@@ -166,18 +207,22 @@ export class AreaDocumentSearchModalComponent
   } // onZoneSelected(event: any): void
 
   // Esta funcion se invoca cuando el usuario ingresa el nombre de un rancho
-  onRanchSelected(event: any): void {
+  onRanchSelected(): void {
     // borramos el valor del productor elegido en caso de que haya tenido un 
     // valor previo y el usuario este cambiando de rancho
     this.defaultDocumentSearchForm.controls.producer.setValue(null)
     this.defaultDocumentSearchForm.controls.area.setValue(null)
-    this.areas = []
+    this.producers = this.areas = [
+      this.optionAll
+    ]
 
     // si el rancho ingresado es valido
-    if (this.defaultDocumentSearchForm.controls.ranch.valid) {
+    let selectedRanch = 
+      <ElementWithParent>this.defaultDocumentSearchForm.controls.ranch.value
+    if (selectedRanch.id) {
       // preparamos los datos que seran enviados al servidor
       let data = new FormData()
-      data.append('ranch_name', event.target.value.split(': ')[1])
+      data.append('ranch_name', selectedRanch.name)
 
       // enviamos la peticion al servidor para recuperar los productores de 
       // este rancho
@@ -189,7 +234,7 @@ export class AreaDocumentSearchModalComponent
           if (response.meta.return_code == 0) {
             // si asi fue guardamos los productores en el objeto de sugerencias 
             // del campo de productores
-            this.producers = response.data
+            this.producers = this.producers.concat(response.data)
           } else {
             // en caso de que el servidor responda con error, hay que notificar 
             // al usuario
@@ -206,16 +251,21 @@ export class AreaDocumentSearchModalComponent
   } // onRanchSelected(event: any): void 
 
   // Esta funcion se invoca cuando el usuario ingresa el nombre de un rancho
-  onProducerSelected(event: any): void {
+  onProducerSelected(): void {
     // borramos el valor del productor elegido en caso de que haya tenido un 
     // valor previo y el usuario este cambiando de rancho
     this.defaultDocumentSearchForm.controls.area.setValue(null)
+    this.areas = [
+      this.optionAll
+    ]
 
     // si el productor ingresado es valido
-    if (this.defaultDocumentSearchForm.controls.producer.valid) {
+    let selectedProducer = 
+      <ElementWithParent>this.defaultDocumentSearchForm.controls.producer.value
+    if (selectedProducer.id) {
       // preparamos los datos que seran enviados al servidor
       let data = new FormData()
-      data.append('producer_name', event.target.value.split(': ')[1])
+      data.append('producer_name', selectedProducer.name)
 
       // enviamos la peticion al servidor para recuperar las areas de este 
       // productor
@@ -227,7 +277,7 @@ export class AreaDocumentSearchModalComponent
           if (response.meta.return_code == 0) {
             // si asi fue guardamos las areas en el objeto de sugerencias 
             // del campo de areas
-            this.areas = response.data
+            this.areas = this.areas.concat(response.data)
           } else {
             // en caso de que el servidor responda con error, hay que notificar 
             // al usuario
@@ -256,10 +306,30 @@ export class AreaDocumentSearchModalComponent
       'end_date', 
       $('input[type="hidden"][name="end-date_submit"]').val()
     )
-    data.append(
-      'area_id', 
-      this.defaultDocumentSearchForm.controls.area.value
-    )
+
+    let selectedZone = 
+      <ElementWithoutParent>this.defaultDocumentSearchForm.controls.zone.value
+    if (selectedZone && selectedZone != this.zoneOptionAll) {
+      data.append('zone_id', selectedZone.id.toString())
+    }
+
+    let selectedRanch = 
+      <ElementWithParent>this.defaultDocumentSearchForm.controls.ranch.value
+    if (selectedRanch && selectedRanch != this.optionAll) {
+      data.append('ranch_id', selectedRanch.id.toString())
+    }
+
+    let selectedProducer = 
+      <ElementWithParent>this.defaultDocumentSearchForm.controls.producer.value
+    if (selectedProducer && selectedProducer != this.optionAll) {
+      data.append('producer_id', selectedProducer.id.toString())
+    }
+
+    let selectedArea = 
+      <ElementWithParent>this.defaultDocumentSearchForm.controls.area.value
+    if (selectedArea && selectedArea != this.optionAll) {
+      data.append('area_id', selectedArea.id.toString())
+    }
 
     // mostramos el modal de espera
     let modal = this.modalManager.open(ProgressModalComponent)

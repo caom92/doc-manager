@@ -37,19 +37,26 @@ class AreasDocuments extends DataBaseTable
   // caracteristicas especificadas
   // [in]   typeID (uint): el ID del tipo de documento cuyos elementos seran 
   //        recuperados
-  // [in]   areaID (uint): el ID del area o producto cuyos elementos seran 
-  //        recuperados
   // [in]   startDate (string): la fecha de inicio de la busqueda
   // [in]   endDate (string): la fecha de fin de la busqueda
+  // [in]   [zoneID] (uint): el ID de la zona cuyos datos van a ser recuperados
+  // [in]   [ranchID] (uint): el ID del rancho cuyos datos van a ser recuperados
+  // [in]   [producerID] (uint): el ID del productor cuyos datos van a ser 
+  //        recuperados
+  // [in]   [areaID] (uint): el ID del area o producto cuyos datos van a ser 
+  //        recuperados
   // [out]  return (dictionary): la lista de todos los documentos encontrados 
   //        en el tabla organizados por renglones y columnas
-  function selectByTypeAreaAndDateInterval(
+  function selectByDateInterval(
     $typeID,
-    $areaID, 
     $startDate, 
-    $endDate
+    $endDate,
+    $zoneID,
+    $ranchID,
+    $producerID,
+    $areaID
   ) {
-    $query = $this->getStatement(
+    $queryStr = 
       "SELECT
         d.upload_date AS upload_date,
         d.file_date AS file_date,
@@ -78,17 +85,38 @@ class AreasDocuments extends DataBaseTable
         ON z.id = r.parent_id
       WHERE
         d.file_date >= :startDate AND d.file_date <= :endDate
-        AND d.type_id = :typeID
-        AND area_id = :areaID
-      ORDER BY
-        d.file_date"
-    );
-    $query->execute([
+        AND d.type_id = :typeID ";
+    
+    $values = [
       ':typeID' => $typeID,
-      ':areaID' => $areaID,
       ':startDate' => $startDate,
       ':endDate' => $endDate
-    ]);
+    ];
+    
+    if (isset($areaID)) {
+      $queryStr .= "AND area_id = :areaID ";
+      $values[':areaID'] = $areaID;
+    }
+
+    if (isset($producerID)) {
+      $queryStr .= "AND p.id = :producerID ";
+      $values[':producerID'] = $producerID;
+    }
+
+    if (isset($ranchID)) {
+      $queryStr .= "AND r.id = :ranchID ";
+      $values[':ranchID'] = $ranchID;
+    }
+
+    if (isset($zoneID)) {
+      $queryStr .= "AND z.id = :zoneID ";
+      $values[':zoneID'] = $zoneID;
+    }
+
+    $queryStr .= "ORDER BY d.file_date";
+
+    $query = $this->getStatement($queryStr);
+    $query->execute($values);
     return $query->fetchAll();
   }
 }
