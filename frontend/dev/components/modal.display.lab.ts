@@ -3,6 +3,7 @@ import { MzBaseModal, MzModalComponent } from 'ng2-materialize'
 import { LanguageService } from '../services/app.language'
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser'
 import { AreaDocumentDisplayModalComponent } from './modal.display.area'
+import { environment } from '../environments/environment'
 
 // El componente del modal que despliega el archivo buscado por el usuario
 @Component({
@@ -24,8 +25,12 @@ export class LabDocumentDisplayModalComponent
   // Esta funcion se ejecuta al iniciar la pagina
   ngOnInit(): void {
     // generamos el URL valido para cargar los documentos
-    this.sanitizedPath = this.sanitizer.bypassSecurityTrustResourceUrl(
-      `http://localhost/doc-manager/backend/ViewerJS/#../documents/lab/${ this.fileName }`
-    )
+    this.sanitizedPath = (environment.production) ?
+      this.sanitizer.bypassSecurityTrustResourceUrl(
+        `http://documents.jfdc.tech/backend/ViewerJS/#../documents/lab/${ this.fileName }`
+      )
+      : this.sanitizer.bypassSecurityTrustResourceUrl(
+        `http://localhost/doc-manager/backend/ViewerJS/#../documents/lab/${ this.fileName }`
+      )
   } // ngOnInit(): void
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core'
 import { Http, Response, Headers, RequestOptions, URLSearchParams } from '@angular/http'
 import { Observable } from 'rxjs/Rx'
+import { environment } from '../environments/environment'
 
 // El tipo de objeto que es retornado del servidor como respuesta a cualquier 
 // peticion
@@ -22,7 +23,9 @@ export class BackendService
 {
   // El URL a donde se enviaran las peticiones de servicio al backend de la 
   // aplicacion
-  private static url = 'http://localhost/doc-manager/backend/services/'
+  private static url = (environment.production) ?
+    'http://documents.jfdc.tech/backend/services'
+    : 'http://localhost/doc-manager/backend/services/'
 
   // Los encabezados del paquete HTTP que sera enviado
   private static headers = new Headers({ 
