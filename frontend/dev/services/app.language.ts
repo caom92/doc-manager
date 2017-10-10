@@ -109,6 +109,28 @@ export class LanguageService
           }
         }
       },
+      list: {
+        view: 'Ver',
+        area: {
+          tableHeaders: [
+            'Fecha',
+            'Zona',
+            'Rancho',
+            'Productor',
+            'Área/Producto'
+          ]
+        },
+        lab: {
+          tableHeaders: [
+            'Fecha',
+            'Zona',
+            'Laboratorio',
+            'Rancho',
+            'Productor',
+            'Área/Producto'
+          ]
+        }
+      },
       'capture-default': {
         0: 'Documento capturado con éxito',
         1: 'Error al subir el documento'
@@ -221,6 +243,28 @@ export class LanguageService
           }
         }
       },
+      list: {
+        view: 'View',
+        area: {
+          tableHeaders: [
+            'Date',
+            'Zone',
+            'Ranch',
+            'Producer',
+            'Area/Product'
+          ]
+        },
+        lab: {
+          tableHeaders: [
+            'Date',
+            'Zone',
+            'Lab',
+            'Ranch',
+            'Producer',
+            'Area/Product'
+          ]
+        }
+      },
       'capture-default': {
         0: 'Document uploaded successfully',
         1: 'Failed to upload the document file'
@@ -326,7 +370,28 @@ export class LanguageService
         }
       }
     },
-
+    list: {
+      view: null,
+      area: {
+        tableHeaders: [
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      lab: {
+        tableHeaders: [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      }
+    }
   }
 
   // Inicializa todos los textos de la aplicacion con el idioma que este 

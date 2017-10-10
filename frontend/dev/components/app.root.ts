@@ -21,6 +21,8 @@ import { AreaDocumentDisplayModalComponent } from './modal.display.area'
 import { LabDocumentUploadModalComponent } from './modal.upload.lab'
 import { LabDocumentSearchModalComponent } from './modal.search.lab'
 import { LabDocumentDisplayModalComponent } from './modal.display.lab'
+import { AreaSearchResultsListComponent } from './list.area'
+import { LabSearchResultsListComponent } from './list.lab'
 
 // Importamos los servicios que van a ser necesitados por cada pagina del 
 // sistema
@@ -31,6 +33,7 @@ import { GlobalElementsService } from '../services/app.globals'
 import { BackendService } from '../services/app.backend'
 import { LanguageService } from '../services/app.language'
 import { ToastService } from '../services/app.toast'
+import { DynamicComponentContainerDirective } from '../directives/dynamic.container'
 
 // Declaramos el modulo raiz que indica el inicio de nuestra aplicacion
 @NgModule({
@@ -88,7 +91,10 @@ import { ToastService } from '../services/app.toast'
     AreaDocumentDisplayModalComponent,
     LabDocumentUploadModalComponent,
     LabDocumentSearchModalComponent,
-    LabDocumentDisplayModalComponent
+    LabDocumentDisplayModalComponent,
+    DynamicComponentContainerDirective,
+    AreaSearchResultsListComponent,
+    LabSearchResultsListComponent
   ],
   // declaramos cualquier componente que sera inyectado dinamicamente
   entryComponents: [
@@ -98,7 +104,9 @@ import { ToastService } from '../services/app.toast'
     AreaDocumentDisplayModalComponent,
     LabDocumentUploadModalComponent,
     LabDocumentSearchModalComponent,
-    LabDocumentDisplayModalComponent
+    LabDocumentDisplayModalComponent,
+    AreaSearchResultsListComponent,
+    LabSearchResultsListComponent
   ],
   // indicamos cual es el componente raiz
   bootstrap: [ HomeComponent ]

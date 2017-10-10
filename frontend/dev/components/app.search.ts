@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ComponentFactoryResolver } from '@angular/core'
 import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
@@ -9,17 +9,19 @@ import { AreaDocumentSearchModalComponent } from './modal.search.area'
 import { LabDocumentSearchModalComponent } from './modal.search.lab'
 import { AreaDocumentDisplayModalComponent } from './modal.display.area'
 import { LabDocumentDisplayModalComponent } from './modal.display.lab'
+import { DynamicComponentResolver } from './dynamic.resolver'
+import { AreaSearchResultsListComponent } from './list.area'
+import { LabSearchResultsListComponent } from './list.lab'
 
 // Componente que define el comportamiento de la pagina donde el usuario puede 
 // buscar documentos 
 @Component({
   templateUrl: '../templates/app.search.html'
 })
-export class SearchComponent implements OnInit
+export class SearchComponent 
+  extends DynamicComponentResolver
+  implements OnInit
 {
-  // Bandera que indica si hay resultados de busqueda o no
-  hasSearchResults: boolean = null
-
   // El tipo de documento elegido por el usuario
   selectedDocument: {
     id: number,
@@ -32,8 +34,13 @@ export class SearchComponent implements OnInit
     name: string
   }> = []
 
-  // La lista de los documentos encontrados
-  searchResults: Array<any>= []
+  // El componente que actualmente esta listando los resultados de busqueda
+  listComponent: any = {
+    data: {
+      searchResults: [],
+      hasSearchResults: true
+    }
+  }
 
   // El constructor de este componente, inyectando los servicios requeridos
   constructor(
@@ -41,8 +48,10 @@ export class SearchComponent implements OnInit
     private toastManager: ToastService,
     private global: GlobalElementsService,
     private langManager: LanguageService,
-    private modalManager: MzModalService
+    private modalManager: MzModalService,
+    factoryResolver: ComponentFactoryResolver
   ) {
+    super(factoryResolver)
   }
 
   // Esta funcion se ejecuta al iniciar la pagina
@@ -83,22 +92,33 @@ export class SearchComponent implements OnInit
     // relacionada con el
     switch (this.selectedDocument.name) {
       case 'LABORATORIOS':
+        this.listComponent = 
+          this.loadComponent(LabSearchResultsListComponent, {
+            parent: this
+          }).instance
+
         this.modalManager.open(LabDocumentSearchModalComponent, {
-          parent: this,
+          parent: this.listComponent,
           selectedDocumentTypeID: this.selectedDocument.id
         })
       break
 
       default:
+        this.listComponent = 
+          this.loadComponent(AreaSearchResultsListComponent, {
+            parent: this
+          }).instance
+        
         this.modalManager.open(AreaDocumentSearchModalComponent, {
-          parent: this,
+          parent: this.listComponent,
           selectedDocumentTypeID: this.selectedDocument.id
         })
       break
     } // switch (this.selectedDocument.name)
   } // onDocumentTypeSelected(): void
 
-  // Esta funcion se invoca cuando el usuario hace clic en uno de los enlaces generados al buscar documentos en la base de datos
+  // Esta funcion se invoca cuando el usuario hace clic en uno de los enlaces 
+  // generados al buscar documentos en la base de datos
   onDocumentLinkClicked(document: any): void {
     switch (this.selectedDocument.name) {
       case 'LABORATORIOS':
@@ -124,6 +144,6 @@ export class SearchComponent implements OnInit
   // Esta funcion se invoca cuando el usuario hace clic en el boton de ordenar 
   // los resultados
   onSortButtonClick(): void {
-    this.searchResults.reverse()
+    this.listComponent.data.searchResults.reverse()
   } // onSortButtonClick(): void
 } // export class SearchComponent implements OnInit

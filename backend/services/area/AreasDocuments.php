@@ -54,13 +54,28 @@ class AreasDocuments extends DataBaseTable
         d.upload_date AS upload_date,
         d.file_date AS file_date,
         d.file_path AS file_path,
+        z.name AS zone_name,
+        r.name AS ranch_name,
+        p.name AS producer_name,
+        a.name AS area_name,
         notes
       FROM
         `$this->table`
       INNER JOIN
         `documents` AS d
-        ON
-          d.id = document_id
+        ON d.id = document_id
+      INNER JOIN
+        `areas` AS a
+        ON a.id = area_id
+      INNER JOIN
+        `producers` AS p
+        ON p.id = a.parent_id
+      INNER JOIN 
+        `ranches` AS r
+        ON r.id = p.parent_id
+      INNER JOIN
+        `zones` AS z
+        ON z.id = r.parent_id
       WHERE
         d.file_date >= :startDate AND d.file_date <= :endDate
         AND d.type_id = :typeID

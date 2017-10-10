@@ -6,7 +6,7 @@ import { LanguageService } from '../services/app.language'
 import { MzModalService, MzBaseModal } from 'ng2-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { SearchComponent } from './app.search'
+import { LabSearchResultsListComponent } from './list.lab'
 import { AreaDocumentSearchModalComponent } from './modal.search.area'
 
 // Este componente define el comportamiento de la pagina donde el usuario puede 
@@ -134,8 +134,8 @@ export class LabDocumentSearchModalComponent
         // si el servidor respondio con exito, reiniciamos el formulario para 
         // que el usuario capture un nuevo documento
         if (response.meta.return_code == 0) {
-          this.parent.searchResults = response.data
-          this.parent.hasSearchResults = response.data.length > 0
+          this.parent.data.searchResults = response.data
+          this.parent.data.hasSearchResults = response.data.length > 0
         } else {
           // notificamos al usuario del resultado obtenido
           this.toastManager.showText(

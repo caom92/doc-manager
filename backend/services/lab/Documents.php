@@ -57,27 +57,42 @@ class Documents extends DataBaseTable
   ) {
     $query = $this->getStatement(
       "SELECT
-        a.upload_date AS upload_date,
-        a.file_date AS file_date,
-        a.file_path AS file_path,
+        d.upload_date AS upload_date,
+        d.file_date AS file_date,
+        d.file_path AS file_path,
+        l.name AS lab_name,
+        z.name AS zone_name,
+        r.name AS ranch_name,
+        p.name AS producer_name,
+        a.name AS area_name,
         notes
       FROM
         `$this->table`
       INNER JOIN
-        `documents` AS a
-        ON 
-          analysis_document_id = a.id
+        `documents` AS d
+        ON analysis_document_id = d.id
       INNER JOIN
         `laboratories` AS l
-        ON
-          lab_id = l.id
+        ON lab_id = l.id
+      INNER JOIN
+        `areas` AS a
+        ON a.id = area_id
+      INNER JOIN
+        `producers` AS p
+        ON p.id = a.parent_id
+      INNER JOIN 
+        `ranches` AS r
+        ON r.id = p.parent_id
+      INNER JOIN
+        `zones` AS z
+        ON z.id = r.parent_id
       WHERE
-        a.file_date >= :startDate AND a.file_date <= :endDate
+        d.file_date >= :startDate AND d.file_date <= :endDate
         AND lab_id = :labID
         AND area_id = :areaID
-        AND a.type_id = :documentTypeID
+        AND d.type_id = :documentTypeID
       ORDER BY
-        a.file_date"
+        d.file_date"
     );
     $query->execute([
       ':startDate' => $startDate,

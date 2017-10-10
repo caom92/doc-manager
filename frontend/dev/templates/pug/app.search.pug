@@ -18,17 +18,12 @@ div.row
       '[(ngModel)]'='selectedDocument'
     )
 
-div.row
-  div.col.s12(
-    '*ngFor'='let document of searchResults'
-  )
-    mz-card('[hoverable]'='true')
-      mz-card-content
-        +link()('(click)'='onDocumentLinkClicked(document)')
-          ='{{ document.file_date }}'
+div.row(dynamicComponentContainer)
 
 div.row
-  div.col.s12.center-align('*ngIf'='hasSearchResults == false')
+  div.col.s12.center-align(
+    '*ngIf'='listComponent.data.hasSearchResults == false'
+  )
     h5
       i.mdi.mdi-alert-octagon.red-text
       = '{{ langManager.messages.search.noSearchResults }}'

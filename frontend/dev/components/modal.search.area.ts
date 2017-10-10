@@ -6,7 +6,7 @@ import { LanguageService } from '../services/app.language'
 import { MzModalService, MzBaseModal } from 'ng2-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { SearchComponent } from './app.search'
+import { AreaSearchResultsListComponent } from './list.area'
 
 // Este componente define el comportamiento por defecto necesario para que el 
 // usuario busque un documento en el sistema
@@ -38,7 +38,7 @@ export class AreaDocumentSearchModalComponent
   areas: Array<any> = []
 
   // El componente que invoco este componente
-  parent: SearchComponent = null
+  parent: any = null
 
   // Instancia que representa el formulario de captura donde el usuario subira 
   // el documento
@@ -275,8 +275,8 @@ export class AreaDocumentSearchModalComponent
         // si el servidor respondio con exito, reiniciamos el formulario para 
         // que el usuario capture un nuevo documento
         if (response.meta.return_code == 0) {
-          this.parent.searchResults = response.data
-          this.parent.hasSearchResults = response.data.length > 0
+          this.parent.data.searchResults = response.data
+          this.parent.data.hasSearchResults = response.data.length > 0
         } else {
           // notificamos al usuario del resultado obtenido
           this.toastManager.showText(
