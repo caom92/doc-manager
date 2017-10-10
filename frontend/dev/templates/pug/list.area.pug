@@ -1,54 +1,56 @@
 include globals.pug
 
-div.col.s12(
-  '*ngFor'='let document of data.searchResults'
-)
-  mz-card('[hoverable]'='true')
-    mz-card-content
-      div.row 
-        div.col.s6
-          span(style='font-weight: bold')
-            ='{{ langManager.messages.list.area.tableHeaders[0] }}: '
-          span
-            ='{{ document.file_date }}'
+//- div.col.s12(
+//-   '*ngFor'='let document of data.searchResults'
+//- )
+  //- mz-card('[hoverable]'='true')
+  //-   mz-card-content
+      //- div.row 
+      //-   div.col.s6
+      //-     span(style='font-weight: bold')
+      //-       ='{{ langManager.messages.list.area.tableHeaders[0] }}: '
+      //-     span
+      //-       ='{{ document.file_date }}'
       
-        div.col.s6
-          span(style='font-weight: bold')
-            ='{{ langManager.messages.list.area.tableHeaders[1] }}: '
-          span
-            ='{{ document.zone_name }}'
+      //-   div.col.s6
+      //-     span(style='font-weight: bold')
+      //-       ='{{ langManager.messages.list.area.tableHeaders[1] }}: '
+      //-     span
+      //-       ='{{ document.zone_name }}'
       
-      div.row 
-        div.col.s12
-          span(style='font-weight: bold')
-            ='{{ langManager.messages.list.area.tableHeaders[2] }}: '
-          span
-            ='{{ document.ranch_name }}'
+      //- div.row 
+      //-   div.col.s12
+      //-     span(style='font-weight: bold')
+      //-       ='{{ langManager.messages.list.area.tableHeaders[2] }}: '
+      //-     span
+      //-       ='{{ document.ranch_name }}'
 
-        div.col.s12
-          span(style='font-weight: bold')
-            ='{{ langManager.messages.list.area.tableHeaders[3] }}: '
-          span
-            ='{{ document.producer_name }}'
+      //-   div.col.s12
+      //-     span(style='font-weight: bold')
+      //-       ='{{ langManager.messages.list.area.tableHeaders[3] }}: '
+      //-     span
+      //-       ='{{ document.producer_name }}'
         
-        div.col.s12
-          span(style='font-weight: bold')
-            ='{{ langManager.messages.list.area.tableHeaders[4] }}: '
-          span
-            ='{{ document.area_name }}'
+      //-   div.col.s12
+      //-     span(style='font-weight: bold')
+      //-       ='{{ langManager.messages.list.area.tableHeaders[4] }}: '
+      //-     span
+      //-       ='{{ document.area_name }}'
       
-      div.row: div.col.s12
+      //- div.row: div.col.s12
+      //-   +link()('(click)'='parent.onDocumentLinkClicked(document)')
+      //-     ='{{ langManager.messages.list.view }}'
+
+div.col.s12
+  +responsiveTable('langManager.messages.list.area.tableHeaders')
+    tr(
+      '*ngFor'='let document of data.searchResults'
+    )
+      td='{{ document.file_date }}'
+      td='{{ document.zone_name }}'
+      td='{{ document.ranch_name }}'
+      td='{{ document.producer_name }}'
+      td='{{ document.area_name }}'
+      td
         +link()('(click)'='parent.onDocumentLinkClicked(document)')
           ='{{ langManager.messages.list.view }}'
-  //- +responsiveTable('langManager.messages.list.area.tableHeaders')
-  //-   tr(
-  //-     '*ngFor'='let row of data'
-  //-   )
-  //-     td='{{ row.file_date }}'
-  //-     td='{{ row.zone_name }}'
-  //-     td='{{ row.ranch_name }}'
-  //-     td='{{ row.producer_name }}'
-  //-     td='{{ area_name }}'
-  //-     td
-  //-       +link()('(click)'='onDocumentLinkClicked(row)')
-  //-         ='{{ langManager.messages.list.view }}'

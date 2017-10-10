@@ -117,7 +117,8 @@ export class LanguageService
             'Zona',
             'Rancho',
             'Productor',
-            'Área/Producto'
+            'Área/Producto',
+            'Enlace'
           ]
         },
         lab: {
@@ -127,7 +128,8 @@ export class LanguageService
             'Laboratorio',
             'Rancho',
             'Productor',
-            'Área/Producto'
+            'Área/Producto',
+            'Enlace'
           ]
         }
       },
@@ -251,7 +253,8 @@ export class LanguageService
             'Zone',
             'Ranch',
             'Producer',
-            'Area/Product'
+            'Area/Product',
+            'Link'
           ]
         },
         lab: {
@@ -261,7 +264,8 @@ export class LanguageService
             'Lab',
             'Ranch',
             'Producer',
-            'Area/Product'
+            'Area/Product',
+            'Link'
           ]
         }
       },
@@ -378,11 +382,13 @@ export class LanguageService
           null,
           null,
           null,
+          null,
           null
         ]
       },
       lab: {
         tableHeaders: [
+          null,
           null,
           null,
           null,
