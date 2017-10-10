@@ -24,7 +24,7 @@ export class BackendService
   // El URL a donde se enviaran las peticiones de servicio al backend de la 
   // aplicacion
   private static url = (environment.production) ?
-    'http://documents.jfdc.tech/backend/services'
+    'http://documents.jfdc.tech/backend/services/'
     : 'http://localhost/doc-manager/backend/services/'
 
   // Los encabezados del paquete HTTP que sera enviado
