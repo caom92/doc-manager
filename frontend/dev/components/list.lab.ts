@@ -9,32 +9,27 @@ import { SearchComponent } from './app.search'
 })
 export class LabSearchResultsListComponent
 {
-  // Los datos de entrada de este componente
+  // El componente responsable de la creacion de este componente
   @Input()
-  data: {
-    // El componente responsable de la creacion de este componente
-    parent: SearchComponent,
+  parent: SearchComponent = null
 
-    // La lista de los documentos encontrados
-    searchResults: Array<{
-      upload_date: string,
-      file_date: string,
-      file_path: string,
-      lab_name: string,
-      zone_name: string,
-      ranch_name: string,
-      producer_name: string,
-      area_name: string,
-      notes: string
-    }>,
+  // La lista de los documentos encontrados
+  @Input()
+  searchResults: Array<{
+    upload_date: string,
+    file_date: string,
+    file_path: string,
+    lab_name: string,
+    zone_name: string,
+    ranch_name: string,
+    producer_name: string,
+    area_name: string,
+    notes: string
+  }> = []
 
-    // Bandera que indica si hay resultados de busqueda o no
-    hasSearchResults: boolean
-  } = {
-    parent: null,
-    searchResults: [],
-    hasSearchResults: true
-  }
+  // Bandera que indica si hay resultados de busqueda o no
+  @Input()
+  hasSearchResults: boolean = true
 
   // El constructor de este componente, inyectando los servicios requeridos
   constructor(

@@ -23,6 +23,9 @@ $area = [
         realpath(__DIR__.'/list-areas-of-producer.php'),
       'capture-default' => realpath(__DIR__.'/capture-default.php'),
       'search-default' => realpath(__DIR__.'/search-default.php')
+    ],
+    'DELETE' => [
+      'delete-default/{document_id}' => realpath(__DIR__.'/delete-default.php')
     ]
   ]
 ];

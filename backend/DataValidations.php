@@ -163,7 +163,7 @@ function isBoolean($value)
   // if it's an integer, check if its value is 0 or greater
   if ($isInteger) {
     $value = intval($value);
-    return integerIsBetweenValues($value, 0, PHP_MAX_INT);
+    return integerIsBetweenValues($value, 0, PHP_INT_MAX);
   }
 
   // if it's a string, check if it resembles a boolean value

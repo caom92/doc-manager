@@ -12,6 +12,9 @@ $lab = [
     'POST' => [
       'capture-lab' => realpath(__DIR__.'/capture-lab.php'),
       'search-lab' => realpath(__DIR__.'/search-lab.php')
+    ],
+    'DELETE' => [
+      'delete-lab/{document_id}' => realpath(__DIR__.'/delete-lab.php')
     ]
   ]
 ];

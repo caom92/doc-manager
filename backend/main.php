@@ -42,10 +42,9 @@ $controller = new ServiceProvider(
       $area['services']['POST'] +
       $lab['services']['POST'] +
       $types['services']['POST'],
-    'DELETE' => [
-      // 'nombre del servicio' => function($scope, $request) {
-      // }
-    ]
+    'DELETE' => 
+      $area['services']['DELETE'] +
+      $lab['services']['DELETE']
   ]
 );
 

@@ -15,6 +15,7 @@ import { DocumentsComponent } from './app.documents'
 
 // Importamos los componentes de los modales
 import { ProgressModalComponent } from './modal.please.wait'
+import { DeleteDocumentConfirmationModalComponent } from './modal.confirmation.delete'
 import { AreaDocumentUploadModalComponent } from './modal.upload.area'
 import { AreaDocumentSearchModalComponent } from './modal.search.area'
 import { AreaDocumentDisplayModalComponent } from './modal.display.area'
@@ -94,7 +95,8 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     LabDocumentDisplayModalComponent,
     DynamicComponentContainerDirective,
     AreaSearchResultsListComponent,
-    LabSearchResultsListComponent
+    LabSearchResultsListComponent,
+    DeleteDocumentConfirmationModalComponent
   ],
   // declaramos cualquier componente que sera inyectado dinamicamente
   entryComponents: [
@@ -106,7 +108,8 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     LabDocumentSearchModalComponent,
     LabDocumentDisplayModalComponent,
     AreaSearchResultsListComponent,
-    LabSearchResultsListComponent
+    LabSearchResultsListComponent,
+    DeleteDocumentConfirmationModalComponent
   ],
   // indicamos cual es el componente raiz
   bootstrap: [ HomeComponent ]

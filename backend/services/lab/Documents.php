@@ -1,12 +1,12 @@
 <?php
 
 namespace DataBase\Lab;
-require_once realpath(__DIR__.'/../../dao/DataBaseTable.php');
-use DataBase\DataBaseTable;
+require_once realpath(__DIR__.'/../../dao/DocumentsTable.php');
+use DataBase\DocumentsTable;
 
 // Esta clase define la interfaz con la cual se interactua con la tabla 
 // lab_documents en la base de datos
-class Documents extends DataBaseTable
+class Documents extends DocumentsTable
 {
   // Crea una nueva instancia a la tabla lab_documents
   function __construct($db) {
@@ -42,28 +42,19 @@ class Documents extends DataBaseTable
   //        recuperados
   // [in]   startDate (string): la fecha de inicio de la busqueda
   // [in]   endDate (string): la fecha de fin de la busqueda
-  // [in]   [labID] (uint): el ID del laboratorio cuyos datos van a ser 
-  //        recuperados
-  // [in]   [zoneID] (uint): el ID de la zona cuyos datos van a ser recuperados
-  // [in]   [ranchID] (uint): el ID del rancho cuyos datos van a ser recuperados
-  // [in]   [producerID] (uint): el ID del productor cuyos datos van a ser 
-  //        recuperados
-  // [in]   [areaID] (uint): el ID del area o producto cuyos datos van a ser 
-  //        recuperados
+  // [in]   [categoryIDs] (dictionary): la lista de los IDs de las categorias 
+  //        necesarias para buscar el documento en la BD
   // [out]  return (dictionary): la lista de todos los documentos encontrados 
   //        en el tabla organizados por renglones y columnas
   function selectByDateInterval(
     $typeID,
     $startDate, 
     $endDate,
-    $labID,
-    $zoneID,
-    $ranchID,
-    $producerID,
-    $areaID
+    $categoryIDs
   ) {
     $queryStr = 
       "SELECT
+        `$this->table`.id AS id,
         d.upload_date AS upload_date,
         d.file_date AS file_date,
         d.file_path AS file_path,
@@ -103,29 +94,44 @@ class Documents extends DataBaseTable
       ':endDate' => $endDate
     ];
 
-    if (isset($labID)) {
+    if (
+      isset($categoryIDs['lab_id'])
+      && array_key_exists('lab_id', $categoryIDs)
+    ) {
       $queryStr .= "AND lab_id = :labID ";
-      $values[':labID'] = $labID;
+      $values[':labID'] = $categoryIDs['lab_id'];
     }
 
-    if (isset($areaID)) {
+    if (
+      isset($categoryIDs['area_id'])
+      && array_key_exists('area_id', $categoryIDs)
+    ) {
       $queryStr .= "AND area_id = :areaID ";
-      $values[':areaID'] = $areaID;
+      $values[':areaID'] = $categoryIDs['area_id'];
     }
 
-    if (isset($producerID)) {
+    if (
+      isset($categoryIDs['producer_id'])
+      && array_key_exists('producer_id', $categoryIDs)
+    ) {
       $queryStr .= "AND p.id = :producerID ";
-      $values[':producerID'] = $producerID;
+      $values[':producerID'] = $categoryIDs['producer_id'];
     }
 
-    if (isset($ranchID)) {
+    if (
+      isset($categoryIDs['ranch_id'])
+      && array_key_exists('ranch_id', $categoryIDs)
+    ) {
       $queryStr .= "AND r.id = :ranchID ";
-      $values[':ranchID'] = $ranchID;
+      $values[':ranchID'] = $categoryIDs['ranch_id'];
     }
 
-    if (isset($zoneID)) {
+    if (
+      isset($categoryIDs['zone_id'])
+      && array_key_exists('zone_id', $categoryIDs)
+    ) {
       $queryStr .= "AND z.id = :zoneID ";
-      $values[':zoneID'] = $zoneID;
+      $values[':zoneID'] = $categoryIDs['zone_id'];
     }
 
     $queryStr .= "ORDER BY d.file_date";
@@ -133,6 +139,25 @@ class Documents extends DataBaseTable
     $query = $this->getStatement($queryStr);
     $query->execute($values);
     return $query->fetchAll();
+  }
+
+  // Retorna el nombre del archivo que posea el ID especificado en esta tabla
+  function getPathByID($id) {
+    $query = $this->getStatement(
+      "SELECT 
+        d.file_path AS file_path
+      FROM 
+        `$this->table` AS t
+      INNER JOIN 
+        `documents` AS d
+        ON
+          analysis_document_id = d.id
+      WHERE 
+        t.id = :ID"
+    );
+    $query->execute([ ':ID' => $id ]);
+    $rows = $query->fetchAll();
+    return $rows[0]['file_path'];
   }
 }
 

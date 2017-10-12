@@ -48,10 +48,10 @@ export class AreaDocumentDisplayModalComponent
   ngOnInit(): void {
     this.sanitizedPath = (environment.production) ?
       this.sanitizer.bypassSecurityTrustResourceUrl(
-        `http://documents.jfdc.tech/backend/ViewerJS/#../documents/producer/${ this.fileName }`
+        `http://documents.jfdc.tech/backend/ViewerJS/#../documents/area/${ this.fileName }`
       )
       : this.sanitizer.bypassSecurityTrustResourceUrl(
-        `http://localhost/doc-manager/backend/ViewerJS/#../documents/producer/${ this.fileName }`
+        `http://localhost/doc-manager/backend/ViewerJS/#../documents/area/${ this.fileName }`
       )
   } // ngOnInit(): void
 }

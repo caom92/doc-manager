@@ -345,8 +345,8 @@ export class AreaDocumentSearchModalComponent
         // si el servidor respondio con exito, reiniciamos el formulario para 
         // que el usuario capture un nuevo documento
         if (response.meta.return_code == 0) {
-          this.parent.data.searchResults = response.data
-          this.parent.data.hasSearchResults = response.data.length > 0
+          this.parent.searchResults = response.data
+          this.parent.hasSearchResults = response.data.length > 0
         } else {
           // notificamos al usuario del resultado obtenido
           this.toastManager.showText(

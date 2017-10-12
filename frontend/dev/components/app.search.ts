@@ -12,6 +12,7 @@ import { LabDocumentDisplayModalComponent } from './modal.display.lab'
 import { DynamicComponentResolver } from './dynamic.resolver'
 import { AreaSearchResultsListComponent } from './list.area'
 import { LabSearchResultsListComponent } from './list.lab'
+import { DeleteDocumentConfirmationModalComponent } from './modal.confirmation.delete'
 
 // Componente que define el comportamiento de la pagina donde el usuario puede 
 // buscar documentos 
@@ -140,6 +141,58 @@ export class SearchComponent
       break
     }
   } // onDocumentLinkClicked(document: SearchedDocument): void
+
+  // Esta funcion se invoca cuando el usuario hace clic en el boton de 
+  // solicitar el borrado de uno de los documentos
+  onDocumentDeletionRequested(
+    suffix: string, 
+    documentID: number, 
+    idx: number
+  ): void {
+    // desplegamos el modal de confirmacion
+    this.modalManager.open(DeleteDocumentConfirmationModalComponent, {
+      title: this.langManager.messages.deleteConfirmation.title,
+      message: this.langManager.messages.deleteConfirmation.message,
+      parent: this,
+      documentIdx: idx,
+      documentID: documentID,
+      serviceSuffix: suffix
+    })
+  } // onDocumentDeletionRequested()
+
+  // Esta funcion se invoca cuando el usuario hace clic en el boton de aceptar 
+  // en el modal de confirmacion de borrado
+  onDocumentDeleteClicked(
+    suffix: string, 
+    documentID: number, 
+    idx: number
+  ): void {
+    // invocamos el modal de espera
+    let modal = this.modalManager.open(ProgressModalComponent)
+
+    // enviamos los datos al servidor
+    this.server.delete(
+      `delete-${ suffix }`,
+      { document_id: documentID },
+      (response: BackendResponse) => {
+        // cuando el servidor responda cerramos el modal
+        modal.instance.modalComponent.close()
+
+        // notificamos al usuario del resultado de la operacion
+        this.toastManager.showText(
+          this.langManager.getServiceMessage(
+            'delete-*',
+            response.meta.return_code
+          )
+        )
+
+        // si el resultado fue exitoso, borramos el documento del arreglo
+        if (response.meta.return_code == 0) {
+          this.listComponent.searchResults.splice(idx, 1)
+        }
+      } // (response: BackendResponse)
+    ) // this.server.delete
+  } // onDocumentDeleteClicked()
 
   // Esta funcion se invoca cuando el usuario hace clic en el boton de ordenar 
   // los resultados

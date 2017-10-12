@@ -10,9 +10,12 @@ export class LanguageService
     es: { // Español
       global: {
         wait: 'Por favor espere...',
+        erase: 'Borrar',
         selectPlaceholder: 'Elija una opción',
         submit: 'Enviar',
         close: 'Cerrar',
+        accept: 'Aceptar',
+        cancel: 'Cancelar',
         datePickerConfig: {
           closeOnSelect: true,
           closeOnClear: false,
@@ -39,6 +42,10 @@ export class LanguageService
           close: 'Cerrar',
           formatSubmit: "yyyy-mm-dd"
         }
+      },
+      deleteConfirmation: {
+        title: '¿Seguro que desea borrar este documento?',
+        message: 'Está a punto de borrar un documento. Una vez borrado el documento, NO podrá ser recuperado de nuevo.'
       },
       sideNav: {
         search: 'Buscar',
@@ -145,6 +152,10 @@ export class LanguageService
         0: 'Tipo de documento agregado con éxito',
         1: 'Error al crear el tipo; el nombre ya está ocupado'
       },
+      'delete-*': {
+        0: 'Documento borrado exitosamente',
+        1: 'Error al borrar el archivo del documento'
+      },
       100: 'No se pudo reconocer el servicio solicitado',
       101: 'Faltó enviar una entrada al servidor',
       102: 'Una entrada enviada al servidor no es un valor numérico',
@@ -167,14 +178,21 @@ export class LanguageService
     en: { // Ingles
       global: {
         wait: 'Please wait...',
+        erase: 'Erase',
         selectPlaceholder: 'Choose an option',
         submit: 'Send',
         close: 'Close',
+        accept: 'Accept',
+        cancel: 'Cancel',
         datePickerConfig: {
           closeOnSelect: true,
           closeOnClear: false,
           formatSubmit: "yyyy-mm-dd"
         }
+      },
+      deleteConfirmation: {
+        title: 'Are you sure you wish to delete this document?',
+        message: 'You are about to delete a document. Once deleted, a document CANNOT be recovered.'
       },
       sideNav: {
         search: 'Search',
@@ -281,6 +299,10 @@ export class LanguageService
         0: 'Document type added successfully',
         1: 'Failed to add document type; the name is already taken'
       },
+      'delete-*': {
+        0: 'Document was deleted successfully',
+        1: 'Failed to delete document file'
+      },
       100: 'Unable to recognize the requested service',
       101: 'A server input argument was not send',
       102: 'A server input argument is not a numeric value',
@@ -308,7 +330,14 @@ export class LanguageService
     global: {
       selectPlaceholder: null,
       submit: null,
-      datePickerConfig: null
+      datePickerConfig: null,
+      erase: null,
+      accept: null,
+      cancel: null
+    },
+    deleteConfirmation: {
+      title: null,
+      message: null
     },
     sideNav: {
       search: null,

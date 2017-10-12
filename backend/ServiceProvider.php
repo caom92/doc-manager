@@ -40,7 +40,7 @@ class ServiceProvider
     // Inyectamos el servicio PDO para manejar logs en el servidor
     $this->container['log'] = function($config) {
       // creamos una instancia del logger
-      $logger = new \Monolog\Logger('ApplicationLog');
+      $logger = new \Monolog\Logger('AppLog');
 
       // agregamos el manejador de archivos a la pila de manejadores para 
       // desplegar la informacion en el archivo indicado por la configuracion 
@@ -70,9 +70,9 @@ class ServiceProvider
       return function ($request, $response) use ($config) {
         return $config['response']
           ->withStatus(404)
-          ->withHeader('Content-Type', 'application/json;charset=utf8')
-          ->write(ServiceProvider::prepareResponse([], 404, 
-            'The requested service does not exist'));
+          ->getBody()->write(ServiceProvider::prepareResponse(
+            [], 404, 'The requested service does not exist'
+          ));
       };
     };
 
@@ -81,9 +81,10 @@ class ServiceProvider
         return $config['response']
           ->withStatus(405)
           ->withHeader('Allow', implode(', ', $methods))
-          ->withHeader('Content-type', 'application/json;charset=utf8')
-          ->write(ServiceProvider::prepareResponse([], 405, 
-            'Method must be one of: ' . implode(', ', $methods)));
+          ->getBody()->write(ServiceProvider::prepareResponse(
+            [], 405, 'Method must be one of: ' . implode(', ', $methods)
+          ));
+        return $result;
       };
     };
 
@@ -91,6 +92,94 @@ class ServiceProvider
     foreach ($globals as $name => $service) {
       $this->container[$name] = $service;
     }
+
+    // configuramos los encabezados necesarios en caso de que este 
+    // activado la bandera para permitir acceso CORS
+    if (CORS_REQUESTS['allowed']) {
+      $this->app->add(function($request, $response, $next) {
+        // preparamos los encabezados de la respuesta a enviar al cliente
+        $response = $response->withHeader(
+          'Content-Type', 
+          'application/json;charset=utf8'
+        );
+        $response = $response->withHeader(
+          'Access-Control-Allow-Headers', 
+          'X-Requested-With, Content-Type, Accept, Origin, Authorization'
+        );
+        $response = $response->withHeader(
+          'Access-Control-Allow-Methods', 
+          'PUT, GET, POST, DELETE, OPTIONS'
+        );
+
+        // si el acceso CORS requiere una cookie de sesion, la 
+        // configuracion de los encabezados debe incluir una lista de los 
+        // dominios web cuyas peticiones vamos a aceptar
+        if (CORS_REQUESTS['with_credentials']) {
+          // necesitamos asegurarnos de que el cliente proviene 
+          // de un origen autorizado, asi que primero obtenemos el origen
+          $currentOrigin = rtrim($_SERVER['HTTP_REFERER'], '/');
+
+          // inicializamos la bandera que indica si este origen esta 
+          // autorizado
+          $isOriginAllowed = FALSE;
+
+          // tenemos que comparar el origen actual con la lista de origenes 
+          // autorizados uno por uno
+          foreach (CORS_REQUESTS['allowed_origins'] as $origin) {
+            if ($currentOrigin == $origin) {
+              $isOriginAllowed = TRUE;
+              break;
+            }
+          } // foreach (CORS_REQUESTS['allowed_origins'] as $origin)
+
+          // si el origen actual esta autorizado para usar credenciales de 
+          // autentificacion con CORS, inicializamos el resto de los 
+          // encabezados necesarios
+          if ($isOriginAllowed) {
+            $response = $response->withHeader(
+              'Access-Control-Allow-Credentials', 
+              'true'
+            );
+            $response = $response->withHeader(
+              'Access-Control-Allow-Origin', 
+              $currentOrigin
+            );
+          } // if ($isOriginAllowed)
+        } else {
+          // si no es necesario permitir CORS con credenciales de 
+          // autentificacion, permitimos el acceso a cualquier origen
+          $response = $response->withHeader(
+            'Access-Control-Allow-Origin', 
+            '*'
+          );
+        } // if (CORS_REQUESTS['with_credentials'])
+
+        // ejecutamos el servicio y obtenemos la respuesta
+        return $next($request, $response);
+      }); // $this->app->add(function($request, $response, $next) {})
+
+      // finalmente agregamos un servicio que procese las peticiones 
+      // 'preflight' cuando las peticiones CORS estan activadas
+      $this->app->options(
+        SERVICES_ROOT.'{routes:.+}', 
+        function($request, $response, $args) {
+          return $response;
+        }
+      );
+    } else {
+      // si no es necesario permitir acceso CORS, entonces simplemente 
+      // preparamos los encabezados de respuesta
+      $this->app->add(function(Request $request, Response $response, $next) {
+        // preparamos los encabezados de la respuesta a enviar al cliente
+        $response = $response->withHeader(
+          'Content-Type', 
+          'application/json;charset=utf8'
+        );
+
+        // ejecutamos el servicio y obtenemos la respuesta
+        return $next($request, $response);
+      });
+    } // if (CORS_REQUESTS['allowed'])
 
     // Ahora visitamos cada elemento del arreglo de servicios
     foreach ($services as $method => $serviceList) {
@@ -114,66 +203,6 @@ class ServiceProvider
             );
           }
 
-          // preparamos los encabezados de la respuesta a enviar al cliente
-          $response = $response->withHeader('Content-Type', 
-            'application/json;charset=utf8');
-
-          // configuramos los encabezados necesarios en caso de que este 
-          // activado la bandera para permitir acceso CORS
-          if (CORS_REQUESTS['allowed']) {
-            $response = $response->withHeader(
-              'Access-Control-Allow-Headers', 
-              'Content-Type'
-            );
-            $response = $response->withHeader(
-              'Access-Control-Allow-Methods', 
-              'PUT, GET, POST, DELETE, OPTIONS'
-            );
-            
-            // si el acceso CORS requiere una cookie de sesion, la 
-            // configuracion de los encabezados debe incluir una lista de los 
-            // dominios web cuyas peticiones vamos a aceptar
-            if (CORS_REQUESTS['with_credentials']) {
-              // necesitamos asegurarnos de que el cliente proviene 
-              // de un origen autorizado, asi que primero obtenemos el origen
-              $currentOrigin = rtrim($_SERVER['HTTP_REFERER'], '/');
-
-              // inicializamos la bandera que indica si este origen esta 
-              // autorizado
-              $isOriginAllowed = FALSE;
-
-              // tenemos que comparar el origen actual con la lista de origenes 
-              // autorizados uno por uno
-              foreach (CORS_REQUESTS['allowed_origins'] as $origin) {
-                if ($currentOrigin == $origin) {
-                  $isOriginAllowed = TRUE;
-                  break;
-                }
-              }
-
-              // si el origen actual esta autorizado para usar credenciales de 
-              // autentificacion con CORS, inicializamos el resto de los 
-              // encabezados necesarios
-              if ($isOriginAllowed) {
-                $response = $response->withHeader(
-                  'Access-Control-Allow-Credentials', 
-                  'true'
-                );
-                $response = $response->withHeader(
-                  'Access-Control-Allow-Origin', 
-                  $currentOrigin
-                );
-              }
-            } else {
-              // si no es necesario permitir CORS con credenciales de 
-              // autentificacion, permitimos el acceso a cualquier origen
-              $response = $response->withHeader(
-                'Access-Control-Allow-Origin', 
-                '*'
-              );
-            }
-          }
-
           // inicializamos la variable que almacenara el resultado del servicio
           $result = NULL;
 
@@ -182,7 +211,7 @@ class ServiceProvider
           $service = NULL;
 
           // importamos el archivo que contiene la declaracion del servicio
-          include $import;
+          require_once $import;
 
           // intentamos ejecutar el servicio
           try {
@@ -212,9 +241,10 @@ class ServiceProvider
             // escribimos la respuesta
             $response->getBody()->write($result);
           }
+
           // y la enviamos al cliente
           return $response;
-        };
+        }; // $callback = function(Request $request, Response $response, $args)
 
         // configuramos el servicio dependiendo del metodo HTTP que debe 
         // utilizar
@@ -247,10 +277,10 @@ class ServiceProvider
               100
             );
           break;
-        }
-      }
-    }
-  }
+        } // switch ($method)
+      } // foreach ($serviceList as $name => $import)
+    } // foreach ($services as $method => $serviceList)
+  } // function __construct($globals, $services)
 
   // Agrega una nueva regla de validacion para los datos de entrada que pueden
   // ser enviados desde el cliente junto con una peticion para un servicio
