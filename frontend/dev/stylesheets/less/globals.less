@@ -24,3 +24,17 @@ body {
 .viewerjs-container {
   height: ~"calc(100vh - 225px)";
 }
+
+// Hace que los textos en las etiquetas de los campos de captura de los 
+// formularios sean gruesos y negros, esto fue una peticion del cliente pues 
+// tenian dispositivos en donde la combinacion del color gris claro con el 
+// tamaño chico de letra no permitia que el texto se apreciara correctamente en 
+// dichas pantallas
+label {
+  font-weight: 900;
+  color: black !important;
+}
+
+input:disabled {
+  color: black !important;
+}
