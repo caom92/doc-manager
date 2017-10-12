@@ -6,76 +6,78 @@ mz-modal(
   '[fullscreen]'='true'
 )
   mz-modal-header
-    ='{{ langManager.messages.search.title }}'
+    div.container: div.row: div.col.s12
+      ='{{ langManager.messages.search.title }}'
   mz-modal-content
-    form(
-      '[formGroup]'='defaultDocumentSearchForm'
-      novalidate
-    )
-      div.row
-        div.col.s12.m4
-          +dateInput(
-            'start-date', 
-            '{{ langManager.messages.search.startDateLabel }}'
-          )(
-            formControlName='startDate'
-            mz-validation
-            required
-            '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
-          )
-        div.col.s12.m4
-          +dateInput(
-            'end-date', 
-            '{{ langManager.messages.search.endDateLabel }}'
-          )(
-            formControlName='endDate'
-            mz-validation
-            required
-            '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
-          )
-        div.col.s12.m4
-          +select(
-            'lab', 'langManager.messages.upload.lab.labNameLabel', 'langManager.messages.global.selectPlaceholder',
-            'labs', '.name', ''
-          )(
-            formControlName='lab'
-          )
-      
-      div.row
-        div.col.s12.m3
-          +select(
-            'zone', 'langManager.messages.upload.zoneLabel', 'langManager.messages.global.selectPlaceholder',
-            'zones', '.name', '',
-            'onZoneSelected()'
-          )(
-            formControlName='zone'
-          )
-
-        div.col.s12.m3
-          +select(
-            'ranch', 'langManager.messages.upload.ranchLabel', 'langManager.messages.global.selectPlaceholder',
-            'ranches', '.name', '',
-            'onRanchSelected()'
-          )(
-            formControlName='ranch'
-          )
-
-        div.col.s12.m3
-          +select(
-            'producer', 'langManager.messages.upload.producerLabel', 'langManager.messages.global.selectPlaceholder',
-            'producers', '.name', '',
-            'onProducerSelected()'
-          )(
-            formControlName='producer'
-          )
+    div.container
+      form(
+        '[formGroup]'='defaultDocumentSearchForm'
+        novalidate
+      )
+        div.row
+          div.col.s12.m4
+            +dateInput(
+              'start-date', 
+              '{{ langManager.messages.search.startDateLabel }}'
+            )(
+              formControlName='startDate'
+              mz-validation
+              required
+              '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
+            )
+          div.col.s12.m4
+            +dateInput(
+              'end-date', 
+              '{{ langManager.messages.search.endDateLabel }}'
+            )(
+              formControlName='endDate'
+              mz-validation
+              required
+              '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
+            )
+          div.col.s12.m4
+            +select(
+              'lab', 'langManager.messages.upload.lab.labNameLabel', 'langManager.messages.global.selectPlaceholder',
+              'labs', '.name', ''
+            )(
+              formControlName='lab'
+            )
         
-        div.col.s12.m3
-          +select(
-            'area', 'langManager.messages.upload.areaLabel', 'langManager.messages.global.selectPlaceholder',
-            'areas', '.name', ''
-          )(
-            formControlName='area'
-          )
+        div.row
+          div.col.s12.m3
+            +select(
+              'zone', 'langManager.messages.upload.zoneLabel', 'langManager.messages.global.selectPlaceholder',
+              'zones', '.name', '',
+              'onZoneSelected()'
+            )(
+              formControlName='zone'
+            )
+
+          div.col.s12.m3
+            +select(
+              'ranch', 'langManager.messages.upload.ranchLabel', 'langManager.messages.global.selectPlaceholder',
+              'ranches', '.name', '',
+              'onRanchSelected()'
+            )(
+              formControlName='ranch'
+            )
+
+          div.col.s12.m3
+            +select(
+              'producer', 'langManager.messages.upload.producerLabel', 'langManager.messages.global.selectPlaceholder',
+              'producers', '.name', '',
+              'onProducerSelected()'
+            )(
+              formControlName='producer'
+            )
+          
+          div.col.s12.m3
+            +select(
+              'area', 'langManager.messages.upload.areaLabel', 'langManager.messages.global.selectPlaceholder',
+              'areas', '.name', ''
+            )(
+              formControlName='area'
+            )
   mz-modal-footer
     +button(
       'search',

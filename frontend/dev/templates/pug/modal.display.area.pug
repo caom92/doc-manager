@@ -7,26 +7,28 @@ mz-modal(
   '[bottomSheet]'='true'
 )
   mz-modal-header
-    ='{{ langManager.messages.display.title }}'
+    div.container: div.row: div.col.s12
+      ='{{ langManager.messages.display.title }}'
   mz-modal-content
-    div.row
-      div.col.s12
-        h6='{{ documentType }} - {{ fileDate }}'
+    div.container
+      div.row
+        div.col.s12
+          h6='{{ documentType }} - {{ fileDate }}'
 
-    div.row
-      div.col.s12
-        +textArea(
-          'notes',
-          65535,
-          'langManager.messages.upload.notesLabel'
-        )(
-          '[(ngModel)]'='notes'
-          '[readonly]'='true'
-        )
-    
-    div.row
-      div.col.s12.viewerjs-container
-        +viewerJSDoc('sanitizedPath')
+      div.row
+        div.col.s12
+          +textArea(
+            'notes',
+            65535,
+            'langManager.messages.upload.notesLabel'
+          )(
+            '[(ngModel)]'='notes'
+            '[readonly]'='true'
+          )
+      
+      div.row
+        div.col.s12.viewerjs-container
+          +viewerJSDoc('sanitizedPath')
   mz-modal-footer
     +button(
       'button',
