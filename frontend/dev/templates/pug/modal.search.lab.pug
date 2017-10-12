@@ -15,7 +15,7 @@ mz-modal(
         novalidate
       )
         div.row
-          div.col.s12.m4
+          div.col.s12.m6
             +dateInput(
               'start-date', 
               '{{ langManager.messages.search.startDateLabel }}'
@@ -25,7 +25,7 @@ mz-modal(
               required
               '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
             )
-          div.col.s12.m4
+          div.col.s12.m6
             +dateInput(
               'end-date', 
               '{{ langManager.messages.search.endDateLabel }}'
@@ -35,7 +35,16 @@ mz-modal(
               required
               '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
             )
-          div.col.s12.m4
+
+        div.row
+          div.col.s12.m6
+            +select(
+              'type', 'langManager.messages.upload.lab.typeNameLabel', 'langManager.messages.global.selectPlaceholder',
+              'analysisTypes', '.name', ''
+            )(
+              formControlName='type'
+            )
+          div.col.s12.m6
             +select(
               'lab', 'langManager.messages.upload.lab.labNameLabel', 'langManager.messages.global.selectPlaceholder',
               'labs', '.name', ''

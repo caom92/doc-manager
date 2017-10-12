@@ -3,11 +3,13 @@
 $lab = [
   'tables' => [
     'Lab\Documents' => realpath(__DIR__.'/Documents.php'),
-    'Lab\Laboratories' => realpath(__DIR__.'/Laboratories.php')
+    'Lab\Laboratories' => realpath(__DIR__.'/Laboratories.php'),
+    'Lab\AnalysisTypes' => realpath(__DIR__.'/AnalysisTypes.php')
   ],
   'services' => [
     'GET' => [
-      'list-labs' => realpath(__DIR__.'/list-labs.php')
+      'list-labs' => realpath(__DIR__.'/list-labs.php'),
+      'list-analysis-types' => realpath(__DIR__.'/list-analysis-types.php')
     ],
     'POST' => [
       'capture-lab' => realpath(__DIR__.'/capture-lab.php'),

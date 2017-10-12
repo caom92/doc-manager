@@ -56,7 +56,8 @@ export class LanguageService
         lab: {
           analysisLabel: 'Solicitud de Estudio',
           resultLabel: 'Resultado de Estudio',
-          labNameLabel: 'Nombre del Laboratorio'
+          labNameLabel: 'Nombre del Laboratorio',
+          typeNameLabel: 'Tipo de Análisis'
         },
         title: 'Captura de Documento',
         typeLabel: 'Tipo de Documento',
@@ -131,8 +132,9 @@ export class LanguageService
         lab: {
           tableHeaders: [
             'Fecha',
-            'Zona',
+            'Tipo de Análisis',
             'Laboratorio',
+            'Zona',
             'Rancho',
             'Productor',
             'Área/Producto',
@@ -203,7 +205,8 @@ export class LanguageService
         lab: {
           analysisLabel: 'Analysis Request Document',
           resultLabel: 'Result Document',
-          labNameLabel: "Lab's Name"
+          labNameLabel: "Lab's Name",
+          typeNameLabel: 'Analysis Type'
         },
         title: 'Document Upload',
         typeLabel: 'Document Type',
@@ -278,8 +281,9 @@ export class LanguageService
         lab: {
           tableHeaders: [
             'Date',
-            'Zone',
+            'Analysis Type',
             'Lab',
+            'Zone',
             'Ranch',
             'Producer',
             'Area/Product',
@@ -348,7 +352,8 @@ export class LanguageService
       lab: {
         analysisLabel: null,
         resultLabel: null,
-        labNameLabel: null
+        labNameLabel: null,
+        typeNameLabel: null
       },
       title: null,
       typeLabel: null,
@@ -417,6 +422,7 @@ export class LanguageService
       },
       lab: {
         tableHeaders: [
+          null,
           null,
           null,
           null,

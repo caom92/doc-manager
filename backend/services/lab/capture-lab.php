@@ -16,6 +16,11 @@ $service = [
       'type' => 'datetime',
       'format' => 'Y-m-d'
     ],
+    'analysis_type_name' => [
+      'type' => 'string',
+      'min_length' => 1,
+      'max_length' => 255
+    ],
     'lab_name' => [
       'type' => 'string',
       'min_length' => 1,
@@ -86,6 +91,17 @@ $service = [
       $labID = $labs->insert([ ':name' => $labName ]);
     }
 
+    // obtenemos el ID del tipo de analysis
+    $typeName = strtoupper($request['analysis_type_name']);
+    $analysisTypes = $scope->docManagerTableFactory->get('Lab\AnalysisTypes');
+    $typeID = $analysisTypes->getIDByName($typeName);
+
+    // si el ID no pudo ser recuperado, significa que el tipo de analisis no 
+    // existe en la BD, tenemos que agregarlo
+    if (!isset($typeID)) {
+      $typeID = $analysisTypes->insert([ ':name' => $typeName ]);
+    }
+
     // obtenemos el ID del area, agregando la zona, rancho, productor y/o area 
     // si estas no estan ya almacenadas en la BD en el proceso
     $areaID = Core\getLastCategoryID(
@@ -118,6 +134,7 @@ $service = [
     // guardamos el registro
     return $scope->docManagerTableFactory->get('Lab\Documents')->insert([
       ':analysisDocumentID' => $analysisID,
+      ':analysisTypeID' => $typeID,
       ':labID' => $labID,
       ':areaID' => $areaID,
       ':notes' => ($hasNotes) ? $request['notes'] : ''

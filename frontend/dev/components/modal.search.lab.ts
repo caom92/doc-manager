@@ -22,6 +22,11 @@ export class LabDocumentSearchModalComponent
     this.zoneOptionAll
   ]
 
+  // La lista de laboratorios a elegir por el usuario
+  analysisTypes: Array<ElementWithoutParent> = [
+    this.zoneOptionAll
+  ]
+
   // El constructor de este componente, inyectando los servicios requeridos
   constructor(
     server: BackendService,
@@ -45,7 +50,8 @@ export class LabDocumentSearchModalComponent
       ranch: [ null ],
       producer: [ null ],
       area: [ null ],
-      lab: [ null ]
+      lab: [ null ],
+      type: [ null ]
     })
   } // initForm(): void
 
@@ -95,6 +101,28 @@ export class LabDocumentSearchModalComponent
         } // if (response.meta.return_code == 0)
       } // (response: BackendResponse)
     ) // this.server.read
+
+    // obtenemos la lista de zonas del servidor
+    this.server.read(
+      'list-analysis-types',
+      {},
+      (response: BackendResponse) => {
+        // revisamos si el servidor respondio con exito
+        if (response.meta.return_code == 0) {
+          // si el servidor respondio con exito, cargamos la respuesta al 
+          // objeto de sugerencias de zonas
+          this.analysisTypes = this.analysisTypes.concat(response.data)
+        } else {
+          // si el servidor respondio con error, notificamos al usuario
+          this.toastManager.showText(
+            this.langManager.getServiceMessage(
+              'list-labs',
+              response.meta.return_code
+            )
+          )
+        } // if (response.meta.return_code == 0)
+      } // (response: BackendResponse)
+    ) // this.server.read
   } // retrieveInitialData(): void
 
   // Esta funcion se invoca cuando el formulario de captura de documento es 
@@ -113,6 +141,12 @@ export class LabDocumentSearchModalComponent
       'end_date', 
       $('input[type="hidden"][name="end-date_submit"]').val()
     )
+
+    let selectedType =
+      <ElementWithoutParent>this.defaultDocumentSearchForm.controls.type.value
+    if (selectedType && selectedType != this.zoneOptionAll) {
+      data.append('analysis_type_id', selectedType.id.toString())
+    }
 
     let selectedLab =
       <ElementWithoutParent>this.defaultDocumentSearchForm.controls.lab.value

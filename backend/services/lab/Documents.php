@@ -21,12 +21,14 @@ class Documents extends DocumentsTable
     $query = $this->getStatement(
       "INSERT INTO `$this->table` (
         analysis_document_id,
+        type_id,
         lab_id,
         area_id,
         notes
       ) 
       VALUES (
         :analysisDocumentID,
+        :analysisTypeID,
         :labID,
         :areaID,
         :notes
@@ -50,7 +52,7 @@ class Documents extends DocumentsTable
     $typeID,
     $startDate, 
     $endDate,
-    $categoryIDs
+    ...$categoryIDs
   ) {
     $queryStr = 
       "SELECT
@@ -58,6 +60,7 @@ class Documents extends DocumentsTable
         d.upload_date AS upload_date,
         d.file_date AS file_date,
         d.file_path AS file_path,
+        t.name AS analysis_type_name,
         l.name AS lab_name,
         z.name AS zone_name,
         r.name AS ranch_name,
@@ -69,6 +72,9 @@ class Documents extends DocumentsTable
       INNER JOIN
         `documents` AS d
         ON analysis_document_id = d.id
+      INNER JOIN
+        `analysis_types` AS t
+        ON `$this->table`.type_id = t.id
       INNER JOIN
         `laboratories` AS l
         ON lab_id = l.id
@@ -94,44 +100,34 @@ class Documents extends DocumentsTable
       ':endDate' => $endDate
     ];
 
-    if (
-      isset($categoryIDs['lab_id'])
-      && array_key_exists('lab_id', $categoryIDs)
-    ) {
+    if (isset($categoryIDs[0])) {
+      $queryStr .= "AND `$this->table`.type_id = :analysisTypeID ";
+      $values[':analysisTypeID'] = $categoryIDs[0];
+    }
+
+    if (isset($categoryIDs[1])) {
       $queryStr .= "AND lab_id = :labID ";
-      $values[':labID'] = $categoryIDs['lab_id'];
+      $values[':labID'] = $categoryIDs[1];
     }
 
-    if (
-      isset($categoryIDs['area_id'])
-      && array_key_exists('area_id', $categoryIDs)
-    ) {
+    if (isset($categoryIDs[2])) {
       $queryStr .= "AND area_id = :areaID ";
-      $values[':areaID'] = $categoryIDs['area_id'];
+      $values[':areaID'] = $categoryIDs[2];
     }
 
-    if (
-      isset($categoryIDs['producer_id'])
-      && array_key_exists('producer_id', $categoryIDs)
-    ) {
+    if (isset($categoryIDs[3])) {
       $queryStr .= "AND p.id = :producerID ";
-      $values[':producerID'] = $categoryIDs['producer_id'];
+      $values[':producerID'] = $categoryIDs[3];
     }
 
-    if (
-      isset($categoryIDs['ranch_id'])
-      && array_key_exists('ranch_id', $categoryIDs)
-    ) {
+    if (isset($categoryIDs[4])) {
       $queryStr .= "AND r.id = :ranchID ";
-      $values[':ranchID'] = $categoryIDs['ranch_id'];
+      $values[':ranchID'] = $categoryIDs[4];
     }
 
-    if (
-      isset($categoryIDs['zone_id'])
-      && array_key_exists('zone_id', $categoryIDs)
-    ) {
+    if (isset($categoryIDs[5])) {
       $queryStr .= "AND z.id = :zoneID ";
-      $values[':zoneID'] = $categoryIDs['zone_id'];
+      $values[':zoneID'] = $categoryIDs[5];
     }
 
     $queryStr .= "ORDER BY d.file_date";

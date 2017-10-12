@@ -47,7 +47,7 @@ class AreasDocuments extends DocumentsTable
     $typeID,
     $startDate, 
     $endDate,
-    $categoryIDs
+    ...$categoryIDs
   ) {
     $queryStr = 
       "SELECT
@@ -87,36 +87,24 @@ class AreasDocuments extends DocumentsTable
       ':endDate' => $endDate
     ];
     
-    if (
-      isset($categoryIDs['area_id']) 
-      && array_key_exists('area_id', $categoryIDs)
-    ) {
+    if (isset($categoryIDs[0]) ) {
       $queryStr .= "AND area_id = :areaID ";
-      $values[':areaID'] = $categoryIDs['area_id'];
+      $values[':areaID'] = $categoryIDs[0];
     }
 
-    if (
-      isset($categoryIDs['producer_id']) 
-      && array_key_exists('producer_id', $categoryIDs)
-    ) {
+    if (isset($categoryIDs[1])) {
       $queryStr .= "AND p.id = :producerID ";
-      $values[':producerID'] = $categoryIDs['producer_id'];
+      $values[':producerID'] = $categoryIDs[1];
     }
 
-    if (
-      isset($categoryIDs['ranch_id']) 
-      && array_key_exists('ranch_id', $categoryIDs)
-    ) {
+    if (isset($categoryIDs[2])) {
       $queryStr .= "AND r.id = :ranchID ";
-      $values[':ranchID'] = $categoryIDs['ranch_id'];
+      $values[':ranchID'] = $categoryIDs[2];
     }
 
-    if (
-      isset($categoryIDs['zone_id']) 
-      && array_key_exists('zone_id', $categoryIDs)
-    ) {
+    if (isset($categoryIDs[3])) {
       $queryStr .= "AND z.id = :zoneID ";
-      $values[':zoneID'] = $categoryIDs['zone_id'];
+      $values[':zoneID'] = $categoryIDs[3];
     }
 
     $queryStr .= "ORDER BY d.file_date";

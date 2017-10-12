@@ -19,7 +19,13 @@ export class LabDocumentUploadModalComponent
   // Las sugerencias de autocompletado del campo de laboratorio
   labSuggestions: AutoCompleteObject = {
     data: {},
-    limit: 4
+    limit: 4   
+  }
+
+  // Las sugerencias de autocompletado del campo de tipos de analisis
+  typeSuggestions: AutoCompleteObject = {
+    data: {},
+    limit: 4   
   }
 
   // El archivo de solicitud elegido por el usuario
@@ -43,6 +49,10 @@ export class LabDocumentUploadModalComponent
     // configuramos las reglas de validacion del formulario de captura
     this.defaultDocumentUploadForm = this.formBuilder.group({
       documentDate: [ null, Validators.required ],
+      typeName: [ null, Validators.compose([
+        Validators.required,
+        Validators.maxLength(255)
+      ])],
       labName: [ null, Validators.compose([
         Validators.required,
         Validators.maxLength(255)
@@ -82,7 +92,7 @@ export class LabDocumentUploadModalComponent
           // objeto de sugerencias de zonas
           this.zoneSuggestions = {
             data: {},
-            limit: 4
+            limit: 4   
           }
           for (let zone of response.data) {
             this.zoneSuggestions.data[zone.name] = null
@@ -110,7 +120,7 @@ export class LabDocumentUploadModalComponent
           // objeto de sugerencias de zonas
           this.labSuggestions = {
             data: {},
-            limit: 4
+            limit: 4   
           }
           for (let lab of response.data) {
             this.labSuggestions.data[lab.name] = null
@@ -126,7 +136,56 @@ export class LabDocumentUploadModalComponent
         } // if (response.meta.return_code == 0)
       } // (response: BackendResponse)
     ) // this.server.read
+
+    // obtenemos la lista de tipos de analisis del servidor
+    this.server.read(
+      'list-analysis-types',
+      {},
+      (response: BackendResponse) => {
+        // revisamos si el servidor respondio con exito
+        if (response.meta.return_code == 0) {
+          // si el servidor respondio con exito, cargamos la respuesta al 
+          // objeto de sugerencias de zonas
+          this.typeSuggestions = {
+            data: {},
+            limit: 4   
+          }
+          for (let type of response.data) {
+            this.typeSuggestions.data[type.name] = null
+          }
+        } else {
+          // si el servidor respondio con error, notificamos al usuario
+          this.toastManager.showText(
+            this.langManager.getServiceMessage(
+              'list-analysis-types',
+              response.meta.return_code
+            )
+          )
+        } // if (response.meta.return_code == 0)
+      } // (response: BackendResponse)
+    ) // this.server.read
   } // retrieveInitialData(): void
+
+  // Esta funcion se invoca cuando el usuario ingresa un tipo de analisis
+  onAnalysisTypeSelected(event: any): void {
+    // necesitamos agregar el nombre ingresado al elegir una opcion de la lista 
+    // de sugerencias, de lo contrario, solo se guardara la tecla que el 
+    // usuario presiono para activar la lista de sugerencias
+    this.defaultDocumentUploadForm.controls.typeName.setValue(
+      event.target.value
+    )
+  }
+
+  // Esta funcion se invoca cuando el usuario ingresa el nombre de un 
+  // laboratorio
+  onLabSelected(event: any): void {
+    // necesitamos agregar el nombre ingresado al elegir una opcion de la lista 
+    // de sugerencias, de lo contrario, solo se guardara la tecla que el 
+    // usuario presiono para activar la lista de sugerencias
+    this.defaultDocumentUploadForm.controls.labName.setValue(
+      event.target.value
+    )
+  }
 
   // Esta funcion se invoca cuando el usuario elije un archivo de solicitud
   onAnalysisFileSelected(event: any): void {
@@ -152,6 +211,10 @@ export class LabDocumentUploadModalComponent
     data.append(
       'file_date', 
       $('input[type="hidden"][name="document-date_submit"]').val()
+    )
+    data.append(
+      'analysis_type_name',
+      this.defaultDocumentUploadForm.controls.typeName.value
     )
     data.append(
       'lab_name', 

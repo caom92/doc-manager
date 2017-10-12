@@ -197,6 +197,6 @@ export class SearchComponent
   // Esta funcion se invoca cuando el usuario hace clic en el boton de ordenar 
   // los resultados
   onSortButtonClick(): void {
-    this.listComponent.data.searchResults.reverse()
+    this.listComponent.searchResults.reverse()
   } // onSortButtonClick(): void
 } // export class SearchComponent implements OnInit

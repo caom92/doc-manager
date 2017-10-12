@@ -32,7 +32,7 @@ abstract class DocumentsTable extends DataBaseTable
     $typeID,
     $startDate, 
     $endDate,
-    $categoryIDs
+    ...$categoryIDs
   );
 
   // Retorna el nombre del archivo que posea el ID especificado en esta tabla

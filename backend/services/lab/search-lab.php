@@ -16,6 +16,11 @@ $service = [
       'type' => 'datetime',
       'format' => 'Y-m-d'
     ],
+    'analysis_type_id' => [
+      'type' => 'int',
+      'min' => 1,
+      'optional' => TRUE
+    ],
     'lab_id' => [
       'type' => 'int',
       'min' => 1,
@@ -48,9 +53,12 @@ $service = [
         $request['document_type_id'],
         $request['start_date'],
         $request['end_date'],
+        (isset($request['analysis_type_id']) 
+          && array_key_exists('analysis_type_id', $request)) ? 
+            $request['analysis_type_id'] : NULL,
         (isset($request['lab_id']) 
           && array_key_exists('lab_id', $request)) ? 
-            $request['zone_id'] : NULL,
+            $request['lab_id'] : NULL,
         (isset($request['zone_id']) 
           && array_key_exists('zone_id', $request)) ? 
             $request['zone_id'] : NULL,

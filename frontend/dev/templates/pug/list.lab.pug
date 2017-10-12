@@ -11,31 +11,36 @@ div.col.s12(
       div.row 
         div.col.s12
           span(style='font-weight: bold')
+            ='{{ langManager.messages.list.lab.tableHeaders[1] }}: '
+          span
+            ='{{ document.analysis_type_name }}'
+        div.col.s12
+          span(style='font-weight: bold')
             ='{{ langManager.messages.list.lab.tableHeaders[2] }}: '
           span
             ='{{ document.lab_name }}'
 
         div.col.s12
           span(style='font-weight: bold')
-            ='{{ langManager.messages.list.lab.tableHeaders[1] }}: '
+            ='{{ langManager.messages.list.lab.tableHeaders[3] }}: '
           span
             ='{{ document.zone_name }}'
 
         div.col.s12
           span(style='font-weight: bold')
-            ='{{ langManager.messages.list.lab.tableHeaders[3] }}: '
+            ='{{ langManager.messages.list.lab.tableHeaders[4] }}: '
           span
             ='{{ document.ranch_name }}'
 
         div.col.s12
           span(style='font-weight: bold')
-            ='{{ langManager.messages.list.lab.tableHeaders[4] }}: '
+            ='{{ langManager.messages.list.lab.tableHeaders[5] }}: '
           span
             ='{{ document.producer_name }}'
       
         div.col.s12
           span(style='font-weight: bold')
-            ='{{ langManager.messages.list.lab.tableHeaders[5] }}: '
+            ='{{ langManager.messages.list.lab.tableHeaders[6] }}: '
           span
             ='{{ document.area_name }}'
       

@@ -15,7 +15,7 @@ mz-modal(
         novalidate
       )
         div.row
-          div.col.s12.m6
+          div.col.s12
             +dateInput(
               'document-date', 
               '{{ langManager.messages.upload.docDateLabel }}'
@@ -24,6 +24,21 @@ mz-modal(
               mz-validation
               required
               '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
+            )
+
+        div.row
+          div.col.s12.m6
+            +textInput(
+              'analysis-type-name', 
+              'langManager.messages.upload.lab.typeNameLabel'
+            )(
+              formControlName='typeName'
+              mz-validation
+              required
+              '[errorMessageResource]'='langManager.messages.upload.errors.ranch'
+              length='255'
+              '[autocomplete]'='typeSuggestions'
+              '(change)'='onAnalysisTypeSelected($event)'
             )
           div.col.s12.m6
             +textInput(
@@ -36,6 +51,7 @@ mz-modal(
               '[errorMessageResource]'='langManager.messages.upload.errors.ranch'
               length='255'
               '[autocomplete]'='labSuggestions'
+              '(change)'='onLabSelected($event)'
             )
 
         div.row
