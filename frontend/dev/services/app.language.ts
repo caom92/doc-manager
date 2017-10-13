@@ -126,7 +126,8 @@ export class LanguageService
             'Rancho',
             'Productor',
             'Área/Producto',
-            'Enlace'
+            'Ver',
+            'Borrar'
           ]
         },
         lab: {
@@ -138,7 +139,8 @@ export class LanguageService
             'Rancho',
             'Productor',
             'Área/Producto',
-            'Enlace'
+            'Ver',
+            'Borrar'
           ]
         }
       },
@@ -180,7 +182,7 @@ export class LanguageService
     en: { // Ingles
       global: {
         wait: 'Please wait...',
-        erase: 'Erase',
+        erase: 'Delete',
         selectPlaceholder: 'Choose an option',
         submit: 'Send',
         close: 'Close',
@@ -275,7 +277,8 @@ export class LanguageService
             'Ranch',
             'Producer',
             'Area/Product',
-            'Link'
+            'View',
+            'Delete'
           ]
         },
         lab: {
@@ -287,7 +290,8 @@ export class LanguageService
             'Ranch',
             'Producer',
             'Area/Product',
-            'Link'
+            'View',
+            'Delete'
           ]
         }
       },
@@ -417,11 +421,13 @@ export class LanguageService
           null,
           null,
           null,
+          null,
           null
         ]
       },
       lab: {
         tableHeaders: [
+          null,
           null,
           null,
           null,
