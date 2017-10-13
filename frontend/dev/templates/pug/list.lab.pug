@@ -58,25 +58,26 @@ include globals.pug
 
 //- Despliega la info en forma de tabla
 div.col.s12('*ngIf'='hasSearchResults != false')
-  +responsiveTable('langManager.messages.list.lab.tableHeaders')(
-    class='permanently-horizontal'
-  )
-    tr(
-      '*ngFor'='let document of searchResults; let i = index'
+  div.scrollable-table-container
+    +responsiveTable('langManager.messages.list.lab.tableHeaders')(
+      class='scrollable-table'
     )
-      td='{{ document.file_date }}'
-      td='{{ document.analysis_type_name }}'
-      td='{{ document.lab_name }}'
-      td='{{ document.zone_name }}'
-      td='{{ document.ranch_name }}'
-      td='{{ document.producer_name }}'
-      td='{{ document.area_name }}'
-      td
-        +link()('(click)'='parent.onDocumentLinkClicked(document)')
-          ='{{ langManager.messages.list.view }}'
-      td
-        +link()(
-          class='red-text'
-          '(click)'='parent.onDocumentDeletionRequested("lab", document.id, i)'
-        )
-          ='{{ langManager.messages.global.erase }}'
+      tr(
+        '*ngFor'='let document of searchResults; let i = index'
+      )
+        td.table-col-fixed='{{ document.file_date }}'
+        td.table-col-fixed='{{ document.analysis_type_name }}'
+        td.table-col-fixed='{{ document.lab_name }}'
+        td='{{ document.zone_name }}'
+        td.table-col-fixed='{{ document.ranch_name }}'
+        td.table-col-fixed='{{ document.producer_name }}'
+        td.table-col-fixed='{{ document.area_name }}'
+        td
+          +link()('(click)'='parent.onDocumentLinkClicked(document)')
+            ='{{ langManager.messages.list.view }}'
+        td
+          +link()(
+            class='red-text'
+            '(click)'='parent.onDocumentDeletionRequested("lab", document.id, i)'
+          )
+            ='{{ langManager.messages.global.erase }}'

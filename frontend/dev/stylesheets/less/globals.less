@@ -25,14 +25,13 @@ body {
   height: ~"calc(100vh - 225px)";
 }
 
-// Esta clase sobreescribe el estilo de una tabla responsiva para que los datos 
-// se muestren siempre en forma horizontal, incluso cuando la pantalla es grande
+
 table.responsive-table.permanently-horizontal {
   .responsive-table-col {
     margin: 0;
     vertical-align: top;
   }
-  @media screen and (min-width: @desktopScreenWidth) {
+  @media screen and (min-width: (@desktopScreenWidth + 1)) {
     width: 100%;
     border-collapse: collapse;
     border-spacing: 0;
@@ -40,7 +39,7 @@ table.responsive-table.permanently-horizontal {
     position: relative;
   }
   thead {
-    @media screen and (min-width: @desktopScreenWidth) {
+    @media screen and (min-width: (@desktopScreenWidth + 1)) {
       border: 0;
       border-right: 1px solid #d0d0d0;
       display: block;
@@ -48,14 +47,14 @@ table.responsive-table.permanently-horizontal {
     }
   }
   th {
-    @media screen and (min-width: @desktopScreenWidth) {
+    @media screen and (min-width: (@desktopScreenWidth + 1)) {
       display: block;
       text-align: right;
       .responsive-table-col
     }
   }
   tbody {
-    @media screen and (min-width: @desktopScreenWidth) {
+    @media screen and (min-width: (@desktopScreenWidth + 1)) {
       display: block;
       width: auto;
       position: relative;
@@ -64,14 +63,14 @@ table.responsive-table.permanently-horizontal {
     }
   }
   tr {
-    @media screen and (min-width: @desktopScreenWidth) {
+    @media screen and (min-width: (@desktopScreenWidth + 1)) {
       display: inline-block;
       vertical-align: top;
       padding: 0 10px;
     }
   }
   td {
-    @media screen and (min-width: @desktopScreenWidth) {
+    @media screen and (min-width: (@desktopScreenWidth + 1)) {
       display: block;
       min-height: 1.25em;
       text-align: left;
@@ -79,6 +78,70 @@ table.responsive-table.permanently-horizontal {
     }
   }
 }
+
+// Las siguientes reglas se aplicaran cuando el usuario este en una pantalla de 
+// 993px de ancho en adelante
+@media screen and (min-width: (@desktopScreenWidth + 1)) {
+  // Estas reglas sobreescriben el estilo de la tabla responsiva para que los 
+  // datos se muestren siempre en forma horizontal, incluso cuando la pantalla 
+  // es grande
+  table.responsive-table.permanently-horizontal {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    display: block;
+    position: relative;
+    .responsive-table-col {
+      margin: 0;
+      vertical-align: top;
+    }
+    thead {
+      border: 0;
+      border-right: 1px solid #d0d0d0;
+      display: block;
+      float: left;
+    }
+    th {
+      display: block;
+      text-align: right;
+      .responsive-table-col
+    }
+    tbody {
+      display: block;
+      width: auto;
+      position: relative;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    tr {
+      display: inline-block;
+      vertical-align: top;
+      padding: 0 10px;
+    }
+    td {
+      display: block;
+      min-height: 1.25em;
+      text-align: left;
+      .responsive-table-col
+    }
+  }
+
+  // Estas reglas permiten tener una tabla responsiva que cuando tiene muchas 
+  // columnas en una pantalla grande, permite arrastrarse de forma horizontal y 
+  // vertical; se decidio que se debe permitir arrastrar de forma vertical 
+  // tambien debido a que en caso de que sean muchos renglones, el usuario no 
+  // tiene que navegar hasta el fondo de la pantalla para poder arrastrar las 
+  // columnas de la tabla
+  .scrollable-table-container {
+    overflow: scroll;
+    height: ~"calc(100vh - 300px)";
+    table.responsive-table.scrollable-table {
+      th.table-col-fixed, td.table-col-fixed {
+        min-width: 140px;
+      }
+    }
+  }
+} // @media screen and (min-width: (@desktopScreenWidth + 1))
 
 // Hace que los textos en las etiquetas de los campos de captura de los 
 // formularios sean gruesos y negros, esto fue una peticion del cliente pues 
