@@ -210,7 +210,7 @@ export class LabDocumentUploadModalComponent
     data.append('capture_date', this.global.getFormattedDate())
     data.append(
       'file_date', 
-      $('input[type="hidden"][name="document-date_submit"]').val()
+      this.defaultDocumentUploadForm.controls.documentDate.value
     )
     data.append(
       'analysis_type_name',

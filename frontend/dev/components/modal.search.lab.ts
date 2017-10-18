@@ -135,11 +135,11 @@ export class LabDocumentSearchModalComponent
     )
     data.append(
       'start_date', 
-      $('input[type="hidden"][name="start-date_submit"]').val()
+      this.defaultDocumentSearchForm.controls.startDate.value
     )
     data.append(
       'end_date', 
-      $('input[type="hidden"][name="end-date_submit"]').val()
+      this.defaultDocumentSearchForm.controls.endDate.value
     )
 
     let selectedType =

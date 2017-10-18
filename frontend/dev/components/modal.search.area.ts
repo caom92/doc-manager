@@ -138,26 +138,6 @@ export class AreaDocumentSearchModalComponent
     // configuramos el formulario de captura
     this.initForm()
 
-    // inicializamos el selector de fecha
-    $('.datepicker').pickadate(
-      this.langManager.messages.global.datePickerConfig
-    )
-
-    // cada vez que el selector de fecha cambie, recuperamos la fecha elegida 
-    // formateada 
-    $('#start-date').change(
-      this.defaultDocumentSearchForm, 
-      function(event: any): void {
-        event.data.controls.startDate.setValue(event.target.value)
-      }
-    )
-    $('#end-date').change(
-      this.defaultDocumentSearchForm, 
-      function(event: any): void {
-        event.data.controls.endDate.setValue(event.target.value)
-      }
-    )
-
     // retrieve the server data
     this.retrieveInitialData()
   } // ngOnInit(): void
@@ -300,11 +280,11 @@ export class AreaDocumentSearchModalComponent
     data.append('document_type_id', this.selectedDocumentTypeID.toString())
     data.append(
       'start_date', 
-      $('input[type="hidden"][name="start-date_submit"]').val()
+      this.defaultDocumentSearchForm.controls.startDate.value
     )
     data.append(
       'end_date', 
-      $('input[type="hidden"][name="end-date_submit"]').val()
+      this.defaultDocumentSearchForm.controls.endDate.value
     )
 
     let selectedZone = 

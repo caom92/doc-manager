@@ -15,26 +15,28 @@ mz-modal(
         novalidate
       )
         div.row
-          div.col.s12.m6
-            +dateInput(
-              'start-date', 
-              '{{ langManager.messages.search.startDateLabel }}'
-            )(
-              formControlName='startDate'
-              mz-validation
-              required
-              '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
-            )
-          div.col.s12.m6
-            +dateInput(
-              'end-date', 
-              '{{ langManager.messages.search.endDateLabel }}'
-            )(
-              formControlName='endDate'
-              mz-validation
-              required
-              '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
-            )
+          +dateInput(
+            'start-date', 
+            'langManager.messages.search.startDateLabel',
+            'langManager.messages.global.datePickerConfig',
+            'col s12 m6'
+          )(
+            formControlName='startDate'
+            mz-validation
+            required
+            '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
+          )
+          +dateInput(
+            'end-date', 
+            'langManager.messages.search.endDateLabel',
+            'langManager.messages.global.datePickerConfig',
+            'col s12 m6'
+          )(
+            formControlName='endDate'
+            mz-validation
+            required
+            '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
+          )
 
         div.row
           div.col.s12.m6

@@ -140,20 +140,6 @@ export class AreaDocumentUploadModalComponent
     // configuramos las reglas de validacion del formulario de captura
     this.initForm()
 
-    // inicializamos el selector de fecha
-    $('.datepicker').pickadate(
-      this.langManager.messages.global.datePickerConfig
-    )
-
-    // cada vez que el selector de fecha cambie, recuperamos la fecha elegida 
-    // formateada 
-    $('#document-date').change(
-      this.defaultDocumentUploadForm, 
-      function(event: any): void {
-        event.data.controls.documentDate.setValue(event.target.value)
-      }
-    )
-
     // recuperamos los datos iniciales del servidor
     this.retrieveInitialData()
   } // ngOnInit(): void
@@ -335,7 +321,7 @@ export class AreaDocumentUploadModalComponent
     data.append('capture_date', this.global.getFormattedDate())
     data.append(
       'file_date', 
-      $('input[type="hidden"][name="document-date_submit"]').val()
+      this.defaultDocumentUploadForm.controls.documentDate.value
     )
     data.append('zone', this.defaultDocumentUploadForm.controls.zone.value)
     data.append('ranch', this.defaultDocumentUploadForm.controls.ranch.value)

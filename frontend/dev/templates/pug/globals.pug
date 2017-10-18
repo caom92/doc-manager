@@ -288,14 +288,20 @@ mixin responsiveTable(headers)
 //-       en el componente
 //- [in]  label (string): el nombre a desplegar en pantalla para distinguir el 
 //-       campo de fecha de los demas
-mixin dateInput(name, label)
-  label(for=name)
-    =label
-  input.datepicker(
-    id=name
-    name=name
-    type='text'
-  )&attributes(attributes)
+//- [in]  options (string): el nombre de la variable que contiene las opciones 
+//-       de creacion de Pickadate
+//- [in]  containerClass (string): la clase de estilo que sera aplicado al 
+//-       contenedor del campo de fecha
+mixin dateInput(name, label, options, containerClass='')
+  mz-datepicker-container(class=containerClass)
+    input(
+      id=name
+      name=name
+      type='text',
+      '[label]'=label
+      '[options]'=options
+      mz-datepicker
+    )&attributes(attributes)
 
 //- Agrega un iframe que desplegara el documento cargado con ViewerJS
 //- [in]  path (string): el nombre del atributo del componente de Angular 

@@ -15,16 +15,17 @@ mz-modal(
         novalidate
       )
         div.row
-          div.col.s12
-            +dateInput(
-              'document-date', 
-              '{{ langManager.messages.upload.docDateLabel }}'
-            )(
-              formControlName='documentDate'
-              mz-validation
-              required
-              '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
-            )
+          +dateInput(
+            'document-date', 
+            'langManager.messages.upload.docDateLabel',
+            'langManager.messages.global.datePickerConfig',
+            'col s12'
+          )(
+            formControlName='documentDate'
+            mz-validation
+            required
+            '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
+          )
 
         div.row
           div.col.s12.m6

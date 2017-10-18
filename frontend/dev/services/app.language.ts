@@ -40,6 +40,7 @@ export class LanguageService
           today: 'Hoy',
           clear: 'Borrar',
           close: 'Cerrar',
+          format: 'dddd, dd mmmm, yyyy',
           formatSubmit: "yyyy-mm-dd"
         }
       },
@@ -65,7 +66,7 @@ export class LanguageService
         ranchLabel: 'Rancho',
         areaLabel: 'Área o Producto',
         notesLabel: 'Notas o Comentarios',
-        producerLabel: 'Productor',
+        producerLabel: 'Unidad de Producción',
         docDateLabel: 'Fecha del Documento',
         fileLabel: 'Archivo del Documento',
         fileButtonLabel: 'Subir',
@@ -124,7 +125,7 @@ export class LanguageService
             'Fecha',
             'Zona',
             'Rancho',
-            'Productor',
+            'UP',
             'Área/Producto',
             'Ver',
             'Borrar'
@@ -137,7 +138,7 @@ export class LanguageService
             'Laboratorio',
             'Zona',
             'Rancho',
-            'Productor',
+            'UP',
             'Área/Producto',
             'Ver',
             'Borrar'
@@ -191,6 +192,7 @@ export class LanguageService
         datePickerConfig: {
           closeOnSelect: true,
           closeOnClear: false,
+          format: 'dddd, dd mmmm, yyyy',
           formatSubmit: "yyyy-mm-dd"
         }
       },
@@ -216,7 +218,7 @@ export class LanguageService
         ranchLabel: 'Ranch',
         areaLabel: 'Area or Product',
         notesLabel: 'Notes or Comments',
-        producerLabel: 'Producer',
+        producerLabel: 'Production Unit',
         docDateLabel: 'Document Date',
         fileLabel: 'Document File',
         fileButtonLabel: 'Upload',
@@ -275,7 +277,7 @@ export class LanguageService
             'Date',
             'Zone',
             'Ranch',
-            'Producer',
+            'PU',
             'Area/Product',
             'View',
             'Delete'
@@ -288,7 +290,7 @@ export class LanguageService
             'Lab',
             'Zone',
             'Ranch',
-            'Producer',
+            'PU',
             'Area/Product',
             'View',
             'Delete'
