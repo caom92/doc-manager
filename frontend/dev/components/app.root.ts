@@ -15,13 +15,9 @@ import { SearchComponent } from './app.search'
 // Importamos los componentes de los modales
 import { ProgressModalComponent } from './modal.please.wait'
 import { DeleteDocumentConfirmationModalComponent } from './modal.confirmation.delete'
-import { AreaDocumentUploadModalComponent } from './modal.upload.area'
-import { AreaDocumentSearchModalComponent } from './modal.search.area'
-import { AreaDocumentDisplayModalComponent } from './modal.display.area'
+import { DefaultDocumentDisplayModalComponent } from './modal.display.default'
 import { LabDocumentUploadModalComponent } from './modal.upload.lab'
 import { LabDocumentSearchModalComponent } from './modal.search.lab'
-import { LabDocumentDisplayModalComponent } from './modal.display.lab'
-import { AreaSearchResultsListComponent } from './list.area'
 import { LabSearchResultsListComponent } from './list.lab'
 
 // Importamos los servicios que van a ser necesitados por cada pagina del 
@@ -80,27 +76,19 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     ProgressModalComponent,
     UploadComponent,
     SearchComponent,
-    AreaDocumentUploadModalComponent,
-    AreaDocumentSearchModalComponent,
-    AreaDocumentDisplayModalComponent,
+    DefaultDocumentDisplayModalComponent,
     LabDocumentUploadModalComponent,
     LabDocumentSearchModalComponent,
-    LabDocumentDisplayModalComponent,
     DynamicComponentContainerDirective,
-    AreaSearchResultsListComponent,
     LabSearchResultsListComponent,
     DeleteDocumentConfirmationModalComponent
   ],
   // declaramos cualquier componente que sera inyectado dinamicamente
   entryComponents: [
     ProgressModalComponent,
-    AreaDocumentUploadModalComponent,
-    AreaDocumentSearchModalComponent,
-    AreaDocumentDisplayModalComponent,
+    DefaultDocumentDisplayModalComponent,
     LabDocumentUploadModalComponent,
     LabDocumentSearchModalComponent,
-    LabDocumentDisplayModalComponent,
-    AreaSearchResultsListComponent,
     LabSearchResultsListComponent,
     DeleteDocumentConfirmationModalComponent
   ],

@@ -6,9 +6,9 @@ import { environment } from '../environments/environment'
 
 // El componente del modal que despliega el archivo buscado por el usuario
 @Component({
-  templateUrl: '../templates/modal.display.area.html'
+  templateUrl: '../templates/modal.display.default.html'
 })
-export class AreaDocumentDisplayModalComponent 
+export class DefaultDocumentDisplayModalComponent 
   extends MzBaseModal 
   implements OnInit
 {
@@ -19,6 +19,11 @@ export class AreaDocumentDisplayModalComponent
   // El nombre del tipo de documento a desplegar
   @Input()
   documentType: string = null
+
+  // El nombre de la carpeta donde se encuentra almacenado el documento a 
+  // desplegar
+  @Input()
+  baseFolder: string = null 
 
   // La fecha del archivo 
   @Input()
@@ -48,10 +53,10 @@ export class AreaDocumentDisplayModalComponent
   ngOnInit(): void {
     this.sanitizedPath = (environment.production) ?
       this.sanitizer.bypassSecurityTrustResourceUrl(
-        `http://documents.jfdc.tech/backend/ViewerJS/#../documents/area/${ this.fileName }`
+        `http://documents.jfdc.tech/backend/ViewerJS/#../documents/${ this.baseFolder }/${ this.fileName }`
       )
       : this.sanitizer.bypassSecurityTrustResourceUrl(
-        `http://localhost/doc-manager/backend/ViewerJS/#../documents/area/${ this.fileName }`
+        `http://localhost/doc-manager/backend/ViewerJS/#../documents/${ this.baseFolder }/${ this.fileName }`
       )
   } // ngOnInit(): void
 }

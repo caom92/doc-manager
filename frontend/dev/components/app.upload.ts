@@ -5,7 +5,6 @@ import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
 import { MzModalService } from 'ng2-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
-import { AreaDocumentUploadModalComponent } from './modal.upload.area'
 import { LabDocumentUploadModalComponent } from './modal.upload.lab'
 
 // Componente que define el comportamiento de la pagina donde el usuario puede 
@@ -70,12 +69,6 @@ export class UploadComponent implements OnInit
     switch (this.selectedDocument.name) {
       case 'LABORATORIOS':
         this.modalManager.open(LabDocumentUploadModalComponent, {
-          selectedDocumentTypeID: this.selectedDocument.id
-        })
-      break
-
-      default:
-        this.modalManager.open(AreaDocumentUploadModalComponent, {
           selectedDocumentTypeID: this.selectedDocument.id
         })
       break

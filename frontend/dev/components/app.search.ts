@@ -5,12 +5,9 @@ import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
 import { MzModalService } from 'ng2-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
-import { AreaDocumentSearchModalComponent } from './modal.search.area'
 import { LabDocumentSearchModalComponent } from './modal.search.lab'
-import { AreaDocumentDisplayModalComponent } from './modal.display.area'
-import { LabDocumentDisplayModalComponent } from './modal.display.lab'
+import { DefaultDocumentDisplayModalComponent } from './modal.display.default'
 import { DynamicComponentResolver } from './dynamic.resolver'
-import { AreaSearchResultsListComponent } from './list.area'
 import { LabSearchResultsListComponent } from './list.lab'
 import { DeleteDocumentConfirmationModalComponent } from './modal.confirmation.delete'
 
@@ -103,18 +100,6 @@ export class SearchComponent
           selectedDocumentTypeID: this.selectedDocument.id
         })
       break
-
-      default:
-        this.listComponent = 
-          this.loadComponent(AreaSearchResultsListComponent, {
-            parent: this
-          }).instance
-        
-        this.modalManager.open(AreaDocumentSearchModalComponent, {
-          parent: this.listComponent,
-          selectedDocumentTypeID: this.selectedDocument.id
-        })
-      break
     } // switch (this.selectedDocument.name)
   } // onDocumentTypeSelected(): void
 
@@ -123,17 +108,9 @@ export class SearchComponent
   onDocumentLinkClicked(document: any): void {
     switch (this.selectedDocument.name) {
       case 'LABORATORIOS':
-        this.modalManager.open(LabDocumentDisplayModalComponent, {
+        this.modalManager.open(DefaultDocumentDisplayModalComponent, {
           documentType: this.selectedDocument.name,
-          fileName: document.file_path,
-          fileDate: document.file_date,
-          notes: document.notes
-        })
-      break
-
-      default:
-        this.modalManager.open(AreaDocumentDisplayModalComponent, {
-          documentType: this.selectedDocument.name,
+          baseFolder: 'lab',
           fileName: document.file_path,
           fileDate: document.file_date,
           notes: document.notes

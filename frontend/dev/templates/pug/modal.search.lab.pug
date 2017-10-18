@@ -11,7 +11,7 @@ mz-modal(
   mz-modal-content
     div.container
       form(
-        '[formGroup]'='defaultDocumentSearchForm'
+        '[formGroup]'='searchForm'
         novalidate
       )
         div.row
@@ -39,23 +39,7 @@ mz-modal(
           )
 
         div.row
-          div.col.s12.m6
-            +select(
-              'type', 'langManager.messages.upload.lab.typeNameLabel', 'langManager.messages.global.selectPlaceholder',
-              'analysisTypes', '.name', ''
-            )(
-              formControlName='type'
-            )
-          div.col.s12.m6
-            +select(
-              'lab', 'langManager.messages.upload.lab.labNameLabel', 'langManager.messages.global.selectPlaceholder',
-              'labs', '.name', ''
-            )(
-              formControlName='lab'
-            )
-        
-        div.row
-          div.col.s12.m3
+          div.col.s12.m4
             +select(
               'zone', 'langManager.messages.upload.zoneLabel', 'langManager.messages.global.selectPlaceholder',
               'zones', '.name', '',
@@ -63,29 +47,42 @@ mz-modal(
             )(
               formControlName='zone'
             )
-
-          div.col.s12.m3
-            +select(
-              'ranch', 'langManager.messages.upload.ranchLabel', 'langManager.messages.global.selectPlaceholder',
-              'ranches', '.name', '',
-              'onRanchSelected()'
-            )(
-              formControlName='ranch'
-            )
-
-          div.col.s12.m3
+          div.col.s12.m4
             +select(
               'producer', 'langManager.messages.upload.producerLabel', 'langManager.messages.global.selectPlaceholder',
-              'producers', '.name', '',
-              'onProducerSelected()'
+              'producers', '.name'
             )(
               formControlName='producer'
             )
-          
-          div.col.s12.m3
+          div.col.s12.m4
+            +select(
+              'lab', 'langManager.messages.upload.lab.labNameLabel', 'langManager.messages.global.selectPlaceholder',
+              'labs', '.name'
+            )(
+              formControlName='lab'
+            )
+
+        div.row
+          div.col.s12.m4
+            +select(
+              'type', 'langManager.messages.upload.lab.typeNameLabel', 'langManager.messages.global.selectPlaceholder',
+              'analysisTypes', '.name', '',
+              'onAnalysisTypeSelected()'
+            )(
+              formControlName='type'
+            )
+          div.col.s12.m4
+            +select(
+              'subtype', 'langManager.messages.upload.lab.subtypeLabel', 'langManager.messages.global.selectPlaceholder',
+              'ranches', '.name', '',
+              'onSubTypeSelected()'
+            )(
+              formControlName='subtype'
+            )
+          div.col.s12.m4
             +select(
               'area', 'langManager.messages.upload.areaLabel', 'langManager.messages.global.selectPlaceholder',
-              'areas', '.name', ''
+              'areas', '.name'
             )(
               formControlName='area'
             )
@@ -96,7 +93,7 @@ mz-modal(
       '{{ langManager.messages.search.buttonLabel }}',
       'mdi mdi-magnify'
     )(
-      '[disabled]'='!defaultDocumentSearchForm.valid'
+      '[disabled]'='!searchForm.valid'
       '(click)'='onLabDocumentSearch()'
       mz-modal-close
     )

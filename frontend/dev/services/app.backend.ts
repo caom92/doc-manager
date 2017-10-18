@@ -47,14 +47,14 @@ export class BackendService
     // haremos uso de la interfaz HTTP de Angular
   }
 
-  // Envia una solicitud al servidor por el metodo PUT
+  // Envia una solicitud al servidor por el metodo POST
   // [in]   service: el nombre del servicio que sera solicitado al servidor
   // [in]   data: los datos que van a ser enviados junto con la peticion
   // [in]   successCallback: la funcion a ejecutarse en caso de que la 
   //        comunicacion con el servidor se haya realizado con exito
   // [in]   [errorCallback]: la funcion a ejecutarse en caso de que la 
   //        comunicacion con el servidor haya fallado
-  create(
+  write(
     service: string, 
     data: FormData, 
     successCallback: OnSuccessCallback, 
@@ -109,39 +109,6 @@ export class BackendService
       .get(
         BackendService.url + service + params,
         new RequestOptions({ 
-          headers: BackendService.headers,
-          withCredentials: true
-        })
-      )
-      .map((response: Response) => {
-        // convertimos el resultado en JSON 
-        let result = JSON.parse(response['_body'].toString())
-
-        // invocamos la funcion de exito especificada por el usuario
-        successCallback(result)
-      })
-      .catch(errorCallback)
-      .subscribe()
-  }
-
-  // Envia datos al servidor por el metodo POST
-  // [in]   service: el nombre del servicio que sera solicitado al servidor
-  // [in]   data: los datos que van a ser enviados junto con la peticion
-  // [in]   successCallback: la funcion a ejecutarse en caso de que la 
-  //        comunicacion con el servidor se haya realizado con exito
-  // [in]   [errorCallback]: la funcion a ejecutarse en caso de que la 
-  //        comunicacion con el servidor haya fallado
-  update(
-    service: string, 
-    data: FormData, 
-    successCallback: OnSuccessCallback, 
-    errorCallback = BackendService.defaultErrorCallback
-  ): void {
-    this.http
-      .put(
-        BackendService.url + service,
-        data,
-        new RequestOptions({
           headers: BackendService.headers,
           withCredentials: true
         })
