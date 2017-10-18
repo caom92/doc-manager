@@ -40,8 +40,7 @@ $controller = new ServiceProvider(
     ],
     'POST' => 
       $area['services']['POST'] +
-      $lab['services']['POST'] +
-      $types['services']['POST'],
+      $lab['services']['POST'],
     'DELETE' => 
       $area['services']['DELETE'] +
       $lab['services']['DELETE']

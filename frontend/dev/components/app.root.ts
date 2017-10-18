@@ -11,7 +11,6 @@ import { HttpModule } from '@angular/http'
 import { HomeComponent } from './app.home'
 import { UploadComponent } from './app.upload'
 import { SearchComponent } from './app.search'
-import { DocumentsComponent } from './app.documents'
 
 // Importamos los componentes de los modales
 import { ProgressModalComponent } from './modal.please.wait'
@@ -60,11 +59,6 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
           name: 'search',
           url: '/search',
           component: SearchComponent
-        },
-        {
-          name: 'document-types',
-          url: '/document-types',
-          component: DocumentsComponent
         }
       ],
       useHash: true,
@@ -86,7 +80,6 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     ProgressModalComponent,
     UploadComponent,
     SearchComponent,
-    DocumentsComponent,
     AreaDocumentUploadModalComponent,
     AreaDocumentSearchModalComponent,
     AreaDocumentDisplayModalComponent,
