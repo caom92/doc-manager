@@ -34,6 +34,16 @@ class Documents extends DataBaseTable
     $query->execute($row);
     return $this->db->lastInsertId();
   }
+
+  // Borra de la BD el documento con el ID especificado y retorna el numero de 
+  // renglones afectados
+  function delete($id) {
+    $query = $this->getStatement(
+      "DELETE FROM `$this->table` WHERE id = :ID"
+    );
+    $query->execute([ ':ID' => $id ]);
+    return $query->rowCount();
+  }
 }
 
 ?>

@@ -153,10 +153,7 @@ export class LabDocumentUploadModalComponent
   } // // ngOnInit(): void
 
   // Esta funcion se invoca cuando el usuario ingreso el nombre de una zona
-  onZoneSelected(event: any): void {
-    // guardamos la zona ingresada por el usuario
-    this.uploadForm.controls.zone.setValue(event.target.value)
-
+  onZoneSelected(): void {
     // borramos los valores de productor en caso que ya hayan tenido 
     // algun valor previamente y el usuario este cambiando de zona
     this.uploadForm.controls.producer.setValue(null)
@@ -165,14 +162,16 @@ export class LabDocumentUploadModalComponent
     // la lista de productores
     if (this.uploadForm.controls.zone.valid) {
       // preparamos los datos que seran enviados al servidor
-      let data = new FormData()
-      data.append('zone_name', event.target.value)
+      let selectedZone = 
+        <any>this.uploadForm.controls.zone.value
 
       // enviamos la peticion al servidor para recuperar los productores de 
       // este rancho
-      this.server.write(
+      this.server.read(
         'list-producers-of-zone',
-        data,
+        {
+          zone_id: selectedZone.id
+        },
         (response: BackendResponse) => {
           // revisamos si el rancho respondio con exito
           if (response.meta.return_code == 0) {
@@ -238,7 +237,7 @@ export class LabDocumentUploadModalComponent
     if (this.uploadForm.controls.typeName.valid) {
       // preparamos los datos que seran enviados al usuario
       let data = new FormData()
-      data.append('type_name', event.target.value)
+      data.append('subtype_name', event.target.value)
 
       // recuperamos los ranchos del servidor
       this.server.write(
@@ -348,7 +347,8 @@ export class LabDocumentUploadModalComponent
       'file_date', 
       this.uploadForm.controls.documentDate.value
     )
-    data.append('zone', this.uploadForm.controls.zone.value)
+    let selectedZone = <any>this.uploadForm.controls.zone.value
+    data.append('zone', selectedZone.id)
     data.append(
       'producer', 
       this.uploadForm.controls.producer.value
@@ -361,7 +361,7 @@ export class LabDocumentUploadModalComponent
       'analysis_type_name',
       this.uploadForm.controls.typeName.value
     )
-    data.append('subtype_name', this.uploadForm.controls.subtype.value)
+    data.append('subtype', this.uploadForm.controls.subtype.value)
     data.append(
       'area',
       this.uploadForm.controls.area.value

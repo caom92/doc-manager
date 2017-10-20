@@ -34,10 +34,7 @@ export class DefaultDocumentUploadModalComponent
   selectedDocumentFile: any = null
 
   // Las sugerencias de autocompletado del campo de zonas
-  zoneSuggestions: AutoCompleteObject = {
-    data: {},
-    limit: 4
-  }
+  zones: Array<any> = []
 
   // La interfaz que representa el formulario de captura para el documento a 
   // capturar
@@ -59,21 +56,15 @@ export class DefaultDocumentUploadModalComponent
   // Esta funcion se ejecuta al iniciar la vista
   ngOnInit(): void {
     // obtenemos la lista de zonas del servidor
-    this.server.read(
+    this.server.write(
       'list-zones',
-      {},
+      new FormData(),
       (response: BackendResponse) => {
         // revisamos si el servidor respondio con exito
         if (response.meta.return_code == 0) {
           // si el servidor respondio con exito, cargamos la respuesta al 
           // objeto de sugerencias de zonas
-          this.zoneSuggestions = {
-            data: {},
-            limit: 4
-          }
-          for (let zone of response.data) {
-            this.zoneSuggestions.data[zone.name] = null
-          }
+          this.zones = response.data
         } else {
           // si el servidor respondio con error, notificamos al usuario
           this.toastManager.showText(
@@ -83,7 +74,8 @@ export class DefaultDocumentUploadModalComponent
             )
           )
         } // if (response.meta.return_code == 0)
-      } // (response: BackendResponse)
+      }, // (response: BackendResponse)
+      BackendService.url.fsm
     ) // this.server.read
   } // ngOnInit(): void
 } // class DefaultDocumentUploadModalComponent

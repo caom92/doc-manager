@@ -16,6 +16,10 @@ export type BackendResponse = {
 // Tipo auxiliar para definir el callback que atendera la respuesta del servidor
 type OnSuccessCallback = (response: BackendResponse) => void
 
+// Tipo auxiliar para definir el callback que se invocara cuando la 
+// comunicacion con el servidor haya fallado
+type OnErrorCallback = (error: any, caught: Observable<void>) => Array<any>
+
 // Servicio que proporciona la interfaz con la cual el backend puede 
 // comunicarse con el backend de la aplicacion
 @Injectable()
@@ -23,9 +27,15 @@ export class BackendService
 {
   // El URL a donde se enviaran las peticiones de servicio al backend de la 
   // aplicacion
-  private static url = (environment.production) ?
-    'http://documents.jfdc.tech/backend/services/'
-    : 'http://localhost/doc-manager/backend/services/'
+  static url = (environment.production) ?
+    {
+      default: 'http://documents.jfdc.tech/backend/services/',
+      fsm: 'http://manual.jfdc.tech/backend/services/'
+    }
+    : {
+      default: 'http://localhost/doc-manager/backend/services/',
+      fsm: 'http://localhost/espresso/services/'
+    }
 
   // Los encabezados del paquete HTTP que sera enviado
   private static headers = new Headers({ 
@@ -34,7 +44,7 @@ export class BackendService
 
   // La funcion que sera ejecutada en caso de que la comunicacion con el 
   // servidor falle
-  private static defaultErrorCallback = 
+  private static defaultErrorCallback: OnErrorCallback = 
     (error: any, caught: Observable<void>) => {
       // simplimente arrojamos una excepcion para que sea capturada en una 
       // parte mas alta del programa
@@ -52,17 +62,19 @@ export class BackendService
   // [in]   data: los datos que van a ser enviados junto con la peticion
   // [in]   successCallback: la funcion a ejecutarse en caso de que la 
   //        comunicacion con el servidor se haya realizado con exito
+  // [in]   [url]: el URL del servidor al cual vamos a solicitar el servicio
   // [in]   [errorCallback]: la funcion a ejecutarse en caso de que la 
   //        comunicacion con el servidor haya fallado
   write(
     service: string, 
     data: FormData, 
-    successCallback: OnSuccessCallback, 
-    errorCallback = BackendService.defaultErrorCallback
+    successCallback: OnSuccessCallback,
+    url: string = BackendService.url.default,
+    errorCallback: OnErrorCallback = BackendService.defaultErrorCallback
   ): void {
     this.http
       .post(
-        BackendService.url + service,
+        url + service,
         data,
         new RequestOptions({
           headers: BackendService.headers,
@@ -85,13 +97,15 @@ export class BackendService
   // [in]   data: los datos que van a ser enviados junto con la peticion
   // [in]   successCallback: la funcion a ejecutarse en caso de que la 
   //        comunicacion con el servidor se haya realizado con exito
+  // [in]   [url]: el URL del servidor al cual vamos a solicitar el servicio
   // [in]   [errorCallback]: la funcion a ejecutarse en caso de que la 
   //        comunicacion con el servidor haya fallado
   read(
     service: string, 
     data: any, 
     successCallback: OnSuccessCallback, 
-    errorCallback = BackendService.defaultErrorCallback
+    url: string = BackendService.url.default,
+    errorCallback: OnErrorCallback = BackendService.defaultErrorCallback
   ): void {
     // debido a que el metodo GET debe ser enviado con un cuerpo vacio, habra 
     // que pasar los parametros del servicio en el URL, sin embargo, debido a 
@@ -107,7 +121,7 @@ export class BackendService
 
     this.http
       .get(
-        BackendService.url + service + params,
+        BackendService.url.default + service + params,
         new RequestOptions({ 
           headers: BackendService.headers,
           withCredentials: true
@@ -129,13 +143,15 @@ export class BackendService
   // [in]   data: los datos que van a ser enviados junto con la peticion
   // [in]   successCallback: la funcion a ejecutarse en caso de que la 
   //        comunicacion con el servidor se haya realizado con exito
+  // [in]   [url]: el URL del servidor al cual vamos a solicitar el servicio
   // [in]   [errorCallback]: la funcion a ejecutarse en caso de que la 
   //        comunicacion con el servidor haya fallado
   delete(
     service: string, 
     data: any, 
     successCallback: OnSuccessCallback, 
-    errorCallback = BackendService.defaultErrorCallback
+    url: string = BackendService.url.default,
+    errorCallback: OnErrorCallback = BackendService.defaultErrorCallback
   ): void {
     // se sigue el mismo proceso de desglozamiento de parametros del servicio 
     // seguido en la funcion read() de esta clase
@@ -146,7 +162,7 @@ export class BackendService
 
     this.http
       .delete(
-        BackendService.url + service + params,
+        BackendService.url.default + service + params,
         new RequestOptions({
           headers: BackendService.headers,
           withCredentials: true

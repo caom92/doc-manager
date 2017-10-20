@@ -15,7 +15,7 @@ function saveUploadedFileTo(
   $sourceFileName, 
   $sourceFilePath,
   $destinationFolder, 
-  $uid = NULL
+  $uid = ''
 ) {
   // primero extraemos el formato del archivo original
   $format = substr($sourceFileName, strpos($sourceFileName, '.'));
@@ -73,8 +73,9 @@ function getLastCategoryID($daoFactory, $categoryStack, $parentID) {
   $table = $daoFactory->get($categoryStack['table']);
   $currentName = strtoupper($categoryStack['name']);
   $currentID = $table->getIDByName($currentName);
+
+  // si no existe, tenemos que agregarla
   if (!isset($currentID)) {
-    // si no existe, tenemos que agregarla
     if (isset($parentID)) {
       $currentID = $table->insert([
         ':name' => $currentName,
@@ -91,6 +92,34 @@ function getLastCategoryID($daoFactory, $categoryStack, $parentID) {
   return isset($categoryStack['child']) ? 
     getLastCategoryID($daoFactory, $categoryStack['child'], $currentID)
     : $currentID;
+}
+
+// Funcion auxiliar que ira agregando las categorias para este tipo 
+// de documento, agregando valores nuevos en cada uno de ellas si el valor 
+// asignado no esta almacenado ya en la base de datos y retrona el ID del valor 
+// para cada categoria
+// [in]   daoFactory (TableFactory): instancia a la interfaz que permite crear 
+//        interfaces a las tablas individuales de la base de datos
+// [in]   categoryList (dictionary): arreglo asociativo que lista las 
+//        categorias cuyos valores seran buscados en la base de datos. Cada
+//        elemento posee los siguientes atributos:
+//        * name (string): el valor de la categoria actual que sera buscado en 
+//          la base de datos; si este valor no se encuentra en la BD, sera 
+//          agregado
+//        * table (string): el nombre de la tabla que almacena los valores de 
+//          la categoria actual
+// [out]  return (dictionary): el mismo arreglo ingresado en categoryList, pero 
+//        cada elemento tendra un campo adicional llamado 'id', que contiene el 
+//        ID de ese elemento en particular
+function getCategoryID($daoFactory, $categoryList) {
+  foreach ($categoryList as &$category) {
+    $table = $daoFactory->get($category['table']);
+    $id = $table->getIDByName(strtoupper($category['name']));  
+    $category['id'] = (isset($id)) ? 
+      $id : $table->insert([ ':name' => $categoryName ]);
+  }
+  unset($category);
+  return $categoryList;
 }
 
 ?>

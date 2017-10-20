@@ -78,9 +78,9 @@ export class DefaultDocumentSearchModalComponent
   // Esta funcion se ejecuta al iniciar la vista
   ngOnInit(): void {
     // obtenemos la lista de zonas del servidor
-    this.server.read(
+    this.server.write(
       'list-zones',
-      {},
+      new FormData(),
       (response: BackendResponse) => {
         // revisamos si el servidor respondio con exito
         if (response.meta.return_code == 0) {
@@ -96,7 +96,8 @@ export class DefaultDocumentSearchModalComponent
             )
           )
         } // if (response.meta.return_code == 0)
-      } // (response: BackendResponse)
+      }, // (response: BackendResponse)
+      BackendService.url.fsm
     ) // this.server.read
   } // ngOnInit(): void
 }

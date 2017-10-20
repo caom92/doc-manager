@@ -19,30 +19,36 @@ use \DataBase\TableFactory as TableFactory;
 $controller = new ServiceProvider(
   [
     'docManagerTableFactory' => function($config) 
-    use ($area, $lab, $types) {
+    use ($default, $lab, $types) {
       return new TableFactory(
         'DocManager',
         'DataBase\\',
-        $area['tables'] + 
+        $default['tables']['dm'] + 
         $lab['tables'] +
         $types['tables']
+      );
+    },
+    'fsmTableFactory' => function($config) 
+    use ($default) {
+      return new TableFactory(
+        'FoodSafetyManual',
+        'DataBase\\Fsm\\',
+        $default['tables']['fsm']
       );
     }
   ],
   [
     'GET' => 
-      $area['services']['GET'] +
+      $default['services']['GET'] +
       $lab['services']['GET'] +
       $types['services']['GET'],
     'PUT' => [
       // 'nombre del servicio' => function($scope, $request) {
       // }
     ],
-    'POST' => 
-      $area['services']['POST'] +
+    'POST' =>
       $lab['services']['POST'],
-    'DELETE' => 
-      $area['services']['DELETE'] +
+    'DELETE' =>
       $lab['services']['DELETE']
   ]
 );

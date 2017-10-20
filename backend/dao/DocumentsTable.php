@@ -37,16 +37,6 @@ abstract class DocumentsTable extends DataBaseTable
 
   // Retorna el nombre del archivo que posea el ID especificado en esta tabla
   abstract function getPathByID($id);
-
-  // Borra de la BD el documento con el ID especificado y retorna el numero de 
-  // renglones afectados
-  function delete($id) {
-    $query = $this->getStatement(
-      "DELETE FROM `$this->table` WHERE id = :ID"
-    );
-    $query->execute([ ':ID' => $id ]);
-    return $query->rowCount();
-  }
 }
 
 ?>

@@ -27,17 +27,15 @@ mz-modal(
             '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
           )
           div.col.s12.m4
-            +textInput(
-              'zone',
-              'langManager.messages.upload.zoneLabel'
+            +select(
+              'zone', 'langManager.messages.upload.zoneLabel', 'langManager.messages.global.selectPlaceholder',
+              'zones', '.name', '',
+              'onZoneSelected()'
             )(
-              '[autocomplete]'='zoneSuggestions'
-              '(change)'='onZoneSelected($event)'
               formControlName='zone'
-              '[errorMessageResource]'='langManager.messages.upload.errors.zone'
+              '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
               mz-validation
               required
-              length='3'
             )
           div.col.s12.m4
             +textInput(

@@ -20,15 +20,15 @@ class Documents extends DocumentsTable
   function insert($row) {
     $query = $this->getStatement(
       "INSERT INTO `$this->table` (
-        analysis_document_id,
-        type_id,
+        document_id,
+        producer_id,
         lab_id,
         area_id,
         notes
       ) 
       VALUES (
-        :analysisDocumentID,
-        :analysisTypeID,
+        :documentID,
+        :producerID,
         :labID,
         :areaID,
         :notes

@@ -16,7 +16,11 @@ $service = [
       'type' => 'datetime',
       'format' => 'Y-m-d'
     ],
-    'analysis_type_name' => [
+    'zone' => [
+      'type' => 'int',
+      'min' => 1
+    ],
+    'producer' => [
       'type' => 'string',
       'min_length' => 1,
       'max_length' => 255
@@ -26,16 +30,12 @@ $service = [
       'min_length' => 1,
       'max_length' => 255
     ],
-    'zone' => [
-      'type' => 'string',
-      'length' => 3
-    ],
-    'ranch' => [
+    'analysis_type_name' => [
       'type' => 'string',
       'min_length' => 1,
       'max_length' => 255
     ],
-    'producer' => [
+    'subtype' => [
       'type' => 'string',
       'min_length' => 1,
       'max_length' => 255
@@ -56,70 +56,65 @@ $service = [
     ]
   ],
   'callback' => function($scope, $request, $args) {
-    // guardamos el archivo subido de forma permanente
-    $analysisFile = Core\saveUploadedFileTo(
-      $_FILES['analysis_file']['name'],
-      $_FILES['analysis_file']['tmp_name'],
-      realpath(__DIR__.'/../../documents/lab'),
-      "Analysis_{$request['producer']}"
+    // obtenemos el ID del laboratorio, agregandolo a la BD si aun no esta 
+    // registrado
+    $labID = 
+      Core\getCategoryID(
+        $scope->docManagerTableFactory,
+        [
+          'lab' => [
+            'name' => $request['lab_name'],
+            'table' => 'Lab\Laboratories'
+          ]
+        ]
+      )['lab']['id'];
+
+    // recuperamos el ID local de la zona
+    $zones = $scope->docManagerTableFactory->get('Zones');
+    $zoneID = $zones->getIDByForeignID($request['zone']);
+    
+    // si el ID local no existe, tal vez es porque esta zona fue agregada 
+    // recientemente en la BD foranea, hay que asignarle un ID local
+    if (!isset($zoneID)) {
+      // primero revisamos si el ID proveido existe en la BD foranea
+      $isValid = 
+        $scope->fsmTableFactory->get('Zones')->hasByID($request['zone']);
+      if ($isValid) {
+        $zoneID = $zones->insert([ ':foreignID' => $request['zone'] ]);
+      } else {
+        // lanzamos una excepcion
+        throw new \Exception(
+          "The value for 'zone_id' is not registered in the foreign data base",
+          1
+        );
+      }
+    }
+
+    // obtenemos el ID del proveedor, agregandolo a la BD si aun no esta 
+    // registrado
+    $producerID = Core\getLastCategoryID(
+      $scope->docManagerTableFactory,
+      [
+        'name' => $request['producer'],
+        'table' => 'Producers',
+        'child' => NULL
+      ],
+      $zoneID
     );
 
-    // si el archivo no pudo ser subido, truncamos el programa con un error
-    if (!isset($analysisFile)) {
-      throw new \Exception(
-        "Failed to save upload {$_FILES['analysis_file']['name']}",
-        1
-      );
-    }
-
-    // si el archivo se subio con exito, actualizamos la base de datos
-    $analysisID =  $scope->docManagerTableFactory->get('Documents')->insert([
-      ':typeID' => $request['document_type_id'],
-      ':uploadDate' => $request['capture_date'],
-      ':fileDate' => $request['file_date'],
-      ':filePath' => $analysisFile
-    ]);
-
-    // obtenemos el ID del laboratorio
-    $labName = strtoupper($request['lab_name']);
-    $labs = $scope->docManagerTableFactory->get('Lab\Laboratories');
-    $labID = $labs->getIDByName($labName);
-    
-    // si el ID no pudo ser recuperado, significa que el lab no existe en la BD,
-    // tenemos que agregarlo
-    if (!isset($labID)) {
-      $labID = $labs->insert([ ':name' => $labName ]);
-    }
-
-    // obtenemos el ID del tipo de analysis
-    $typeName = strtoupper($request['analysis_type_name']);
-    $analysisTypes = $scope->docManagerTableFactory->get('Lab\AnalysisTypes');
-    $typeID = $analysisTypes->getIDByName($typeName);
-
-    // si el ID no pudo ser recuperado, significa que el tipo de analisis no 
-    // existe en la BD, tenemos que agregarlo
-    if (!isset($typeID)) {
-      $typeID = $analysisTypes->insert([ ':name' => $typeName ]);
-    }
-
-    // obtenemos el ID del area, agregando la zona, rancho, productor y/o area 
-    // si estas no estan ya almacenadas en la BD en el proceso
+    // obtenemos el ID del area, agregandolo a la BD si aun no esta regsistrado
     $areaID = Core\getLastCategoryID(
-      $scope->docManagerTableFactory, 
+      $scope->docManagerTableFactory,
       [
-        'name' => $request['zone'],
-        'table' => 'Zones',
+        'name' => $request['analysis_type_name'],
+        'table' => 'Lab\AnalysisTypes',
         'child' => [
-          'name' => $request['ranch'],
-          'table' => 'Ranches',
+          'name' => $request['subtype'],
+          'table' => 'Lab\AnalysisSubTypes',
           'child' => [
-            'name' => $request['producer'],
-            'table' => 'Producers',
-            'child' => [
-              'name' => $request['area'],
-              'table' => 'Areas',
-              'child' => NULL
-            ]
+            'name' => $request['area'],
+            'table' => 'Lab\Areas',
+            'child' => NULL
           ]
         ]
       ],
@@ -131,14 +126,53 @@ $service = [
     $notesID = NULL;
     $hasNotes = isset($request['notes']) && array_key_exists('notes', $request);
 
-    // guardamos el registro
-    return $scope->docManagerTableFactory->get('Lab\Documents')->insert([
-      ':analysisDocumentID' => $analysisID,
-      ':analysisTypeID' => $typeID,
-      ':labID' => $labID,
-      ':areaID' => $areaID,
-      ':notes' => ($hasNotes) ? $request['notes'] : ''
-    ]);
+    // guardamos el archivo subido de forma permanente
+    $analysisFile = Core\saveUploadedFileTo(
+      $_FILES['analysis_file']['name'],
+      $_FILES['analysis_file']['tmp_name'],
+      realpath(__DIR__.'/../../documents/lab'),
+      "{$producerID}_{$labID}_{$areaID}"
+    );
+
+    // si el archivo no pudo ser subido, truncamos el programa con un error
+    if (!isset($analysisFile)) {
+      throw new \Exception(
+        "Failed to save upload {$_FILES['analysis_file']['name']}",
+        1
+      );
+    }
+
+    // si el archivo se subio con exito, actualizamos la base de datos
+    $documents = $scope->docManagerTableFactory->get('Documents');
+    try {
+      $analysisID = $documents->insert([
+        ':typeID' => $request['document_type_id'],
+        ':uploadDate' => $request['capture_date'],
+        ':fileDate' => $request['file_date'],
+        ':filePath' => $analysisFile
+      ]);
+
+      // guardamos el registro
+      return $scope->docManagerTableFactory->get('Lab\Documents')->insert([
+        ':documentID' => $analysisID,
+        ':producerID' => $producerID,
+        ':labID' => $labID,
+        ':areaID' => $areaID,
+        ':notes' => ($hasNotes) ? $request['notes'] : ''
+      ]);
+    } catch (\Exception $e) {
+      // computamos la direccion donde se encuentra almacenado el archivo PDF
+      $filepath = realpath(__DIR__."/../../documents/lab/$analysisFile");
+
+      // intentamos borrar el archivo
+      unlink($filepath);
+
+      // una vez borrado el archivo, borramos la entrada en la BD
+      $documents->delete($analysisID);
+
+      // pasamos la excepcion a la siguiente capa
+      throw $e;
+    } 
   } // 'callback' => function($scope, $request, $args)
 ];
 
