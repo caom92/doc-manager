@@ -237,7 +237,7 @@ export class LabDocumentUploadModalComponent
     if (this.uploadForm.controls.typeName.valid) {
       // preparamos los datos que seran enviados al usuario
       let data = new FormData()
-      data.append('subtype_name', event.target.value)
+      data.append('type_name', event.target.value)
 
       // recuperamos los ranchos del servidor
       this.server.write(

@@ -9,13 +9,14 @@ $service = [
   ],
   'callback' => function($scope, $request, $args) {
     // recuperamos la instancia a la tabla de documentos
-    $documents = $scope->docManagerTableFactory->get('Lab\Documents');
+    $document = $scope->docManagerTableFactory->get('Lab\Documents')
+      ->getByID($args['document_id']);
 
     // computamos la direccion donde se encuentra almacenado el archivo PDF
     $filepath = realpath(
       __DIR__
       .'/../../documents/lab/'
-      .$documents->getPathByID($args['document_id'])
+      .$document['file_path']
     );
 
     // intentamos borrar el archivo
@@ -25,7 +26,8 @@ $service = [
     }
 
     // una vez borrado el archivo, borramos la entrada en la BD
-    return $documents->delete($args['document_id']);
+    return $scope->docManagerTableFactory->get('Documents')
+      ->delete($document['id']);
   }
 ]
 

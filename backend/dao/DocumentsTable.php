@@ -35,8 +35,26 @@ abstract class DocumentsTable extends DataBaseTable
     ...$categoryIDs
   );
 
-  // Retorna el nombre del archivo que posea el ID especificado en esta tabla
-  abstract function getPathByID($id);
+  // Retorna la informacion del documento que posea el ID especificado en esta 
+  // tabla
+  function getByID($id) {
+    $query = $this->getStatement(
+      "SELECT 
+        d.id AS id,
+        d.file_path AS file_path
+      FROM 
+        `$this->table` AS t
+      INNER JOIN 
+        `documents` AS d
+        ON
+          document_id = d.id
+      WHERE 
+        t.id = :ID"
+    );
+    $query->execute([ ':ID' => $id ]);
+    $rows = $query->fetchAll();
+    return $rows[0];
+  }
 }
 
 ?>

@@ -16,7 +16,12 @@ $service = [
       'type' => 'datetime',
       'format' => 'Y-m-d'
     ],
-    'analysis_type_id' => [
+    'zone_id' => [
+      'type' => 'int',
+      'min' => 1,
+      'optional' => TRUE
+    ],
+    'producer_id' => [
       'type' => 'int',
       'min' => 1,
       'optional' => TRUE
@@ -26,17 +31,12 @@ $service = [
       'min' => 1,
       'optional' => TRUE
     ],
-    'zone_id' => [
+    'analysis_type_id' => [
       'type' => 'int',
       'min' => 1,
       'optional' => TRUE
     ],
-    'ranch_id' => [
-      'type' => 'int',
-      'min' => 1,
-      'optional' => TRUE
-    ],
-    'producer_id' => [
+    'analysis_subtype_id' => [
       'type' => 'int',
       'min' => 1,
       'optional' => TRUE
@@ -48,30 +48,39 @@ $service = [
     ]
   ],
   'callback' => function($scope, $request, $args) {
-    return $scope->docManagerTableFactory->get('Lab\Documents')
+    $rows = $scope->docManagerTableFactory->get('Lab\Documents')
       ->selectByDateInterval(
         $request['document_type_id'],
         $request['start_date'],
         $request['end_date'],
-        (isset($request['analysis_type_id']) 
-          && array_key_exists('analysis_type_id', $request)) ? 
-            $request['analysis_type_id'] : NULL,
-        (isset($request['lab_id']) 
-          && array_key_exists('lab_id', $request)) ? 
-            $request['lab_id'] : NULL,
         (isset($request['zone_id']) 
           && array_key_exists('zone_id', $request)) ? 
             $request['zone_id'] : NULL,
-        (isset($request['ranch_id']) 
-          && array_key_exists('ranch_id', $request)) ?
-            $request['ranch_id'] : NULL,
         (isset($request['producer_id'])
           && array_key_exists('producer_id', $request)) ?
             $request['producer_id'] : NULL,
+        (isset($request['lab_id']) 
+          && array_key_exists('lab_id', $request)) ? 
+            $request['lab_id'] : NULL,
+        (isset($request['analysis_type_id']) 
+          && array_key_exists('analysis_type_id', $request)) ? 
+            $request['analysis_type_id'] : NULL,
+        (isset($request['analysis_subtype_id']) 
+          && array_key_exists('analysis_subtype_id', $request)) ?
+            $request['analysis_subtype_id'] : NULL,
         (isset($request['area_id']) 
           && array_key_exists('area_id', $request)) ?
             $request['area_id'] : NULL
       );
+
+    $fsmZones = $scope->fsmTableFactory->get('Zones');
+    foreach ($rows as &$row) {
+      $zoneName = $fsmZones->getNameByID($row['zone_id']);
+      $row['zone_name'] = $zoneName;
+    }
+    unset($row);
+
+    return $rows;
   } // 'callback' => function($scope, $request, $args)
 ];
 

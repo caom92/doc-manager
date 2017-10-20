@@ -58,7 +58,8 @@ export class LanguageService
           analysisLabel: 'Solicitud de Estudio',
           resultLabel: 'Resultado de Estudio',
           labNameLabel: 'Nombre del Laboratorio',
-          typeNameLabel: 'Tipo de Análisis'
+          typeNameLabel: 'Tipo de Análisis',
+          subtype: 'Subtipo de Análisis'
         },
         title: 'Captura de Documento',
         typeLabel: 'Tipo de Documento',
@@ -210,7 +211,8 @@ export class LanguageService
           analysisLabel: 'Analysis Request Document',
           resultLabel: 'Result Document',
           labNameLabel: "Lab's Name",
-          typeNameLabel: 'Analysis Type'
+          typeNameLabel: 'Analysis Type',
+          subtype: 'Analysis Subtype'
         },
         title: 'Document Upload',
         typeLabel: 'Document Type',
@@ -359,7 +361,8 @@ export class LanguageService
         analysisLabel: null,
         resultLabel: null,
         labNameLabel: null,
-        typeNameLabel: null
+        typeNameLabel: null,
+        subtype: null
       },
       title: null,
       typeLabel: null,

@@ -26,6 +26,18 @@ class Zones extends DataBaseTable
     $rows = $query->fetchAll();
     return count($rows) > 0;
   }
+
+  // Retorna el nombre de la zona que tenga registrado el ID especificado
+  function getNameByID($id) {
+    $query = $this->getStatement(
+      "SELECT name FROM `$this->table` WHERE id = :id"
+    );
+    $query->execute([
+      ':id' => $id
+    ]);
+    $rows = $query->fetchAll();
+    return (count($rows) > 0) ? $rows[0]['name'] : NULL;
+  }
 }
 
 ?>

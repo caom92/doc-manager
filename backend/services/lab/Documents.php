@@ -60,36 +60,36 @@ class Documents extends DocumentsTable
         d.upload_date AS upload_date,
         d.file_date AS file_date,
         d.file_path AS file_path,
-        t.name AS analysis_type_name,
-        l.name AS lab_name,
-        z.name AS zone_name,
-        r.name AS ranch_name,
+        z.foreign_id AS zone_id,
         p.name AS producer_name,
+        l.name AS lab_name,
+        t.name AS analysis_type_name,
+        s.name AS analysis_subtype_name,
         a.name AS area_name,
         notes
       FROM
         `$this->table`
       INNER JOIN
-        `documents` AS d
-        ON analysis_document_id = d.id
+        `producers` AS p
+        ON p.id = producer_id
       INNER JOIN
-        `analysis_types` AS t
-        ON `$this->table`.type_id = t.id
+        `zones` AS z
+        ON z.id = p.parent_id
       INNER JOIN
         `laboratories` AS l
         ON lab_id = l.id
       INNER JOIN
-        `areas` AS a
+        `lab_areas` AS a
         ON a.id = area_id
-      INNER JOIN
-        `producers` AS p
-        ON p.id = a.parent_id
       INNER JOIN 
-        `ranches` AS r
-        ON r.id = p.parent_id
+        `analysis_subtypes` AS s
+        ON s.id = a.parent_id
       INNER JOIN
-        `zones` AS z
-        ON z.id = r.parent_id
+        `analysis_types` AS t
+        ON t.id = s.parent_id
+      INNER JOIN
+        `documents` AS d
+        ON document_id = d.id
       WHERE
         d.file_date >= :startDate AND d.file_date <= :endDate
         AND d.type_id = :documentTypeID ";
@@ -101,33 +101,33 @@ class Documents extends DocumentsTable
     ];
 
     if (isset($categoryIDs[0])) {
-      $queryStr .= "AND `$this->table`.type_id = :analysisTypeID ";
-      $values[':analysisTypeID'] = $categoryIDs[0];
+      $queryStr .= "AND z.foreign_id = :zoneID ";
+      $values[':zoneID'] = $categoryIDs[0];
     }
 
     if (isset($categoryIDs[1])) {
-      $queryStr .= "AND lab_id = :labID ";
-      $values[':labID'] = $categoryIDs[1];
+      $queryStr .= "AND p.id = :producerID ";
+      $values[':producerID'] = $categoryIDs[1];
     }
 
     if (isset($categoryIDs[2])) {
-      $queryStr .= "AND area_id = :areaID ";
-      $values[':areaID'] = $categoryIDs[2];
+      $queryStr .= "AND lab_id = :labID ";
+      $values[':labID'] = $categoryIDs[2];
     }
 
     if (isset($categoryIDs[3])) {
-      $queryStr .= "AND p.id = :producerID ";
-      $values[':producerID'] = $categoryIDs[3];
+      $queryStr .= "AND t.id = :analysisTypeID ";
+      $values[':analysisTypeID'] = $categoryIDs[3];
     }
 
     if (isset($categoryIDs[4])) {
-      $queryStr .= "AND r.id = :ranchID ";
-      $values[':ranchID'] = $categoryIDs[4];
+      $queryStr .= "AND s.id = :analysisSubTypeID ";
+      $values[':analysisSubTypeID'] = $categoryIDs[4];
     }
 
     if (isset($categoryIDs[5])) {
-      $queryStr .= "AND z.id = :zoneID ";
-      $values[':zoneID'] = $categoryIDs[5];
+      $queryStr .= "AND area_id = :areaID ";
+      $values[':areaID'] = $categoryIDs[5];
     }
 
     $queryStr .= "ORDER BY d.file_date";
@@ -135,25 +135,6 @@ class Documents extends DocumentsTable
     $query = $this->getStatement($queryStr);
     $query->execute($values);
     return $query->fetchAll();
-  }
-
-  // Retorna el nombre del archivo que posea el ID especificado en esta tabla
-  function getPathByID($id) {
-    $query = $this->getStatement(
-      "SELECT 
-        d.file_path AS file_path
-      FROM 
-        `$this->table` AS t
-      INNER JOIN 
-        `documents` AS d
-        ON
-          analysis_document_id = d.id
-      WHERE 
-        t.id = :ID"
-    );
-    $query->execute([ ':ID' => $id ]);
-    $rows = $query->fetchAll();
-    return $rows[0]['file_path'];
   }
 }
 

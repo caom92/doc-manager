@@ -131,14 +131,12 @@ export class LabDocumentSearchModalComponent
     let selectedZone = 
       <NoParentElement>this.searchForm.controls.zone.value
     if (selectedZone.id) {
-      // preparamos los datos que seran enviados al usuario
-      let data = new FormData()
-      data.append('zone_name', selectedZone.name)
-
       // recuperamos los ranchos del servidor
-      this.server.write(
+      this.server.read(
         'list-producers-of-zone',
-        data,
+        {
+          zone_name: selectedZone.id
+        },
         (response: BackendResponse) => {
           // revisamos si el servidor respondio con exito
           if (response.meta.return_code == 0) {
