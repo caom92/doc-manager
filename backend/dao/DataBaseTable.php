@@ -14,7 +14,7 @@ class DataBaseTable
 
   // La lista de las consultas SQL que fueron cacheadas para ser reutilizadas
   // luego
-  static private $cachedQueries = [];
+  private $cachedQueries = [];
  
   // Crea una interfaz para interactuar con la tabla en la base de datos que 
   // tenga el nombre especificado
