@@ -113,10 +113,14 @@ function getLastCategoryID($daoFactory, $categoryStack, $parentID) {
 //        ID de ese elemento en particular
 function getCategoryID($daoFactory, $categoryList) {
   foreach ($categoryList as &$category) {
+    $categoryName = strtoupper($category['name']);
     $table = $daoFactory->get($category['table']);
-    $id = $table->getIDByName(strtoupper($category['name']));  
+
+    $id = $table->getIDByName($categoryName);
+
     $category['id'] = (isset($id)) ? 
-      $id : $table->insert([ ':name' => $categoryName ]);
+      $id 
+      : $table->insert([ ':name' => $categoryName ]);
   }
   unset($category);
   return $categoryList;

@@ -738,22 +738,19 @@ export class LanguageService
   //        servicio especificado en el idioma seleccionado
   getServiceMessage(service: string, code: number): string {
     // inicializamos el almacenamiento temporal para el mensaje resultante
-    let message = null
+    let message = (localStorage.lang == 'en') ?
+      'An unknown error occurred' : 'Ocurrió un error desconocido'
     
     if (this.translations[localStorage.lang][service] !== undefined) {
-      // si existe la combinacion de servicio y codigo de resultado 
-      // especificados, retornamos ese
-      message = this.translations[localStorage.lang][service][code]
+      if (this.translations[localStorage.lang][service][code] !== undefined) {
+        // si existe la combinacion de servicio y codigo de resultado 
+        // especificados, retornamos ese
+        message = this.translations[localStorage.lang][service][code]
+      }
     } else if (this.translations[localStorage.lang][code] !== undefined) {
       // si la combinacion no existe, buscamos el mensaje que corresponda 
       // unicamente el codigo de resultado especificado
       message = this.translations[localStorage.lang][code]
-    } else {
-      // si no se encontro un texto apropiado para ninguno de los dos casos, 
-      // retornamos uno generico
-      message = (localStorage.lang == 'en') ?
-        'An unknown error occurred'
-        : 'Ocurrió un error desconocido'
     }
 
     // retornamos el texto obtenido

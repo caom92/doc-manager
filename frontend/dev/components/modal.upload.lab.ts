@@ -64,6 +64,38 @@ export class LabDocumentUploadModalComponent
   ngOnInit(): void {
     super.ngOnInit()
 
+    if (this.global.roleName !== 'Director') {
+      this.server.read(
+        'list-producers-of-zone',
+        {
+          zone_id: this.global.zone.id
+        },
+        (response: BackendResponse) => {
+          // revisamos si el rancho respondio con exito
+          if (response.meta.return_code == 0) {
+            // si asi fue guardamos los productores en el objeto de sugerencias 
+            // del campo de productores
+            this.producerSuggestions = {
+              data: {},
+              limit: 4
+            }
+            for (let producer of response.data) {
+              this.producerSuggestions.data[producer.name] = null
+            }
+          } else {
+            // en caso de que el servidor responda con error, hay que notificar 
+            // al usuario
+            this.toastManager.showText(
+              this.langManager.getServiceMessage(
+                'list-producers-of-zone',
+                response.meta.return_code
+              )
+            )
+          } // if (response.meta.return_code == 0)
+        } // (response: BackendResponse)
+      ) // this.server.read
+    } // if (this.global.roleName !== 'Director')
+
     // obtenemos la lista de laboratorios del servidor
     this.server.read(
       'list-labs',
