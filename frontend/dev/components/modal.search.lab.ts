@@ -108,7 +108,17 @@ export class LabDocumentSearchModalComponent
     this.searchForm = this.formBuilder.group({
       startDate: [ null, Validators.required ],
       endDate: [ null, Validators.required ],
-      zone: [ null ],
+      zone: [
+        (this.global.roleName !== 'Director') ?
+          {
+            value: this.global.zone,
+            disabled: true
+          }
+          : {
+            value: null,
+            disabled: false
+          }
+      ],
       subtype: [ null ],
       producer: [ null ],
       area: [ null ],

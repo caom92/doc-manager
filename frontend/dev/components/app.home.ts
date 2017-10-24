@@ -32,13 +32,101 @@ export class HomeComponent implements OnInit
     // inicializamos los mensajes en el idioma adecuado
     this.langManager.initMessages()
 
+    // si el usuario no ha iniciado sesion, coloca la bandera como falso
+    if (localStorage.is_logged_in === undefined) {
+      localStorage.is_logged_in = false
+    }
+
+    // idealmente, cuando el usuario navega a la pagina, deberiamos revisar el 
+    // cookie de sesion en el servidor, sin embargo, como esta es una operacion 
+    // asincrona, no se ajusta al modo de trabajo de ui-router, por lo que por 
+    // lo pronto dependeremos de sessionStorage
+    this.server.write(
+      'check-session', 
+      new FormData(), 
+      (response: any) => {
+        if (response.meta.return_code == 0) {
+          this.global.hideSpinner()
+          if (!response.data) {
+            // si el usuario no ha iniciado sesion, desactivamos la bandera y 
+            // redireccionamos a la pantalla de inicio de sesion
+            localStorage.is_logged_in = false
+            this.router.go('login')
+          } else {
+            // de lo contrario, permitimos la navegacion
+            localStorage.is_logged_in = true
+            
+            // no olvides desplegar el menu lateral de navegacion
+            this.global.displaySideNav()
+
+            // dependiendo del rol del usuario, se deben mostrar diferentes 
+            // opciones en la aplicacion
+            // switch (this.global.roleName) {
+            //   case 'Employee':
+            //   case 'Manager':
+            //     this.global.initProgramsMenu()
+            //   break
+
+            //   case 'Supervisor':
+            //     this.global.initProgramsMenu()
+            //     this.global.initSupervisorMenu(this.server, this.toastManager)
+            //   break
+
+            //   case 'Director':
+            //     this.global.initProgramsMenu()
+            //     this.global.initZoneMenu(this.server, this.toastManager)
+            //   break
+            // }
+          }
+        } else {
+          // si hubo un problema con la comunicacion con el servidor 
+          // desplegamos un mensaje de error al usuario 
+          this.toastManager.showText(
+            this.langManager.getServiceMessage(
+              'check-session', response.meta.return_code
+            )
+          )
+        } // if (result.meta.return_code == 0)
+      }, // (response: Response)
+      BackendService.url.fsm
+    ) // this.server.update
+
     // desplegamos el menu lateral y escondemos la animacion de carga
-    this.global.displaySideNav()
-    this.global.hideSpinner()
+    // this.global.displaySideNav()
+    // this.global.hideSpinner()
   } // ngOnInit()
 
   // Esta funcion se ejecuta cuando el usuario cambio el idioma de la pagina
   onLanguageButtonClicked(lang): void {
     this.langManager.changeLanguage(lang)
   }
+
+  // Esta es la funcion que se invoca cuando el usuario hace clic en el boton 
+  // de cerrar sesion
+  onLogOutButtonClicked(): void {
+    this.server.write(
+      'logout', 
+      new FormData(), 
+      (response: any) => {
+        if (response.meta.return_code == 0) {
+          // si la sesion fue cerrada correctamente, desactivamos la bandera y 
+          // redireccionamos al usuario a la pantalla de inicio de sesion
+          let lang = localStorage.lang
+          localStorage.clear()
+          localStorage.lang = lang
+          localStorage.is_logged_in = false
+          this.router.go('login')
+        } else {
+          // si hubo un problema con la comunicacion con el servidor, 
+          // desplegamos un mensaje de error al usuario
+          this.toastManager.showText(
+            this.langManager.getServiceMessage(
+              'logout', response.meta.return_code
+            )
+          )
+        } // if (result.meta.return_code == 0)
+      }, // (response: Response)
+      BackendService.url.fsm
+    ) // this.server.update
+  } // onLogOutButtonClicked()
 } // export class HomeComponent implements OnInit

@@ -37,6 +37,114 @@ export class GlobalElementsService
     this._showSpinner = false
   }
 
+  // El ID del usuario que tiene registrado en la base de datos
+  private _userID: number = 
+    (localStorage.user_id !== undefined) ?
+      localStorage.user_id
+      : null
+  set userID(value: number) {
+    this._userID = value
+    localStorage.user_id = value
+  }
+  get userID() {
+    return this._userID
+  }
+
+  // El nombre del rol del usuario
+  private _roleName: string = 
+    (localStorage.role_name !== undefined) ?
+      localStorage.role_name
+      : null
+  set roleName(value: string) {
+    this._roleName = value
+    localStorage.role_name = value
+  }
+  get roleName() {
+    return this._roleName
+  }
+
+  // El numero de indentificacion del empleado en la empresa
+  private _employeeNum: string = 
+    (localStorage.employee_num !== undefined) ?
+      localStorage.employee_num
+      : null
+  set employeeNum(value: string) {
+    this._employeeNum = value
+    localStorage.employee_num = value
+  }
+  get employeeNum() {
+    return this._employeeNum
+  }
+
+  // El nombre completo del usuario que sera desplegado en el menu lateral
+  private _userFullName: string = (localStorage.user_full_name !== undefined) ?
+    localStorage.user_full_name
+    : null
+  set userFullName(value: string) {
+    this._userFullName = value
+    localStorage.user_full_name = value
+  }
+  get userFullName() {
+    return this._userFullName
+  }
+
+  // El nombre de cuenta del usuario para iniciar sesion
+  private _loginName: string = 
+    (localStorage.login_name !== undefined) ?
+      localStorage.login_name
+      : null
+  set loginName(value: string) {
+    this._loginName = value
+    localStorage.login_name = value
+  }
+  get loginName() {
+    return this._loginName
+  }
+
+  // Informacion de la compañia
+  private _company = {
+    name: (localStorage.company_name !== undefined) ? 
+      localStorage.company_name : null,
+    logo: (localStorage.company_logo !== undefined) ? 
+      localStorage.company_logo : null,
+    address: (localStorage.company_address !== undefined) ? 
+      localStorage.company_address : null
+  }
+  set companyName(value: string) {
+    this._company.name = value
+    localStorage.company_name = value
+  }
+  set companyLogo(value: string) {
+    this._company.logo = value
+    localStorage.company_logo = value
+  }
+  set companyAddress(value: string) {
+    this._company.address = value
+    localStorage.company_address = value
+  }
+  get company() {
+    return this._company
+  }
+
+  // Informacion de la zona del usuario
+  private _zone = {
+    id: (localStorage.zone_id !== undefined) ? 
+      localStorage.zone_id : null,
+    name: (localStorage.zone_name !== undefined) ? 
+      localStorage.zone_name : null
+  }
+  set zoneID(value: number) {
+    this._zone.id = value
+    localStorage.zone_id = value
+  }
+  set zoneName(value: string) {
+    this._zone.name = value
+    localStorage.zone_name = value
+  }
+  get zone() {
+    return this._zone
+  }
+
   // Retorna la fecha de hoy en una cadena con formato AAAA-MM-DD
   getFormattedDate(): string {
     // primero obtenemos la fecha de hoy 

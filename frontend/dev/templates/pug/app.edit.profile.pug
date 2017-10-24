@@ -1,0 +1,118 @@
+include globals.pug
+
+div.row: div.col.s12.m12
+  h4
+    i.mdi.mdi-account-circle
+    ='{{ langManager.messages.userProfile.title }}'
+
+div.row
+  div.col.s12.m6
+    +textInput(
+      'profile-name', 
+      "langManager.messages.userProfile.username"
+    )(
+      '[(ngModel)]'='global.loginName'
+      disabled
+    )
+  div.col.s12.m6
+    +textInput(
+      'employee-num', 
+      "langManager.messages.userProfile.employeeNum"
+    )(
+      '[(ngModel)]'='global.employeeNum'
+      disabled
+    )
+  div.col.s12.m6
+    +textInput('full-name', "langManager.messages.userProfile.fullName")(
+      '[(ngModel)]'='global.userFullName'
+      disabled
+    )
+
+div.row: div.col.s12
+  mz-collapsible(
+    '[mode]'="'accordion'"
+  )
+    +accordionItem(
+      '{{ langManager.messages.editPasswordForm.title }}', 
+      'mdi mdi-lock'
+    )
+      form(
+        '[formGroup]'='passwordEditionForm'
+        '(ngSubmit)'='onPasswordEditionFormSubmit()'
+        novalidate
+      )
+        +passwordInput(
+          'new-password', 
+          "langManager.messages.editPasswordForm.newPassword"
+        )(
+          formControlName='newPassword'
+          required
+          mz-validation
+          '[errorMessageResource]'='langManager.messages.editPasswordForm.errors.newPassword'
+        )
+        +passwordInput(
+          'new-password-confirmation', 
+          "langManager.messages.editPasswordForm.newPasswordConfirmation"
+        )(
+          formControlName='newPasswordConfirmation'
+          required
+          mz-validation
+          '[errorMessageResource]'='langManager.messages.editPasswordForm.errors.newPasswordConfirmation'
+        )
+        +passwordInput(
+          'old-password', 
+          "langManager.messages.editPasswordForm.oldPassword"
+        )(
+          formControlName='oldPassword'
+          required
+          mz-validation
+          '[errorMessageResource]'='langManager.messages.editPasswordForm.errors.oldPassword'
+        )
+        +button(
+          'submit', 
+          'editPasswordSubmit', 
+          '{{ langManager.messages.editPasswordForm.submit }}', 
+          'mdi mdi-send'
+        )(
+          '[disabled]'="!passwordEditionForm.valid"
+        )
+        div.invalid.red-text(
+          '*ngIf'="passwordEditionForm.hasError('arePasswordsDifferent')"
+          style='font-size: 0.8rem;'
+        )
+          ='{{ langManager.messages.editPasswordForm.error }}'
+    +accordionItem(
+      '{{ langManager.messages.editUsernameForm.title }}', 
+      'mdi mdi-account'
+    )
+      form(
+        '[formGroup]'='usernameEditionForm'
+        '(ngSubmit)'='onUsernameEditionFormSubmit()'
+        novalidate
+      )
+        +textInput(
+          'new-username', 
+          "langManager.messages.editUsernameForm.newUsername"
+        )(
+          formControlName='newUsername'
+          required
+          mz-validation
+          '[errorMessageResource]'='langManager.messages.editUsernameForm.errors.newUsername'
+        )
+        +passwordInput(
+          'password', 
+          "langManager.messages.editUsernameForm.password"
+        )(
+          formControlName='password'
+          required
+          mz-validation
+          '[errorMessageResource]'='langManager.messages.editUsernameForm.errors.password'
+        )
+        +button(
+          'submit', 
+          'editUsernameSubmit', 
+          '{{ langManager.messages.editUsernameForm.submit }}', 
+          'mdi mdi-send'
+        )(
+          '[disabled]'="!usernameEditionForm.valid"
+        )

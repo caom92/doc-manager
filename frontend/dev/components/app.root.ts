@@ -11,6 +11,9 @@ import { HttpModule } from '@angular/http'
 import { HomeComponent } from './app.home'
 import { UploadComponent } from './app.upload'
 import { SearchComponent } from './app.search'
+import { LogInComponent } from './app.login'
+import { EditProfileComponent } from './app.edit.profile'
+import { UsersComponent } from './app.users'
 
 // Importamos los componentes de los modales
 import { ProgressModalComponent } from './modal.please.wait'
@@ -44,8 +47,13 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     UIRouterModule.forRoot({
       // hay que configurar ui-router para poder redireccionar al usuario 
       // dependiendo si la sesion esta iniciada o no
-      // config: uiRouterAuthenticatedNavConfig,
+      config: uiRouterAuthenticatedNavConfig,
       states: [
+        {
+          name: 'login',
+          url: '/login',
+          component: LogInComponent
+        },
         {
           name: 'upload',
           url: '/upload',
@@ -55,10 +63,20 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
           name: 'search',
           url: '/search',
           component: SearchComponent
+        },
+        {
+          name: 'edit-profile',
+          url: '/edit-profile',
+          component: EditProfileComponent
+        },
+        {
+          name: 'users',
+          url: '/users',
+          component: UsersComponent
         }
       ],
       useHash: true,
-      otherwise: '/upload'
+      otherwise: '/edit-profile'
     })
   ],
   // declaramos los servicios globales
@@ -81,7 +99,10 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     LabDocumentSearchModalComponent,
     DynamicComponentContainerDirective,
     LabSearchResultsListComponent,
-    DeleteDocumentConfirmationModalComponent
+    DeleteDocumentConfirmationModalComponent,
+    LogInComponent,
+    EditProfileComponent,
+    UsersComponent
   ],
   // declaramos cualquier componente que sera inyectado dinamicamente
   entryComponents: [

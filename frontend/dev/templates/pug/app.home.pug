@@ -34,14 +34,36 @@ include globals.pug
   '*ngIf'="global.showSideNav === true"
 )
   div.logo-area
-  mz-sidenav-link
-    +uiRouterLink('search')(class='side-menu-link waves-effect waves-green')
+  +sideNavCollapsible(
+    '{{ global.userFullName }}', 'mdi mdi-account-circle white-text'
+  )(id='account-options')
+    mz-sidenav-link
+      +uiRouterLink('edit-profile')(class='waves-effect waves-green')
+        ='{{ langManager.messages.sideNav.editProfile }}'
+    mz-sidenav-link
+      +link()(
+        class='waves-effect waves-green'
+        '(click)'='onLogOutButtonClicked()'
+      )
+        ='{{ langManager.messages.sideNav.logout }}'
+  mz-sidenav-link('*ngIf'='global.roleName !== "Administrator"')
+    +uiRouterLink('search')(
+      class='side-menu-link waves-effect waves-green'
+    )
       i.mdi.mdi-magnify.mdi-24px
       ='{{ langManager.messages.sideNav.search }}'
-  mz-sidenav-link
-    +uiRouterLink('upload')(class='side-menu-link waves-effect waves-green')
+  mz-sidenav-link('*ngIf'='global.roleName === "Supervisor"')
+    +uiRouterLink('upload')(
+      class='side-menu-link waves-effect waves-green'
+    )
       i.mdi.mdi-upload.mdi-24px
       ='{{ langManager.messages.sideNav.upload }}'
+  mz-sidenav-link('*ngIf'="global.roleName === 'Administrator'")
+    +uiRouterLink('users')(
+      class='side-menu-link waves-effect waves-green'
+    )
+      i.mdi.mdi-account-multiple.mdi-24px
+      ='{{ langManager.messages.sideNav.users }}'
 
 //- Area principal de la pagina
 div.container(

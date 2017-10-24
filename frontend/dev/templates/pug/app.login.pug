@@ -1,0 +1,45 @@
+include globals.pug
+
+div.row
+  div.col.s12.m6.offset-m3
+    form(
+      '[formGroup]'='loginForm'
+      '(ngSubmit)'='onLogInFormSubmit()'
+      novalidate
+    )
+      mz-card(
+        '[hoverable]'="'true'"
+        '[textClass]'="'center-align'"
+      )
+        mz-card-title
+          ='{{ langManager.messages.loginForm.title }}'
+        mz-card-content
+          +textInput(
+            'username',
+            "langManager.messages.loginForm.username",
+            'mdi mdi-account-circle'
+          )(
+            mz-validation
+            required
+            '[errorMessageResource]'='langManager.messages.loginForm.errors.username'
+            formControlName='username'
+          )
+          +passwordInput(
+            'password',
+            "langManager.messages.loginForm.password",
+            'mdi mdi-lock'
+          )(
+            mz-validation
+            required
+            '[errorMessageResource]'='langManager.messages.loginForm.errors.password'
+            formControlName='password'
+          )
+        mz-card-action
+          +button(
+            'submit', 
+            'submit-button', 
+            '{{ langManager.messages.loginForm.submit }}'
+          )(
+            '[flat]'="'true'"
+            '[disabled]'="!loginForm.valid"
+          )

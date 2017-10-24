@@ -44,6 +44,22 @@ export class LanguageService
           formatSubmit: "yyyy-mm-dd"
         }
       },
+      loginForm: {
+        title: 'Inicie Sesión',
+        username: 'Nombre de Usuario',
+        password: 'Contraseña',
+        submit: 'Entrar',
+        errors: {
+          username: {
+            required: 'Este campo es obligatorio',
+            minlength: 'Este campo debe tener al menos 3 caracteres'
+          },
+          password: {
+            required: 'Este campo es obligatorio',
+            minlength: 'Este campo debe tener al menos 6 caracteres'
+          }
+        }
+      },
       deleteConfirmation: {
         title: '¿Seguro que desea borrar este documento?',
         message: 'Está a punto de borrar un documento. Una vez borrado el documento, NO podrá ser recuperado de nuevo.'
@@ -51,7 +67,72 @@ export class LanguageService
       sideNav: {
         search: 'Buscar',
         upload: 'Capturar',
-        documents: 'Tipos de Documento'
+        documents: 'Tipos de Documento',
+        editProfile: 'Editar Perfil',
+        logout: 'Cerrar Sesión',
+        users: 'Usuarios'
+      },
+      userProfile: {
+        title: 'Su Perfil de Usuario',
+        username: 'Nombre de usuario',
+        employeeNum: 'ID de Empleado',
+        fullName: 'Nombre completo',
+        firstName: 'Nombre(s)',
+        lastName: 'Apellido(s)',
+      },
+      editPasswordForm: {
+        title: 'Cambiar la contraseña',
+        newPassword: 'Nueva contraseña',
+        newPasswordConfirmation: 'Confirme nueva contraseña',
+        oldPassword: 'Contraseña actual',
+        submit: 'Editar',
+        error: 'Los campos para la nueva contraseña no coinciden',
+        errors: {
+          newPassword: {
+            required: 'Este campo es obligatorio',
+            minlength: 'Este campo debe tener al menos 6 caracteres'
+          },
+          newPasswordConfirmation: {
+            required: 'Este campo es obligatorio',
+            minlength: 'Este campo debe tener al menos 6 caracteres'
+          },
+          oldPassword: {
+            required: 'Este campo es obligatorio',
+            minlength: 'Este campo debe tener al menos 6 caracteres'
+          }
+        }
+      },
+      editUsernameForm: {
+        title: 'Cambiar el nombre de usuario',
+        newUsername: 'Nuevo nombre de usuario',
+        password: 'Contraseña actual',
+        submit: 'Editar',
+        errors: {
+          newUsername: {
+            required: 'Este campo es obligatorio',
+            minlength: 'Este campo debe tener al menos 3 caracteres'
+          },
+          password: {
+            required: 'Este campo es obligatorio',
+            minlength: 'Este campo debe tener al menos 6 caracteres'
+          }
+        }
+      },
+      usersForm: {
+        titles: [
+          'Lista de usuarios',
+          'Información del Usuario',
+          'Privilegios de Usuario'
+        ],
+        tableHeaders: [
+          'ID de Empleado',
+          'Nombre',
+          'Rol',
+          '¿Activo?'
+        ],
+        active: 'Sí',
+        inactive: 'No',
+        role: 'Rol de Usuario'
       },
       upload: {
         lab: {
@@ -146,6 +227,22 @@ export class LanguageService
           ]
         }
       },
+      login: {
+        0: 'Sesión iniciada exitosamente',
+        1: 'Las credenciales son incorrectas'
+      },
+      'check-session': {
+        0: 'Sesión iniciada anteriormente'
+      },
+      'change-password': {
+        0: 'La contraseña se cambió exitosamente',
+        1: 'La vieja contraseña es incorrecta'
+      },
+      'change-username': {
+        0: 'El nombre de usuario se cambió exitosamente',
+        1: 'El nombre ingresado ya fue reclamado',
+        2: 'La contraseña es incorrecta'
+      },
       'capture-default': {
         0: 'Documento capturado con éxito',
         1: 'Error al subir el documento'
@@ -197,6 +294,22 @@ export class LanguageService
           formatSubmit: "yyyy-mm-dd"
         }
       },
+      loginForm: {
+        title: 'Sign In',
+        username: 'Username',
+        password: 'Password',
+        submit: 'Enter',
+        errors: {
+          username: {
+            required: 'This field is required',
+            minlength: 'This field must be at least 3 characters long'
+          },
+          password: {
+            required: 'This field is required',
+            minlength: 'This field must be at least 6 characters long'
+          }
+        }
+      },
       deleteConfirmation: {
         title: 'Are you sure you wish to delete this document?',
         message: 'You are about to delete a document. Once deleted, a document CANNOT be recovered.'
@@ -204,7 +317,72 @@ export class LanguageService
       sideNav: {
         search: 'Search',
         upload: 'Upload',
-        documents: 'Document Types'
+        documents: 'Document Types',
+        editProfile: 'Edit Profile',
+        logout: 'Log Out',
+        users: 'Users'
+      },
+      userProfile: {
+        title: 'Your User Profile',
+        username: 'Username',
+        employeeNum: 'Employee ID',
+        fullName: 'Full Name',
+        firstName: 'First name',
+        lastName: 'Last name',
+      },
+      editPasswordFormLabels: {
+        title: 'Change password',
+        newPassword: 'New password',
+        newPasswordConfirmation: 'Confirm new password',
+        oldPassword: 'Current password',
+        submit: 'Edit',
+        error: 'The fields for the new password differ from one another',
+        errors: {
+          newPassword: {
+            required: 'This field is required',
+            minlength: 'This field must be at least 6 characters long'
+          },
+          newPasswordConfirmation: {
+            required: 'This field is required',
+            minlength: 'This field must be at least 6 characters long'
+          },
+          oldPassword: {
+            required: 'This field is required',
+            minlength: 'This field must be at least 6 characters long'
+          }
+        }
+      },
+      editUsernameForm: {
+        title: 'Change username',
+        newUsername: 'New username',
+        password: 'Current password',
+        submit: 'Edit',
+        errors: {
+          newUsername: {
+            required: 'This field is required',
+            minlength: 'This field must be at least 3 characters long'
+          },
+          password: {
+            required: 'This field is required',
+            minlength: 'This field must be at least 6 characters long'
+          }
+        }
+      },
+      usersForm: {
+        titles: [
+          'List of users',
+          'User Information',
+          'User Privileges'
+        ],
+        tableHeaders: [
+          'Employee ID',
+          'Name',
+          'Role',
+          'Active?'
+        ],
+        active: 'Yes',
+        inactive: 'No',
+        role: 'User Role'
       },
       upload: {
         lab: {
@@ -299,6 +477,22 @@ export class LanguageService
           ]
         }
       },
+      login: {
+        0: 'Logged in successfully',
+        1: 'Log in credentials are incorrect'
+      },
+      'check-session': {
+        0: 'Already logged in'
+      },
+      'change-password': {
+        0: 'Password changed successfully',
+        1: 'Current password is incorrect'
+      },
+      'change-username': {
+        0: 'Username changed successfully',
+        1: 'The user name is already taken',
+        2: 'The password is incorrect'
+      },
       'capture-default': {
         0: 'Document uploaded successfully',
         1: 'Failed to upload the document file'
@@ -347,6 +541,22 @@ export class LanguageService
       accept: null,
       cancel: null
     },
+    loginForm: {
+      title: null,
+      username: null,
+      password: null,
+      submit: null,
+      errors: {
+        username: {
+          required: null,
+          minlength: null
+        },
+        password: {
+          required: null,
+          minlength: null
+        }
+      }
+    },
     deleteConfirmation: {
       title: null,
       message: null
@@ -354,7 +564,63 @@ export class LanguageService
     sideNav: {
       search: null,
       upload: null,
-      documents: null
+      documents: null,
+      editProfile: null,
+      logout: null,
+      users: null
+    },
+    userProfile: {
+      title: null,
+      username: null,
+      employeeNum: null,
+      fullName: null,
+      firstName: null,
+      lastName: null,
+    },
+    editPasswordForm: {
+      title: null,
+      newPassword: null,
+      newPasswordConfirmation: null,
+      oldPassword: null,
+      submit: null,
+      error: null,
+      errors: {
+        newPassword: {
+          required: null,
+          minlength: null
+        },
+        newPasswordConfirmation: {
+          required: null,
+          minlength: null
+        },
+        oldPassword: {
+          required: null,
+          minlength: null
+        }
+      }
+    },
+    editUsernameForm: {
+      title: null,
+      newUsername: null,
+      password: null,
+      submit: null,
+      errors: {
+        newUsername: {
+          required: null,
+          minlength: null
+        },
+        password: {
+          required: null,
+          minlength: null
+        }
+      }
+    },
+    usersForm: {
+      titles: [ null, null, null ],
+      tableHeaders: [ null, null, null, null ],
+      active: null,
+      inactive: null,
+      role: null
     },
     upload: {
       lab: {

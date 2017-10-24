@@ -55,27 +55,31 @@ export class DefaultDocumentUploadModalComponent
 
   // Esta funcion se ejecuta al iniciar la vista
   ngOnInit(): void {
-    // obtenemos la lista de zonas del servidor
-    this.server.write(
-      'list-zones',
-      new FormData(),
-      (response: BackendResponse) => {
-        // revisamos si el servidor respondio con exito
-        if (response.meta.return_code == 0) {
-          // si el servidor respondio con exito, cargamos la respuesta al 
-          // objeto de sugerencias de zonas
-          this.zones = response.data
-        } else {
-          // si el servidor respondio con error, notificamos al usuario
-          this.toastManager.showText(
-            this.langManager.getServiceMessage(
-              'list-zones',
-              response.meta.return_code
+    if (this.global.roleName !== 'Director') {
+      this.zones = [ this.global.zone ]
+    } else {
+      // obtenemos la lista de zonas del servidor
+      this.server.write(
+        'list-zones',
+        new FormData(),
+        (response: BackendResponse) => {
+          // revisamos si el servidor respondio con exito
+          if (response.meta.return_code == 0) {
+            // si el servidor respondio con exito, cargamos la respuesta al 
+            // objeto de sugerencias de zonas
+            this.zones = response.data
+          } else {
+            // si el servidor respondio con error, notificamos al usuario
+            this.toastManager.showText(
+              this.langManager.getServiceMessage(
+                'list-zones',
+                response.meta.return_code
+              )
             )
-          )
-        } // if (response.meta.return_code == 0)
-      }, // (response: BackendResponse)
-      BackendService.url.fsm
-    ) // this.server.read
+          } // if (response.meta.return_code == 0)
+        }, // (response: BackendResponse)
+        BackendService.url.fsm
+      ) // this.server.read
+    }
   } // ngOnInit(): void
 } // class DefaultDocumentUploadModalComponent

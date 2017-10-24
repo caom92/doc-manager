@@ -131,11 +131,15 @@ export class LabDocumentUploadModalComponent
         Validators.required,
         Validators.maxLength(255)
       ])],
-      zone: [ null, Validators.compose([
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(3)
-      ])],
+      zone: [
+        {
+          value: this.global.zone,
+          disabled: true
+        },
+        Validators.compose([
+          Validators.required
+        ])
+      ],
       subtype: [ null, Validators.compose([
         Validators.required,
         Validators.maxLength(255)
