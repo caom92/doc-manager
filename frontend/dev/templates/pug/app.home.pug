@@ -58,6 +58,12 @@ include globals.pug
     )
       i.mdi.mdi-upload.mdi-24px
       ='{{ langManager.messages.sideNav.upload }}'
+  mz-sidenav-link('*ngIf'='global.roleName !== "Administrator"')
+    +uiRouterLink('report')(
+      class='side-menu-link waves-effect waves-green'
+    )
+      i.mdi.mdi-file-chart.mdi-24px
+      ='{{ langManager.messages.sideNav.report }}'
   mz-sidenav-link('*ngIf'="global.roleName === 'Administrator'")
     +uiRouterLink('users')(
       class='side-menu-link waves-effect waves-green'

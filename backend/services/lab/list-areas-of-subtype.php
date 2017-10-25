@@ -2,6 +2,7 @@
 
 $service = [
   'requirements_desc' => [
+    'logged_in' => 'any',
     'subtype_name' => [
       'type' => 'string',
       'min_length' => 1

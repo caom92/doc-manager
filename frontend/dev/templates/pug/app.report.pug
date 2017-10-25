@@ -1,0 +1,29 @@
+include globals.pug
+
+div.row
+  div.col.s12
+    h4
+      i.mdi.mdi-magnify
+      ='{{ langManager.messages.report.title }}'
+
+div.row
+  div.col.s12
+    +select(
+      'document-type',
+      'langManager.messages.upload.typeLabel',
+      'langManager.messages.global.selectPlaceholder',
+      'documents', '.name', '',
+      'onDocumentTypeSelected()'
+    )(
+      '[(ngModel)]'='selectedDocument'
+    )
+
+div.row(dynamicComponentContainer)
+
+div.row
+  div.col.s12.center-align(
+    '*ngIf'='reportComponent.hasData === false'
+  )
+    h5
+      i.mdi.mdi-alert-octagon.red-text
+      = '{{ langManager.messages.search.noSearchResults }}'

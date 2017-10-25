@@ -14,6 +14,7 @@ import { SearchComponent } from './app.search'
 import { LogInComponent } from './app.login'
 import { EditProfileComponent } from './app.edit.profile'
 import { UsersComponent } from './app.users'
+import { ReportComponent } from './app.report'
 
 // Importamos los componentes de los modales
 import { ProgressModalComponent } from './modal.please.wait'
@@ -22,6 +23,8 @@ import { DefaultDocumentDisplayModalComponent } from './modal.display.default'
 import { LabDocumentUploadModalComponent } from './modal.upload.lab'
 import { LabDocumentSearchModalComponent } from './modal.search.lab'
 import { LabSearchResultsListComponent } from './list.lab'
+import { LabDocumentReportModalComponent } from './modal.report.lab'
+import { LabReportResultsComponent } from './report.lab'
 
 // Importamos los servicios que van a ser necesitados por cada pagina del 
 // sistema
@@ -73,6 +76,11 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
           name: 'users',
           url: '/users',
           component: UsersComponent
+        },
+        {
+          name: 'report',
+          url: '/report',
+          component: ReportComponent
         }
       ],
       useHash: true,
@@ -102,7 +110,10 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     DeleteDocumentConfirmationModalComponent,
     LogInComponent,
     EditProfileComponent,
-    UsersComponent
+    UsersComponent,
+    ReportComponent,
+    LabDocumentReportModalComponent,
+    LabReportResultsComponent
   ],
   // declaramos cualquier componente que sera inyectado dinamicamente
   entryComponents: [
@@ -111,7 +122,9 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     LabDocumentUploadModalComponent,
     LabDocumentSearchModalComponent,
     LabSearchResultsListComponent,
-    DeleteDocumentConfirmationModalComponent
+    DeleteDocumentConfirmationModalComponent,
+    LabDocumentReportModalComponent,
+    LabReportResultsComponent
   ],
   // indicamos cual es el componente raiz
   bootstrap: [ HomeComponent ]

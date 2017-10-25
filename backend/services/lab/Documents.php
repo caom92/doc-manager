@@ -136,6 +136,66 @@ class Documents extends DocumentsTable
     $query->execute($values);
     return $query->fetchAll();
   }
+
+  // Retorna una tabla que cuenta cuantos documentos fueron capturados de cada 
+  // area para cada productor
+  // [in]   zoneID (uint): el ID de la zona cuyos productores van a ser 
+  //        buscados en la BD
+  // [in]   startDate (string): la fecha de inicio en la que se realizara la 
+  //        busqueda
+  // [in]   endDate (string): la fecha final en la que se realizara la busqueda
+  // [out]  return (dictionary): la tabla que contiene cuantos documentos hay 
+  //        organizados por renglones y columnas
+  function countByDateIntervalAndZoneID($zoneID, $startDate, $endDate) {
+    $query = $this->getStatement(
+      "SELECT
+        ap.area_name AS area_name,
+        ap.producer_name AS producer_name,
+        COUNT(d.id) AS num_documents
+      FROM 
+        `lab_documents` AS l
+      RIGHT JOIN
+        (
+          SELECT
+            a.id AS area_id,
+            a.name AS area_name,
+            p.id AS producer_id,
+            p.name AS producer_name
+          FROM 
+            `lab_areas` AS a 
+          RIGHT JOIN 
+            `producers` AS p 
+            ON 1
+          WHERE 
+            p.parent_id = :zoneID
+        ) AS ap
+        ON 
+          l.area_id = ap.area_id
+          AND l.producer_id = ap.producer_id
+      LEFT JOIN 
+        (
+          SELECT
+            id,
+            file_date
+          FROM 
+            `documents`
+          WHERE 
+            file_date >= :startDate
+            AND file_date <= :endDate
+        ) AS d 
+      ON l.document_id = d.id
+      GROUP BY
+        area_name,
+        producer_name"
+    );
+
+    $query->execute([
+      ':zoneID' => $zoneID,
+      ':startDate' => $startDate,
+      ':endDate' => $endDate
+    ]);
+    return $query->fetchAll();
+  }
 }
 
 ?>

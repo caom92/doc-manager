@@ -70,7 +70,8 @@ export class LanguageService
         documents: 'Tipos de Documento',
         editProfile: 'Editar Perfil',
         logout: 'Cerrar Sesión',
-        users: 'Usuarios'
+        users: 'Usuarios',
+        report: 'Reportes'
       },
       userProfile: {
         title: 'Su Perfil de Usuario',
@@ -216,16 +217,19 @@ export class LanguageService
         lab: {
           tableHeaders: [
             'Fecha',
-            'Tipo de Análisis',
-            'Laboratorio',
             'Zona',
-            'Rancho',
             'UP',
+            'Laboratorio',
+            'Tipo de Análisis',
+            'Subtipo',
             'Área/Producto',
             'Ver',
             'Borrar'
           ]
         }
+      },
+      report: {
+        title: 'Reporte de Documentos'
       },
       login: {
         0: 'Sesión iniciada exitosamente',
@@ -320,7 +324,8 @@ export class LanguageService
         documents: 'Document Types',
         editProfile: 'Edit Profile',
         logout: 'Log Out',
-        users: 'Users'
+        users: 'Users',
+        report: 'Reports'
       },
       userProfile: {
         title: 'Your User Profile',
@@ -466,16 +471,19 @@ export class LanguageService
         lab: {
           tableHeaders: [
             'Date',
-            'Analysis Type',
-            'Lab',
             'Zone',
-            'Ranch',
             'PU',
+            'Lab',
+            'Analysis Type',
+            'Sub-Type',
             'Area/Product',
             'View',
             'Delete'
           ]
         }
+      },
+      report: {
+        title: 'Document Reports'
       },
       login: {
         0: 'Logged in successfully',
@@ -567,7 +575,8 @@ export class LanguageService
       documents: null,
       editProfile: null,
       logout: null,
-      users: null
+      users: null,
+      report: null
     },
     userProfile: {
       title: null,
@@ -709,6 +718,9 @@ export class LanguageService
           null
         ]
       }
+    },
+    report: {
+      title: null
     }
   }
 

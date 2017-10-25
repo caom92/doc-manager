@@ -1,0 +1,14 @@
+include globals.pug
+
+div.col.s12
+  div.scrollable-table-container
+    +responsiveTable('tableHeaders')(
+      class='scrollable-table'
+    )
+      tr(
+        '*ngFor'='let row of reportData'
+      )
+        td='{{ row.name }}'
+        td.table-col-fixed(
+          '*ngFor'='let col of row.values'
+        )='{{ col }}'

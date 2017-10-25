@@ -60,6 +60,31 @@ export class LabDocumentSearchModalComponent
   ngOnInit(): void {
     super.ngOnInit()
 
+    if (this.global.roleName !== 'Director') {
+      this.server.read(
+        'list-producers-of-zone',
+        {
+          zone_name: this.global.zone.id
+        },
+        (response: BackendResponse) => {
+          // revisamos si el servidor respondio con exito
+          if (response.meta.return_code == 0) {
+            // si asi fue, ingresamos los ranchos recuperados al objeto de 
+            // sugerencias de ranchos
+            this.producers = this.producers.concat(response.data)
+          } else {
+            // si el servidor repondio con error, notificamos al usuario
+            this.toastManager.showText(
+              this.langManager.getServiceMessage(
+                'list-zones-ranches-of-zone',
+                response.meta.return_code
+              )
+            )
+          } // if (response.meta.return_code == 0)
+        } // (response: BackendResponse)
+      ) // this.server.write
+    }
+
     // obtenemos la lista de zonas del servidor
     this.server.read(
       'list-labs',
@@ -141,7 +166,7 @@ export class LabDocumentSearchModalComponent
     let selectedZone = 
       <NoParentElement>this.searchForm.controls.zone.value
     if (selectedZone.id) {
-      // recuperamos los ranchos del servidor
+      // recuperamos los productores del servidor
       this.server.read(
         'list-producers-of-zone',
         {
@@ -314,12 +339,11 @@ export class LabDocumentSearchModalComponent
         // que el usuario capture un nuevo documento
         if (response.meta.return_code == 0) {
           this.parent.searchResults = response.data
-          this.parent.hasSearchResults = response.data.length > 0
         } else {
           // notificamos al usuario del resultado obtenido
           this.toastManager.showText(
             this.langManager.getServiceMessage(
-              'search-default',
+              'search-lab',
               response.meta.return_code
             )
           )

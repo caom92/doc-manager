@@ -1,30 +1,30 @@
 import { Component, Input } from '@angular/core'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
-import { SearchComponent } from './app.search'
+import { ReportComponent } from './app.report'
 
 // El componente que lista los resultados de busqueda de documentos
-export class SearchResultsListComponent
+export class ReportResultsComponent
 {
-  // Bandera que indica si hay resultados de busqueda o no
+  // Bandera que indica si el reporte se encuentra vacio o no
   @Input()
-  hasSearchResults: boolean = true
+  hasData: boolean = true
 
   // El componente responsable de la creacion de este componente
   @Input()
-  parent: SearchComponent = null
+  parent: ReportComponent = null
 
   // La lista de los documentos encontrados
   @Input()
-  _searchResults: Array<any> = []
-  set searchResults(value: Array<any>) {
-    this._searchResults = value
-    this.hasSearchResults = (this._searchResults !== null) ?
-      this._searchResults.length > 0
+  _reportData: any = null
+  set reportData(value: any) {
+    this._reportData = value
+    this.hasData = (this._reportData !== null) ?
+      this._reportData.length > 0
       : false
   }
-  get searchResults() {
-    return this._searchResults
+  get reportData() {
+    return this._reportData
   }
 
   // El constructor de este componente, inyectando los servicios requeridos

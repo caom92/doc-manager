@@ -12,6 +12,8 @@ $lab = [
     'GET' => [
       'list-labs' => realpath(__DIR__.'/list-labs.php'),
       'list-analysis-types' => realpath(__DIR__.'/list-analysis-types.php'),
+      'report-lab/{start_date}/{end_date}/{zone_id}' =>
+        realpath(__DIR__.'/report-lab.php')
     ],
     'POST' => [
       'list-analysis-subtypes-of-type' => 

@@ -2,6 +2,7 @@
 
 $service = [
   'requirements_desc' => [
+    'logged_in' => 'any',
     'zone_id' => [
       'type' => 'int',
       'min' => 1

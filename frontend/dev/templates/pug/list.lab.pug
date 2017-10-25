@@ -57,7 +57,7 @@ include globals.pug
 //-         ='{{ langManager.messages.global.erase }}'
 
 //- Despliega la info en forma de tabla
-div.col.s12('*ngIf'='hasSearchResults != false')
+div.col.s12('*ngIf'='searchResults.length > 0')
   div.scrollable-table-container
     +responsiveTable('langManager.messages.list.lab.tableHeaders')(
       class='scrollable-table'

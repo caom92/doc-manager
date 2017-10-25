@@ -6,26 +6,12 @@ import { LanguageService } from '../services/app.language'
 import { MzModalService, MzBaseModal } from 'ng2-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { NoParentElement, SingleParentElement } from './modal.search.default'
 
-// Tipo auxiliar que define los elementos recuperados del servidor que no 
-// posean un padre en la BD
-export type NoParentElement = {
-  id: number,
-  name: string
-}
-
-// Tipo auxiliar que define los elementos recuperados del servidor que
-// poseen un padre en la BD
-export type SingleParentElement = {
-  id: number,
-  name: string,
-  parent_id: number
-}
-
-// Este componente define el comportamiento base necesario para que el 
-// usuario busque un documento en el sistema
-export class DefaultDocumentSearchModalComponent
-  extends MzBaseModal 
+// Este componente define el comportamiento base necesario para que el usuario 
+// genere reportes de un documento del sistema
+export class DefaultDocumentReportModalComponent
+  extends MzBaseModal
   implements OnInit
 {
   // El ID del tipo de documento elegido por el usuario
@@ -36,31 +22,19 @@ export class DefaultDocumentSearchModalComponent
   modalOptions: any = {
   }
 
-  // Valores de la opcion para elegir todas las zonas de la lista de seleccion
-  noParentOptionAll: NoParentElement = {
-    id: null,
-    name: 'ALL - TODOS'
-  }
-
-  // Valores de la opcion para elegir todos los ranchos/productores/areas de la 
-  // lista de seleccion
-  singleParentOptionAll: SingleParentElement = {
-    id: null,
-    name: 'ALL - TODOS',
-    parent_id: null
-  }
-  
   // La lista de zonas a elegir por el usuario
   zones: Array<NoParentElement> = [
-    this.noParentOptionAll
   ]
 
   // El componente que invoco este componente
   parent: any = null
 
-  // Instancia que representa el formulario de captura donde el usuario subira 
-  // el documento
-  searchForm: FormGroup = null
+  // Instancia que representa el formulario de captura donde el usuario 
+  // generara un reporte
+  reportForm: FormGroup = null
+
+  // Los datos del reporte a desplegar en pantalla
+  reportData: any = null
 
   // El constructor de este componente, inyectando los servicios requeridos
   constructor(
@@ -89,7 +63,7 @@ export class DefaultDocumentSearchModalComponent
           if (response.meta.return_code == 0) {
             // si el servidor respondio con exito, cargamos la respuesta al 
             // objeto de sugerencias de zonas
-            this.zones = this.zones.concat(response.data)
+            this.zones = response.data
           } else {
             // si el servidor respondio con error, notificamos al usuario
             this.toastManager.showText(

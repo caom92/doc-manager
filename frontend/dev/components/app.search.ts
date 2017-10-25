@@ -34,10 +34,8 @@ export class SearchComponent
 
   // El componente que actualmente esta listando los resultados de busqueda
   listComponent: any = {
-    data: {
-      searchResults: [],
-      hasSearchResults: true
-    }
+    searchResults: [],
+    hasSearchResults: true
   }
 
   // El constructor de este componente, inyectando los servicios requeridos

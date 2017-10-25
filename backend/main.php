@@ -14,6 +14,46 @@ use \DataBase\TableFactory as TableFactory;
 //   function($scope, $name, $value, $options) {
 //   }
 // );
+ServiceProvider::addValidationRule(
+  'logged_in', 
+  function($scope, $name, $value, $options) {
+    $service = NULL;
+    require_once realpath(__DIR__.'/services/default/check-session.php');
+
+    // check if the user has logged in
+    if ($service['callback']($scope, NULL)) {
+      // get the session segment
+      $segment = $scope->session->getSegment('fsm');
+
+      // if she is, then check if the service is expecting
+      // the user to have an specific role
+      $mustCheckRoles = $options !== 'any';
+      if ($mustCheckRoles) {
+        // retrieve the current role of the user
+        $role = $segment->get('role_name');
+        $hasProperRole = false;
+
+        // check if the user's role correspond to any of
+        // the roles that the service is expecting
+        foreach ($options as $requiredRole) {
+          if ($role === $requiredRole) {
+            $hasProperRole = true;
+            break;
+          }
+        }
+
+        if (!$hasProperRole) {
+          throw new Exception(
+            'User does not have the proper role.',
+            117
+          );
+        }
+      }
+    } else {
+      throw new Exception('The user is not logged in', 118);
+    }
+  }
+);
 
 // Instanciamos el provedor de servicios
 $controller = new ServiceProvider(
