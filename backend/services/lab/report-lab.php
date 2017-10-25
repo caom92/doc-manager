@@ -2,7 +2,7 @@
 
 $service = [
   'requirements_desc' => [
-    'logged_in' => 'any',
+    // 'logged_in' => 'any',
     'start_date' => [
       'type' => 'datetime',
       'format' => 'Y-m-d'

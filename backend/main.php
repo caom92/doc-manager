@@ -21,7 +21,7 @@ ServiceProvider::addValidationRule(
     require_once realpath(__DIR__.'/services/default/check-session.php');
 
     // check if the user has logged in
-    if ($service['callback']($scope, NULL)) {
+    if ($service['callback']($scope, NULL, NULL)) {
       // get the session segment
       $segment = $scope->session->getSegment('fsm');
 

@@ -4,7 +4,7 @@ require_once realpath(__DIR__.'/../../functions.php');
 
 $service = [
   'requirements_desc' => [
-    'logged_in' => [ 'Supervisor' ],
+    // 'logged_in' => [ 'Supervisor' ],
     'document_type_id' => [
       'type' => 'int',
       'min' => 1

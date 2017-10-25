@@ -280,6 +280,8 @@ export class LanguageService
       114: 'Un archivo enviado al servidor no es una imagen',
       115: 'No se pudo enviar un archivo al servidor',
       116: 'Una entrada enviada al servidor no es un número telefónico',
+      117: 'No tiene el rol apropiado para usar este servicio',
+      118: 'La sesión no ha sido iniciada',
       200: 'Fallo al instanciar un DAO'
     },
     en: { // Ingles
@@ -534,6 +536,8 @@ export class LanguageService
       114: 'A file sent to the server is not an image',
       115: 'A file could not be sent to the server',
       116: 'A server input argument is not a phone number',
+      117: 'The user does not have the proper role to use this service',
+      118: 'You are not logged in',
       200: 'Failed to create an instance of a DAO'
     }
   }
