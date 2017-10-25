@@ -1,6 +1,6 @@
 include globals.pug
 
-div.col.s12
+div.col.s12('*ngIf'='hasData === true')
   div.scrollable-table-container
     +responsiveTable('tableHeaders')(
       class='scrollable-table'
