@@ -4,7 +4,7 @@ require_once realpath(__DIR__.'/../../functions.php');
 
 $service = [
   'requirements_desc' => [
-    // 'logged_in' => 'any',
+    'logged_in' => 'any',
     'document_type_id' => [
       'type' => 'int',
       'min' => 1
@@ -48,7 +48,7 @@ $service = [
       'optional' => TRUE
     ]
   ],
-  'callback' => function($scope, $request, $args) {
+  'callback' => function($scope, $request) {
     $rows = $scope->docManagerTableFactory->get('Lab\Documents')
       ->selectByDateInterval(
         $request['document_type_id'],
@@ -82,7 +82,7 @@ $service = [
     unset($row);
 
     return $rows;
-  } // 'callback' => function($scope, $request, $args)
+  } // 'callback' => function($scope, $request)
 ];
 
 ?>

@@ -18,12 +18,12 @@ ServiceProvider::addValidationRule(
   'logged_in', 
   function($scope, $name, $value, $options) {
     $service = NULL;
-    require_once realpath(__DIR__.'/services/default/check-session.php');
+    require_once realpath(__DIR__.'/services/session/check-session.php');
 
     // check if the user has logged in
     if ($service['callback']($scope, NULL, NULL)) {
       // get the session segment
-      $segment = $scope->session->getSegment('fsm');
+      $segment = $scope->session->getSegment('dm');
 
       // if she is, then check if the service is expecting
       // the user to have an specific role
@@ -69,11 +69,13 @@ $controller = new ServiceProvider(
       );
     },
     'fsmTableFactory' => function($config) 
-    use ($default) {
+    use ($default, $account) {
       return new TableFactory(
         'FoodSafetyManual',
         'DataBase\\Fsm\\',
-        $default['tables']['fsm']
+        $default['tables']['fsm'] +
+        $default['tables']['fsm'] +
+        $account['tables']['fsm']
       );
     }
   ],
@@ -81,13 +83,13 @@ $controller = new ServiceProvider(
     'GET' => 
       $default['services']['GET'] +
       $lab['services']['GET'] +
-      $types['services']['GET'],
-    'PUT' => [
-      // 'nombre del servicio' => function($scope, $request) {
-      // }
-    ],
+      $types['services']['GET'] +
+      $session['services']['GET'] +
+      $account['services']['GET'],
     'POST' =>
-      $lab['services']['POST'],
+      $lab['services']['POST'] +
+      $account['services']['POST'] +
+      $session['services']['POST'],
     'DELETE' =>
       $lab['services']['DELETE']
   ]

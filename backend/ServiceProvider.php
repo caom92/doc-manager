@@ -218,15 +218,19 @@ class ServiceProvider
             // obtenemos los datos enviados junto con la peticion y los 
             // almacenamos en un arreglo asociativo para su mas facil uso
             $data = $request->getParsedBody();
+            $data = array_merge(
+              isset($data) ? $data : [], 
+              $args
+            );
 
             // validamos los datos de entrada recibidos por el servicio desde el
             // cliente
             ServiceProvider::validateServiceInputArguments(
-              $this, $data, $args, $service['requirements_desc']
+              $this, $data, $service['requirements_desc']
             );
 
             // ejecutamos el servicio
-            $result = $service['callback']($this, $data, $args);
+            $result = $service['callback']($this, $data);
 
             // preparamos la respuesta a enviar al cliente
             $result = ServiceProvider::prepareResponse($result);
@@ -349,8 +353,8 @@ class ServiceProvider
   //        el dato que no cumplio con las reglas y la regla especifica que
   //        fallo la prueba
   private static function validateServiceInputArguments(
-    $scope, $request, $args, $requirementsDesc)
-  {
+    $scope, $request, $requirementsDesc
+  ) {
     // validamos los datos de entrada segun fueron especificadas las reglas de
     // validacion
     foreach ($requirementsDesc as $attribute => $options) {
@@ -361,11 +365,9 @@ class ServiceProvider
       $isOptional = ($hasOptionalFlag) ? $options['optional'] : false;
 
       // luego revisamos que el cliente haya enviado el argumento esperado
-      $isInRequest =  
-        isset($request[$attribute]) && array_key_exists($attribute, $request);
-      $isInArgs = 
-        isset($args[$attribute]) && array_key_exists($attribute, $args);
-      $hasAttribute = $isInRequest || $isInArgs;
+      $hasAttribute = 
+        isset($request[$attribute]) 
+        && array_key_exists($attribute, $request);
       
       // despues revisamos si la regla que vamos a evaluar se decide con el
       // atributo type
@@ -382,7 +384,7 @@ class ServiceProvider
         if ($hasAttribute) {
           // obtenemos el nombre del validador y el valor a evaluar adecuados
           $rule = $options['type'];
-          $value = ($isInRequest) ? $request[$attribute] : $args[$attribute];
+          $value = $request[$attribute];
         } else if (!$isOptional && $options['type'] != 'files') {
           // si el argumento no fue enviado desde el cliente y no fue declarado 
           // como opcional, entonces hay que lanzar una excepcion
@@ -570,8 +572,9 @@ class ServiceProvider
             // si el arreglo es un arreglo asociativo, debemos invocar esta
             // funcion asociativamente
             foreach ($value as $element) {
-              ServiceProvider::validateServiceInputArguments($scope, $element, 
-                $options['values']);
+              ServiceProvider::validateServiceInputArguments(
+                $scope, $element, $options['values']
+              );
             }
           }
         } else if (!$isOptional) {

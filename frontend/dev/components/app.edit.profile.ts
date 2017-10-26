@@ -108,8 +108,7 @@ export class EditProfileComponent implements OnInit
             response.meta.return_code
           )
         )
-      }, // (response: Response)
-      BackendService.url.fsm
+      } // (response: Response)
     ) // this.server.update
   } // onPasswordEditionFormSubmit()
 
@@ -145,8 +144,7 @@ export class EditProfileComponent implements OnInit
         if (response.meta.return_code == 0) {
           this.global.loginName = newUsername
         }
-      }, // (response: Response)
-      BackendService.url.fsm
+      } // (response: Response)
     ) // this.server.update
   } // onUsernameEditionFormSubmit()
 } // export class EditProfileComponent implements OnInit

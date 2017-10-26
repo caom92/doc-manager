@@ -41,9 +41,9 @@ export class HomeComponent implements OnInit
     // cookie de sesion en el servidor, sin embargo, como esta es una operacion 
     // asincrona, no se ajusta al modo de trabajo de ui-router, por lo que por 
     // lo pronto dependeremos de sessionStorage
-    this.server.write(
+    this.server.read(
       'check-session', 
-      new FormData(), 
+      {}, 
       (response: any) => {
         if (response.meta.return_code == 0) {
           this.global.hideSpinner()
@@ -87,8 +87,7 @@ export class HomeComponent implements OnInit
             )
           )
         } // if (result.meta.return_code == 0)
-      }, // (response: Response)
-      BackendService.url.fsm
+      } // (response: Response)
     ) // this.server.update
 
     // desplegamos el menu lateral y escondemos la animacion de carga
@@ -104,9 +103,9 @@ export class HomeComponent implements OnInit
   // Esta es la funcion que se invoca cuando el usuario hace clic en el boton 
   // de cerrar sesion
   onLogOutButtonClicked(): void {
-    this.server.write(
+    this.server.read(
       'logout', 
-      new FormData(), 
+      {}, 
       (response: any) => {
         if (response.meta.return_code == 0) {
           // si la sesion fue cerrada correctamente, desactivamos la bandera y 
@@ -125,8 +124,7 @@ export class HomeComponent implements OnInit
             )
           )
         } // if (result.meta.return_code == 0)
-      }, // (response: Response)
-      BackendService.url.fsm
+      } // (response: Response)
     ) // this.server.update
   } // onLogOutButtonClicked()
 } // export class HomeComponent implements OnInit

@@ -2,13 +2,13 @@
 
 $service = [
   'requirements_desc' => [
-    // 'logged_in' => 'any',
+    'logged_in' => 'any',
     'type_name' => [
       'type' => 'string',
       'min_length' => 1
     ]
   ],
-  'callback' => function($scope, $request, $args) {
+  'callback' => function($scope, $request) {
     $typeID = $scope->docManagerTableFactory->get('Lab\AnalysisTypes')
       ->getIDByName($request['type_name']);
 

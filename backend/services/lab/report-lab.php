@@ -2,7 +2,7 @@
 
 $service = [
   'requirements_desc' => [
-    // 'logged_in' => 'any',
+    'logged_in' => 'any',
     'start_date' => [
       'type' => 'datetime',
       'format' => 'Y-m-d'
@@ -16,13 +16,13 @@ $service = [
       'min' => 1
     ]
   ],
-  'callback' => function($scope, $request, $args) {
+  'callback' => function($scope, $request) {
     // primero obtenemos los valores del reporte de la BD
     $rows = $scope->docManagerTableFactory->get('Lab\Documents')
       ->countByDateIntervalAndZoneID(
-        $args['zone_id'],
-        $args['start_date'],
-        $args['end_date']
+        $request['zone_id'],
+        $request['start_date'],
+        $request['end_date']
       );
     
     // inicializamos almacenamiento temporal para almacenar los encabezados de 

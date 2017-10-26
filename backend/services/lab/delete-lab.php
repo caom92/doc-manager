@@ -7,10 +7,10 @@ $service = [
       'min' => 1
     ]
   ],
-  'callback' => function($scope, $request, $args) {
+  'callback' => function($scope, $request) {
     // recuperamos la instancia a la tabla de documentos
     $document = $scope->docManagerTableFactory->get('Lab\Documents')
-      ->getByID($args['document_id']);
+      ->getByID($request['document_id']);
 
     // computamos la direccion donde se encuentra almacenado el archivo PDF
     $filepath = realpath(

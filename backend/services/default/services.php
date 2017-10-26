@@ -14,7 +14,9 @@ $default = [
   'services' => [
     'GET' => [
       'list-producers-of-zone/{zone_id}' =>
-        realpath(__DIR__.'/list-producers-of-zone.php')
+        realpath(__DIR__.'/list-producers-of-zone.php'),
+      'list-zones' =>
+        realpath(__DIR__.'/list-zones.php')
     ]
   ]
 ];

@@ -13,30 +13,16 @@ class Zones extends DataBaseTable
     parent::__construct($db, 'zones');
   }
 
-  // Resiva si existe en la tabla algun renglon que tenga registrado el ID 
-  // especificado, retornando verdadero si este es el caso, o falso en caso 
-  // contrario 
-  function hasByID($id) {
+  // Returns an associative array containing all the data elements
+  // of the table
+  // [out]    return: an associative array with the data contained in
+  //          the data base table
+  function selectAll() {
     $query = $this->getStatement(
-      "SELECT * FROM `$this->table` WHERE id = :id"
+      "SELECT * FROM `$this->table` WHERE 1 ORDER BY id"
     );
-    $query->execute([
-      ':id' => $id
-    ]);
-    $rows = $query->fetchAll();
-    return count($rows) > 0;
-  }
-
-  // Retorna el nombre de la zona que tenga registrado el ID especificado
-  function getNameByID($id) {
-    $query = $this->getStatement(
-      "SELECT name FROM `$this->table` WHERE id = :id"
-    );
-    $query->execute([
-      ':id' => $id
-    ]);
-    $rows = $query->fetchAll();
-    return (count($rows) > 0) ? $rows[0]['name'] : NULL;
+    $query->execute();
+    return $query->fetchAll();
   }
 }
 

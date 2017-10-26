@@ -2,15 +2,15 @@
 
 $service = [
   'requirements_desc' => [
-    // 'logged_in' => 'any',
+    'logged_in' => 'any',
     'zone_id' => [
       'type' => 'int',
       'min' => 1
     ]
   ],
-  'callback' => function($scope, $request, $args) {
+  'callback' => function($scope, $request) {
     $zoneID = $scope->docManagerTableFactory->get('Zones')
-      ->getIDByForeignID($args['zone_id']);
+      ->getIDByForeignID($request['zone_id']);
     
     return $scope->docManagerTableFactory->get('Producers')
       ->selectByParentID($zoneID);

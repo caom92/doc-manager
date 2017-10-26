@@ -33,9 +33,9 @@ export class UsersComponent implements OnInit
     let modal = this.modalManager.open(ProgressModalComponent)
 
     // solicitamos al servidor la lista de usuarios
-    this.server.write(
+    this.server.read(
       'list-users',
-      new FormData(),
+      {},
       (response: any) => {
         // cuando el servidor responda, cerramos el modal de espera
         modal.instance.modalComponent.close()
@@ -54,8 +54,7 @@ export class UsersComponent implements OnInit
             )
           )
         } // if (response.meta.return_code == 0)
-      }, // (response: any)
-      BackendService.url.fsm
+      } // (response: any)
     ) // this.server.update
   } // ngOnInit(): void
 
@@ -94,8 +93,7 @@ export class UsersComponent implements OnInit
             )
           )
         } // if (response.meta.return_code == 0)
-      }, // (response: any)
-      BackendService.url.fsm
+      } // (response: any)
     ) // this.server.update
   } // onToggleUserActivation(userIdx: number, isActive: boolean): void
 } // export class UsersComponent implements OnInit

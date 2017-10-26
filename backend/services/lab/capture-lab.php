@@ -4,7 +4,7 @@ require_once realpath(__DIR__.'/../../functions.php');
 
 $service = [
   'requirements_desc' => [
-    // 'logged_in' => [ 'Supervisor' ],
+    'logged_in' => [ 'Supervisor' ],
     'document_type_id' => [
       'type' => 'int',
       'min' => 1
@@ -56,7 +56,7 @@ $service = [
       'format' => 'document'
     ]
   ],
-  'callback' => function($scope, $request, $args) {
+  'callback' => function($scope, $request) {
     // obtenemos el ID del laboratorio, agregandolo a la BD si aun no esta 
     // registrado
     $labID = 
@@ -174,7 +174,7 @@ $service = [
       // pasamos la excepcion a la siguiente capa
       throw $e;
     } 
-  } // 'callback' => function($scope, $request, $args)
+  } // 'callback' => function($scope, $request)
 ];
 
 ?>

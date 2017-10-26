@@ -2,9 +2,9 @@
 
 $service = [
   'requirements_desc' => [
-    // 'logged_in' => 'any'
+    'logged_in' => 'any'
   ],
-  'callback' => function($scope, $request, $args) {
+  'callback' => function($scope, $request) {
     return $scope->docManagerTableFactory->get('Lab\Laboratories')
       ->selectAll();
   }

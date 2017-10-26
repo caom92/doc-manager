@@ -59,9 +59,9 @@ export class DefaultDocumentUploadModalComponent
       this.zones = [ this.global.zone ]
     } else {
       // obtenemos la lista de zonas del servidor
-      this.server.write(
+      this.server.read(
         'list-zones',
-        new FormData(),
+        {},
         (response: BackendResponse) => {
           // revisamos si el servidor respondio con exito
           if (response.meta.return_code == 0) {
@@ -77,8 +77,7 @@ export class DefaultDocumentUploadModalComponent
               )
             )
           } // if (response.meta.return_code == 0)
-        }, // (response: BackendResponse)
-        BackendService.url.fsm
+        } // (response: BackendResponse)
       ) // this.server.read
     }
   } // ngOnInit(): void

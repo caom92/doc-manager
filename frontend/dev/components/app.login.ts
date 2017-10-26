@@ -36,9 +36,9 @@ export class LogInComponent implements OnInit
     this.globals.employeeNum = userData.employee_num
     this.globals.userFullName = `${userData.first_name} ${userData.last_name}`
     this.globals.loginName = userData.login_name
-    this.globals.companyName = userData.company
-    this.globals.companyLogo = userData.logo
-    this.globals.companyAddress = userData.address
+    this.globals.companyName = userData.zone_company
+    this.globals.companyLogo = userData.zone_logo
+    this.globals.companyAddress = userData.zone_address
 
     if (userData.zone_id !== undefined) {
       this.globals.zoneID = userData.zone_id
@@ -67,9 +67,9 @@ export class LogInComponent implements OnInit
     // cuando el usuario quiere entrar a la pantalla de inicio de sesion, hay 
     // que revisar si el usuario aun no haya iniciado sesion para permitirle 
     // entrar a esta pagina
-    this.server.write(
+    this.server.read(
       'check-session', 
-      new FormData(), 
+      {}, 
       (response: any) => {
         if (response.meta.return_code == 0) {
           if (response.data) {
@@ -91,8 +91,7 @@ export class LogInComponent implements OnInit
             )
           )
         }
-      }, // (response: Response)
-      BackendService.url.fsm
+      } // (response: Response)
     ) // this.server.update
   } // ngOnInit()
 
@@ -117,25 +116,6 @@ export class LogInComponent implements OnInit
           localStorage.is_logged_in = true
           this.storeUserData(response.data)
 
-          // // dependiendo del rol del usuario, se deben mostrar diferentes 
-          // // opciones en la aplicacion
-          // switch (this.globals.roleName) {
-          //   case 'Employee':
-          //   case 'Manager':
-          //     this.globals.initProgramsMenu()
-          //   break
-
-          //   case 'Supervisor':
-          //     this.globals.initProgramsMenu()
-          //     this.globals.initSupervisorMenu(this.server, this.toastManager)
-          //   break
-
-          //   case 'Director':
-          //     this.globals.initProgramsMenu()
-          //     this.globals.initZoneMenu(this.server, this.toastManager)
-          //   break
-          // }
-
           // indicamos al usuario que ha iniciado sesion
           this.toastManager.showText(
             this.langManager.getServiceMessage(
@@ -153,8 +133,7 @@ export class LogInComponent implements OnInit
             )
           )
         } // if (result.meta.return_code == 0)
-      }, // (response: Response)
-      BackendService.url.fsm
+      } // (response: Response)
     ) // this.server.update
   } // onLogInFormSubmit
 } // class LogInComponent
