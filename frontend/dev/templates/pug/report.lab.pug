@@ -2,12 +2,17 @@ include globals.pug
 
 div.col.s12('*ngIf'='hasData === true')
   div.scrollable-table-container
-    +responsiveTable('tableHeaders')(
+    +table('tableHeaders')(
       class='scrollable-table'
     )
       tr(
         '*ngFor'='let row of reportData'
       )
+        td.table-col-fixed(
+          '*ngIf'='row.subtype !== undefined'
+          '[attr.rowspan]'='row.rowspan'
+        )
+          ='{{ row.subtype }}'
         td='{{ row.name }}'
         td.table-col-fixed(
           '*ngFor'='let col of row.values'

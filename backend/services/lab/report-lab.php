@@ -27,7 +27,7 @@ $service = [
     
     // inicializamos almacenamiento temporal para almacenar los encabezados de 
     // la tabla de reporte y el cuerpo de la misma
-    $headers = [ '' ];
+    $headers = [ 'SubT.', 'A/P' ];
     $reportData = [];
 
     // almacenamiento auxiliar que contendra los datos del area actual que esta 
@@ -35,13 +35,34 @@ $service = [
     $currentArea = [
       'name' => ''
     ];
+    $subtypes = [];
+    $currentSubtype = [
+      'name' => '',
+      'quantity' => 0
+    ];
 
     // visitamos cada renglon obtenido de la BD uno por uno ...
+    $i = 0;
     foreach ($rows as $row) {
       // revisamos si este renglon contiene un area diferente a todos los 
       // renglones procesados anteriormente hasta ahora
       $hasAreaChanged = $currentArea['name'] != $row['area_name'];
       if ($hasAreaChanged) {
+        $hasSubtypeChanged = $currentSubtype['name'] != $row['subtype_name'];
+        if ($hasSubtypeChanged) {
+          if (strlen($currentSubtype['name']) > 0) {
+            array_push($subtypes, $currentSubtype);
+          }
+
+          $currentSubtype = [
+            'name' => $row['subtype_name'],
+            'index' => $i,
+            'quantity' => 1
+          ];
+        } else {
+          $currentSubtype['quantity']++;    
+        }
+
         // si se trata de un renglon nuevo...
         if (strlen($currentArea['name']) > 0) {
           // guardamos el area que recien terminamos de procesar
@@ -55,6 +76,7 @@ $service = [
             $row['num_documents']
           ]
         ];
+        $i++;
       } else {
         // si el nuevo renglon pertenece a la misma area que estamos procesando 
         // actualmente, simplemente almacenamos los datos de este renglon en 
@@ -72,6 +94,15 @@ $service = [
     // no hay que olvidar almacenar los datos de la ultima area procesada 
     if (strlen($currentArea['name']) > 0) {
       array_push($reportData, $currentArea);
+    }
+
+    if (strlen($currentSubtype['name']) > 0) {
+      array_push($subtypes, $currentSubtype);
+    }
+
+    foreach ($subtypes as $subtype) {
+      $reportData[$subtype['index']]['subtype'] = $subtype['name'];
+      $reportData[$subtype['index']]['rowspan'] = $subtype['quantity'];
     }
 
     // retornamos los datos procesados del reporte

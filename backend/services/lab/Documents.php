@@ -149,6 +149,7 @@ class Documents extends DocumentsTable
   function countByDateIntervalAndZoneID($zoneID, $startDate, $endDate) {
     $query = $this->getStatement(
       "SELECT
+        ap.subtype_name AS subtype_name,
         ap.area_name AS area_name,
         ap.producer_name AS producer_name,
         COUNT(d.id) AS num_documents
@@ -157,12 +158,17 @@ class Documents extends DocumentsTable
       RIGHT JOIN
         (
           SELECT
+            s.id AS subtype_id,
+            s.name AS subtype_name,
             a.id AS area_id,
             a.name AS area_name,
             p.id AS producer_id,
             p.name AS producer_name
           FROM 
             `lab_areas` AS a 
+          INNER JOIN
+            `analysis_subtypes` AS s
+            ON a.parent_id = s.id
           RIGHT JOIN 
             `producers` AS p 
             ON 1
@@ -185,6 +191,7 @@ class Documents extends DocumentsTable
         ) AS d 
       ON l.document_id = d.id
       GROUP BY
+        subtype_name,
         area_name,
         producer_name"
     );

@@ -283,6 +283,17 @@ mixin responsiveTable(headers)
     tbody
       block
 
+//- Crea una tabla NO responsiva
+//- [in]  headers (string): el nombre del atributo del componente Angular que 
+//-       contiene la lista de encabezados de la tabla
+mixin table(headers)
+  table.highlight&attributes(attributes)
+    thead
+      th('*ngFor'='let header of ' + headers) 
+        ='{{ header }}'
+    tbody
+      block
+
 //- Crea un campo para elegir una fecha
 //- [in]  name (string): el nombre del campo con el cual podra ser referenciado 
 //-       en el componente
