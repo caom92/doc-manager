@@ -91,12 +91,6 @@ div.row
             '*ngIf'='row.subtype === undefined'
           )
             td='{{ row.name }}'
-            ng-container(
+            td.table-col-fixed(
               '*ngFor'='let col of row.values'
-            )
-              td.table-col-fixed(
-                '*ngIf'='col > 0'
-              ): b='{{ col }}'
-              td.table-col-fixed(
-                '*ngIf'='col == 0'
-              )='{{ col }}'
+            )='{{ col }}'

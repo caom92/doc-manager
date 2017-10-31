@@ -64,7 +64,7 @@ export class LabReportResultsComponent extends ReportResultsComponent
         background-color: #4CAF50;
       }
       .product {
-        width: 50px;
+        width: 75px;
         text-align: right;
       }
       .header {
@@ -167,23 +167,24 @@ export class LabReportResultsComponent extends ReportResultsComponent
       // el nombre de las areas
       content[0].body += 
         `<table>
-          <tr>
-            <th class='product'>${
-              (localStorage.lang == 'en') ?
-                'Area/Product' : 'Área/Producto'
-            }</th>`
+          <thead>
+            <tr>
+              <th>${
+                (localStorage.lang == 'en') ?
+                  'Area/Product' : 'Área/Producto'
+              }</th>`
       
       // luego agregamos cada celda que contiene el nombre de la unidad 
       // productora, imprimiendolas hasta que se agoten o hasta que se hayan 
       // impreso 9 de ellas, lo que sea que llegue primero
       for (
         let i = startingCol; 
-        i < this.tableHeaders.length && i < startingCol + 9; 
+        i < this.tableHeaders.length && i < startingCol + 11; 
         ++i
       ) {
-        content[0].body += `<th class='product'>${ this.tableHeaders[i] }</th>`
+        content[0].body += `<th class="product">${ this.tableHeaders[i] }</th>`
       }
-      content[0].body += `</tr>`
+      content[0].body += `</tr></thead><tbody>`
 
       // una vez impresos los encabezados, imprimimos los datos renglon por 
       // renglon
@@ -191,7 +192,7 @@ export class LabReportResultsComponent extends ReportResultsComponent
         // primero imprimimos la 1ra columna, que contiene el nombre del area
         content[0].body += 
           `<tr>
-            <td class='product'>${ row.name }</td>`
+            <td>${ row.name }</td>`
         
         // luego imprimiremos 10 columnas o las que sobren, lo que llegue 1ro
         for (
@@ -199,19 +200,18 @@ export class LabReportResultsComponent extends ReportResultsComponent
           j < row.values.length && j < startingCol + 9; 
           ++j
         ) {
-          content[0].body += `<td class='product'>${ row.values[j] }</td>`
+          content[0].body += `<td class="product">${ row.values[j] }</td>`
         }
         content[0].body += `</tr>`
       }
 
       // cerramos la tabla
-      content[0].body += '</table><br><br>'
+      content[0].body += '</tbody></table>'
 
       // avanzamos al siguiente grupo de 10 columnas
-      startingCol += 9
+      startingCol += 11
     } // for (let row of this.reportData)
-    
-    content[0].body = $(content[0].body).html()
+
     // generamos la cadena que representa el JSON que sera enviado al servidor
     this.content = JSON.stringify(content)
   } // prepareReportHTML(): void
