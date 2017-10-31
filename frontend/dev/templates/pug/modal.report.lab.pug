@@ -51,7 +51,8 @@ mz-modal(
           div.col.s12.m4
             +select(
               'type', 'langManager.messages.upload.lab.typeNameLabel', 'langManager.messages.global.selectPlaceholder',
-              'analysisTypes', '.name', ''
+              'analysisTypes', '.name', '',
+              'onAnalysisTypeSelected()'
             )(
               formControlName='type'
               mz-validation
@@ -61,8 +62,7 @@ mz-modal(
           div.col.s12.m4
             +select(
               'subtype', 'langManager.messages.upload.lab.subtype', 'langManager.messages.global.selectPlaceholder',
-              'subTypes', '.name', '',
-              'onSubTypeSelected()'
+              'subTypes', '.name', ''
             )(
               formControlName='subtype'
               mz-validation

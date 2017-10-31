@@ -52,7 +52,6 @@ export class LabReportResultsComponent extends ReportResultsComponent
         font-family: arial, 
         sans-serif; 
         border-collapse: collapse; 
-        width: 100%;
       }
       td { 
         border: 1px solid #000000; 
@@ -65,7 +64,11 @@ export class LabReportResultsComponent extends ReportResultsComponent
         background-color: #4CAF50;
       }
       .product {
-        width: 100px;
+        width: 50px;
+        text-align: right;
+      }
+      .header {
+        width: 100%;
       }
     </style>`
 
@@ -165,7 +168,7 @@ export class LabReportResultsComponent extends ReportResultsComponent
       content[0].body += 
         `<table>
           <tr>
-            <th>${
+            <th class='product'>${
               (localStorage.lang == 'en') ?
                 'Area/Product' : 'Área/Producto'
             }</th>`
@@ -208,6 +211,7 @@ export class LabReportResultsComponent extends ReportResultsComponent
       startingCol += 9
     } // for (let row of this.reportData)
     
+    content[0].body = $(content[0].body).html()
     // generamos la cadena que representa el JSON que sera enviado al servidor
     this.content = JSON.stringify(content)
   } // prepareReportHTML(): void

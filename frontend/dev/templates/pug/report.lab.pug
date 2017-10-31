@@ -1,11 +1,12 @@
 include globals.pug
 
+//- action='http://manual.jfdc.tech/source/server/report/reportPDF.php'
 div.row
   div.col.s6.offset-s6.m4.offset-m8
     form(
       method='POST'
       target='_blank'
-      action='http://manual.jfdc.tech/source/server/report/reportPDF.php'
+      action='http://localhost/espresso/source/server/report/reportPDF.php'
       ngNoForm
     )
       input(
@@ -90,6 +91,12 @@ div.row
             '*ngIf'='row.subtype === undefined'
           )
             td='{{ row.name }}'
-            td.table-col-fixed(
+            ng-container(
               '*ngFor'='let col of row.values'
-            )='{{ col }}'
+            )
+              td.table-col-fixed(
+                '*ngIf'='col > 0'
+              ): b='{{ col }}'
+              td.table-col-fixed(
+                '*ngIf'='col == 0'
+              )='{{ col }}'
