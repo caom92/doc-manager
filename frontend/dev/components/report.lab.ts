@@ -63,7 +63,7 @@ export class LabReportResultsComponent extends ReportResultsComponent
         font-weight: bold; 
         background-color: #4CAF50;
       }
-      .product {
+      .producer-cell {
         width: 75px;
         text-align: center;
       }
@@ -179,10 +179,11 @@ export class LabReportResultsComponent extends ReportResultsComponent
       // impreso 9 de ellas, lo que sea que llegue primero
       for (
         let i = startingCol; 
-        i < this.tableHeaders.length && i < startingCol + 11; 
+        i < this.tableHeaders.length && i < startingCol + 9; 
         ++i
       ) {
-        content[0].body += `<th class="product">${ this.tableHeaders[i] }</th>`
+        content[0].body += 
+          `<th class="producer-cell">${ this.tableHeaders[i] }</th>`
       }
       content[0].body += `</tr></thead><tbody>`
 
@@ -197,26 +198,26 @@ export class LabReportResultsComponent extends ReportResultsComponent
         // luego imprimiremos 10 columnas o las que sobren, lo que llegue 1ro
         for (
           let j = startingCol - 2; 
-          j < row.values.length && j < startingCol + 9; 
+          j < row.values.length && j < startingCol + 7; 
           ++j
         ) {
           if (row.values[j] > 0) {
             content[0].body += 
-              `<td class="product" style="background-color:yellow">
+              `<td class="producer-cell" style="background-color:yellow">
                 ${ row.values[j] }
               </td>`
           } else {
-            content[0].body += `<td class="product">${ row.values[j] }</td>`
+            content[0].body += `<td class="producer-cell">${ row.values[j] }</td>`
           }
         }
         content[0].body += `</tr>`
       }
 
       // cerramos la tabla
-      content[0].body += '</tbody></table>'
+      content[0].body += '</tbody></table><br><br>'
 
       // avanzamos al siguiente grupo de 10 columnas
-      startingCol += 11
+      startingCol += 9
     } // for (let row of this.reportData)
 
     // generamos la cadena que representa el JSON que sera enviado al servidor
