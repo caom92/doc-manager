@@ -19,7 +19,7 @@ mz-modal(
             'start-date', 
             'langManager.messages.search.startDateLabel',
             'langManager.messages.global.datePickerConfig',
-            'col s12 m4'
+            'col s12 m6'
           )(
             formControlName='startDate'
             mz-validation
@@ -30,19 +30,41 @@ mz-modal(
             'end-date', 
             'langManager.messages.search.endDateLabel',
             'langManager.messages.global.datePickerConfig',
-            'col s12 m4'
+            'col s12 m6'
           )(
             formControlName='endDate'
             mz-validation
             required
             '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
           )
+        div.row
           div.col.s12.m4
             +select(
               'zone', 'langManager.messages.upload.zoneLabel', 'langManager.messages.global.selectPlaceholder',
               'zones', '.name'
             )(
               formControlName='zone'
+              mz-validation
+              required
+              '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
+            )
+          div.col.s12.m4
+            +select(
+              'type', 'langManager.messages.upload.lab.typeNameLabel', 'langManager.messages.global.selectPlaceholder',
+              'analysisTypes', '.name', ''
+            )(
+              formControlName='type'
+              mz-validation
+              required
+              '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
+            )
+          div.col.s12.m4
+            +select(
+              'subtype', 'langManager.messages.upload.lab.subtype', 'langManager.messages.global.selectPlaceholder',
+              'subTypes', '.name', '',
+              'onSubTypeSelected()'
+            )(
+              formControlName='subtype'
               mz-validation
               required
               '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'

@@ -30,6 +30,10 @@ $service = [
       $request['username']
     );
 
+    if (strlen($userData['zone_logo']) == 0) {
+      $userData['zone_logo'] = 'default.png';
+    }
+
     // check if the query was successful
     if (isset($userData)) {
       // check if the password is correct

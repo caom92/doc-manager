@@ -17,6 +17,12 @@ export class LabDocumentReportModalComponent
   extends DefaultDocumentReportModalComponent
   implements OnInit
 {
+  // La lista de analisis de laboratorio a elegir por el usuario
+  analysisTypes: Array<NoParentElement> = []
+
+  // La lista de subtipos de analisis de laboratorio a elegir por el usuario
+  subTypes: Array<SingleParentElement> = [] 
+
   // El constructor de este componente, inyectando los servicios requeridos
   constructor(
     server: BackendService,
@@ -49,8 +55,70 @@ export class LabDocumentReportModalComponent
             disabled: false
           },
         Validators.required
-      ]
+      ],
+      type: [ null, Validators.required ],
+      subtype: [ null, Validators.required ]
     })
+
+    // obtenemos la lista de zonas del servidor
+    this.server.read(
+      'list-analysis-types',
+      {},
+      (response: BackendResponse) => {
+        // revisamos si el servidor respondio con exito
+        if (response.meta.return_code == 0) {
+          // si el servidor respondio con exito, cargamos la respuesta al 
+          // objeto de sugerencias de zonas
+          this.analysisTypes = this.analysisTypes.concat(response.data)
+        } else {
+          // si el servidor respondio con error, notificamos al usuario
+          this.toastManager.showText(
+            this.langManager.getServiceMessage(
+              'list-labs',
+              response.meta.return_code
+            )
+          )
+        } // if (response.meta.return_code == 0)
+      } // (response: BackendResponse)
+    ) // this.server.read
+  }
+
+  // Funcion que se invoca cuando un tipo de analisis es seleccionado
+  onAnalysisTypeSelected(): void {
+    // borramos los valores de subtipo en caso que ya hayan tenido 
+    // algun valor previamente y el usuario este cambiando de tipo
+    this.reportForm.controls.subtype.setValue(null)
+    this.subTypes = []
+
+    // si el tipo es valido, mandamos una peticion al servidor para recuperar 
+    // la lista de subtipos
+    let selectedType =
+      <NoParentElement>this.reportForm.controls.type.value
+    if (selectedType.id) {
+      // preparamos los datos que seran enviados al usuario
+      let data = new FormData()
+      data.append('type_name', selectedType.name)
+
+      // recuperamos los ranchos del servidor
+      this.server.write(
+        'list-analysis-subtypes-of-type',
+        data,
+        (response: BackendResponse) => {
+          // revisamos si el servidor respondio con exito
+          if (response.meta.return_code == 0) {
+            this.subTypes = this.subTypes.concat(response.data)
+          } else {
+            // si el servidor repondio con error, notificamos al usuario
+            this.toastManager.showText(
+              this.langManager.getServiceMessage(
+                'list-analysis-subtypes-of-type',
+                response.meta.return_code
+              )
+            )
+          } // if (response.meta.return_code == 0)
+        } // (response: BackendResponse)
+      ) // this.server.write
+    } // if (this.reportForm.controls.typeName.valid)
   }
 
   // Esta funcion se invoca cuando el formulario de captura de documento es 
@@ -65,7 +133,8 @@ export class LabDocumentReportModalComponent
       {
         start_date: this.reportForm.controls.startDate.value,
         end_date: this.reportForm.controls.endDate.value,
-        zone_id: this.reportForm.controls.zone.value.id
+        zone_id: this.reportForm.controls.zone.value.id,
+        subtype_id: this.reportForm.controls.subtype.value.id
       },
       (response: BackendResponse) => {
         // al responder el servidor, cerramos el modal de espera
@@ -76,6 +145,12 @@ export class LabDocumentReportModalComponent
         if (response.meta.return_code == 0) {
           this.parent.tableHeaders = response.data.headers
           this.parent.reportData = response.data.body
+          this.parent.startDate = this.reportForm.controls.startDate.value
+          this.parent.endDate = this.reportForm.controls.endDate.value
+          this.parent.zone = this.reportForm.controls.zone.value.name
+          this.parent.type = this.reportForm.controls.type.value.name
+          this.parent.subtype = this.reportForm.controls.subtype.value.name
+          this.parent.prepareReportHTML()
         } else {
           // notificamos al usuario del resultado obtenido
           this.toastManager.showText(

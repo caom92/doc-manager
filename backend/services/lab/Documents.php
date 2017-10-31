@@ -141,12 +141,15 @@ class Documents extends DocumentsTable
   // area para cada productor
   // [in]   zoneID (uint): el ID de la zona cuyos productores van a ser 
   //        buscados en la BD
+  // [in]   subtypeID (uint): el ID del subtipo de analisis que sera buscado
   // [in]   startDate (string): la fecha de inicio en la que se realizara la 
   //        busqueda
   // [in]   endDate (string): la fecha final en la que se realizara la busqueda
   // [out]  return (dictionary): la tabla que contiene cuantos documentos hay 
   //        organizados por renglones y columnas
-  function countByDateIntervalAndZoneID($zoneID, $startDate, $endDate) {
+  function countByDateIntervalAndZoneAndSubtype(
+    $zoneID, $subtypeID, $startDate, $endDate
+  ) {
     $query = $this->getStatement(
       "SELECT
         ap.subtype_name AS subtype_name,
@@ -174,6 +177,7 @@ class Documents extends DocumentsTable
             ON 1
           WHERE 
             p.parent_id = :zoneID
+            AND a.parent_id = :subtypeID
         ) AS ap
         ON 
           l.area_id = ap.area_id
@@ -198,6 +202,7 @@ class Documents extends DocumentsTable
 
     $query->execute([
       ':zoneID' => $zoneID,
+      ':subtypeID' => $subtypeID,
       ':startDate' => $startDate,
       ':endDate' => $endDate
     ]);

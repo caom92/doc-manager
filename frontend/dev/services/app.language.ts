@@ -42,7 +42,8 @@ export class LanguageService
           close: 'Cerrar',
           format: 'dddd, dd mmmm, yyyy',
           formatSubmit: "yyyy-mm-dd"
-        }
+        },
+        reportButton: 'Reporte'
       },
       loginForm: {
         title: 'Inicie Sesión',
@@ -298,7 +299,8 @@ export class LanguageService
           closeOnClear: false,
           format: 'dddd, dd mmmm, yyyy',
           formatSubmit: "yyyy-mm-dd"
-        }
+        },
+        reportButton: 'Report'
       },
       loginForm: {
         title: 'Sign In',

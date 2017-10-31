@@ -1,19 +1,95 @@
 include globals.pug
 
-div.col.s12('*ngIf'='hasData === true')
-  div.scrollable-table-container
-    +table('tableHeaders')(
-      class='scrollable-table'
+div.row
+  div.col.s6.offset-s6.m4.offset-m8
+    form(
+      method='POST'
+      target='_blank'
+      action='http://manual.jfdc.tech/source/server/report/reportPDF.php'
+      ngNoForm
     )
-      tr(
-        '*ngFor'='let row of reportData'
+      input(
+        type='hidden'
+        name='lang'
+        '[ngModel]'='lang'
       )
-        td.table-col-fixed(
-          '*ngIf'='row.subtype !== undefined'
-          '[attr.rowspan]'='row.rowspan'
+      input(
+        type='hidden'
+        name='content'
+        '[ngModel]'='content'
+      )
+      input(
+        type='hidden'
+        name='style'
+        '[ngModel]'='style'
+      )
+      input(
+        type='hidden'
+        name='company'
+        '[ngModel]'='company'
+      )
+      input(
+        type='hidden'
+        name='address'
+        '[ngModel]'='address'
+      )
+      input(
+        type='hidden'
+        name='logo'
+        '[ngModel]'='logo'
+      )
+      input(
+        type='hidden'
+        name='orientation'
+        '[ngModel]'='orientation'
+      )
+      input(
+        type='hidden'
+        name='footer'
+        '[ngModel]'='footer'
+      )
+      input(
+        type='hidden'
+        name='supervisor'
+        '[ngModel]'='supervisor'
+      )
+      input(
+        type='hidden'
+        name='signature'
+        '[ngModel]'='signature'
+      )
+      +button(
+        'submit',
+        'report-pdf',
+        '{{ langManager.messages.global.reportButton }}',
+        'mdi mdi-file-pdf-box'
+      )
+
+div.row
+  div.col.s12('*ngIf'='hasData === true')
+    div.scrollable-table-container
+      +table('tableHeaders')(
+        class='scrollable-table'
+      )
+        ng-container(
+          '*ngFor'='let row of reportData'
         )
-          ='{{ row.subtype }}'
-        td='{{ row.name }}'
-        td.table-col-fixed(
-          '*ngFor'='let col of row.values'
-        )='{{ col }}'
+          tr(
+            '*ngIf'='row.subtype !== undefined'
+            style='border-top: 1px solid #d0d0d0'
+          )
+            td.table-col-fixed(
+              '[attr.rowspan]'='row.rowspan'
+            )
+              ='{{ row.subtype }}'
+            td='{{ row.name }}'
+            td.table-col-fixed(
+              '*ngFor'='let col of row.values'
+            )='{{ col }}'
+          tr(
+            '*ngIf'='row.subtype === undefined'
+          )
+            td='{{ row.name }}'
+            td.table-col-fixed(
+              '*ngFor'='let col of row.values'
+            )='{{ col }}'

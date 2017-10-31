@@ -14,13 +14,18 @@ $service = [
     'zone_id' => [
       'type' => 'int',
       'min' => 1
+    ],
+    'subtype_id' => [
+      'type' => 'int',
+      'min' => 1
     ]
   ],
   'callback' => function($scope, $request) {
     // primero obtenemos los valores del reporte de la BD
     $rows = $scope->docManagerTableFactory->get('Lab\Documents')
-      ->countByDateIntervalAndZoneID(
+      ->countByDateIntervalAndZoneAndSubtype(
         $request['zone_id'],
+        $request['subtype_id'],
         $request['start_date'],
         $request['end_date']
       );
