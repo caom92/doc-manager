@@ -65,7 +65,7 @@ export class LabReportResultsComponent extends ReportResultsComponent
       }
       .product {
         width: 75px;
-        text-align: right;
+        text-align: center;
       }
       .header {
         width: 100%;
@@ -200,7 +200,14 @@ export class LabReportResultsComponent extends ReportResultsComponent
           j < row.values.length && j < startingCol + 9; 
           ++j
         ) {
-          content[0].body += `<td class="product">${ row.values[j] }</td>`
+          if (row.values[j] > 0) {
+            content[0].body += 
+              `<td class="product" style="background-color:yellow">
+                ${ row.values[j] }
+              </td>`
+          } else {
+            content[0].body += `<td class="product">${ row.values[j] }</td>`
+          }
         }
         content[0].body += `</tr>`
       }
