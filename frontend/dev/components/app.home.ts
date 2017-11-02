@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit
   ngOnInit(): void {
     // si no hay ningun idioma definimo, definimos el idioma español por defecto
     if (localStorage.lang == null) {
-      localStorage.lang = 'es'
+      this.langManager.changeLanguage('es')
     }
 
     // inicializamos los mensajes en el idioma adecuado
@@ -58,25 +58,6 @@ export class HomeComponent implements OnInit
             
             // no olvides desplegar el menu lateral de navegacion
             this.global.displaySideNav()
-
-            // dependiendo del rol del usuario, se deben mostrar diferentes 
-            // opciones en la aplicacion
-            // switch (this.global.roleName) {
-            //   case 'Employee':
-            //   case 'Manager':
-            //     this.global.initProgramsMenu()
-            //   break
-
-            //   case 'Supervisor':
-            //     this.global.initProgramsMenu()
-            //     this.global.initSupervisorMenu(this.server, this.toastManager)
-            //   break
-
-            //   case 'Director':
-            //     this.global.initProgramsMenu()
-            //     this.global.initZoneMenu(this.server, this.toastManager)
-            //   break
-            // }
           }
         } else {
           // si hubo un problema con la comunicacion con el servidor 
