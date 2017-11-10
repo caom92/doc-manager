@@ -35,7 +35,7 @@ $service = [
     }
 
     // check if the query was successful
-    if (isset($userData)) {
+    if (isset($userData) && count($userData) > 1) {
       // check if the password is correct
       $isPasswordValid = password_verify(
         $request['password'], 
