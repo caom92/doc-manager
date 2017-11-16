@@ -30,6 +30,7 @@ import { LabInventoryComponent } from './inventory.lab'
 import { LabTypesInventoryModalComponent } from './modal.inventory.lab.type'
 import { LabSubTypesInventoryModalComponent } from './modal.inventory.lab.subtype'
 import { LabProductInventoryModalComponent } from './modal.inventory.lab.product'
+import { LabLabInventoryModalComponent } from './modal.inventory.lab.lab'
 
 // Importamos los servicios que van a ser necesitados por cada pagina del 
 // sistema
@@ -129,6 +130,7 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     LabTypesInventoryModalComponent,
     LabSubTypesInventoryModalComponent,
     LabProductInventoryModalComponent,
+    LabLabInventoryModalComponent
   ],
   // declaramos cualquier componente que sera inyectado dinamicamente
   entryComponents: [
@@ -143,7 +145,8 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     LabInventoryComponent,
     LabTypesInventoryModalComponent,
     LabSubTypesInventoryModalComponent,
-    LabProductInventoryModalComponent
+    LabProductInventoryModalComponent,
+    LabLabInventoryModalComponent
   ],
   // indicamos cual es el componente raiz
   bootstrap: [ HomeComponent ]

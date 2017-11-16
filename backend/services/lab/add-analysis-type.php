@@ -2,7 +2,7 @@
 
 $service = [
   'requirements_desc' => [
-    'logged_in' => 'any',
+    'logged_in' => [ 'Supervisor' ],
     'name' => [
       'type' => 'string',
       'max_length' => 255

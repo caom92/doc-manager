@@ -2,7 +2,7 @@
 
 $service = [
   'requirements_desc' => [
-    'logged_in' => 'any',
+    'logged_in' => [ 'Supervisor' ],
     'parent_id' => [
       'type' => 'int',
       'min' => 1

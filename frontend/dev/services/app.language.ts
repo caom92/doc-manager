@@ -193,17 +193,31 @@ export class LanguageService
         title: 'Control de Inventario',
         lab: {
           categoriesTitle: 'Categorías de Análisis',
+          categoriesTab: 'Categorías',
+          labsTab: 'Laboratorios',
           tableHeaders: [
             'Tipo de Análisis',
             'Subtupo de Análisis',
             'Área o Producto'
           ],
+          labTableHeaders: [
+            'Nombre'
+          ],
           addTypeButton: 'Tipo',
           addSubTypeButton: 'Subtipo',
           addProductButton: 'Producto',
+          addLabButton: 'Agregar Lab',
           typeTitle: 'Agregar Tipo de Análisis',
           subtypeTitle: 'Agregar Subtipo de Análisis',
-          areaTitle: 'Agregar Área o Producto'
+          areaTitle: 'Agregar Área o Producto',
+          labTitle: 'Agregar Laboratorio',
+          parentErrors: {
+            required: 'Este campo es requerido'
+          },
+          errors: {
+            required: 'Este campo es requerido',
+            maxlength: 'Este campo no debe exceder los 255 caracteres de largo'
+          },
         }
       },
       documents: {
@@ -282,7 +296,7 @@ export class LanguageService
         0: 'Documento borrado exitosamente',
         1: 'Error al borrar el archivo del documento'
       },
-      'capture-product': {
+      'add-product': {
         0: 'El área o producto fue agregado exitosamente'
       },
       100: 'No se pudo reconocer el servicio solicitado',
@@ -471,17 +485,31 @@ export class LanguageService
         title: 'Inventory Management',
         lab: {
           categoriesTitle: 'Analysis Categories',
+          categoriesTab: 'Categories',
+          labsTab: 'Laboratories',
           tableHeaders: [
             'Analysis Type',
             'Analysis Subtype',
             'Area/Product'
           ],
+          labTableHeaders: [
+            'Name'
+          ],
           addTypeButton: 'Type',
           addSubTypeButton: 'Subtype',
           addProductButton: 'Area/Product',
+          addLabButton: 'Add Lab',
           typeTitle: 'Add Analysis Type',
           subtypeTitle: 'Add Analysis Subtype',
-          areaTitle: 'Add Area or Products'
+          areaTitle: 'Add Area or Products',
+          labTitle: 'Add Laboratory',
+          parentErrors: {
+            required: 'This field is required'
+          },
+          errors: {
+            required: 'This field is required',
+            maxlength: 'This field must not exceed 255 characters long'
+          }
         }
       },
       documents: {
@@ -560,7 +588,7 @@ export class LanguageService
         0: 'Document was deleted successfully',
         1: 'Failed to delete document file'
       },
-      'capture-product': {
+      'add-product': {
         0: 'Area or Product was added successfully'
       },
       100: 'Unable to recognize the requested service',
@@ -733,13 +761,25 @@ export class LanguageService
       title: null,
       lab: {
         categoriesTitle: null,
+        categoriesTab: null,
+        labsTab: null,
         tableHeaders: [ null, null, null ],
+        labTableHeaders: [ null ],
         addTypeButton: null,
         addSubTypeButton: null,
         addProductButton: null,
+        addLabButton: null,
         typeTitle: null,
         subtypeTitle: null,
-        areaTitle: null
+        areaTitle: null,
+        labTitle: null,
+        parentErrors: {
+          required: null
+        },
+        errors: {
+          required: null,
+          maxlength: null
+        }
       }
     },
     documents: {

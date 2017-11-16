@@ -23,9 +23,11 @@ $lab = [
         realpath(__DIR__.'/list-areas-of-subtype.php'),
       'capture-lab' => realpath(__DIR__.'/capture-lab.php'),
       'search-lab' => realpath(__DIR__.'/search-lab.php'),
-      'capture-analysis-type' => realpath(__DIR__.'/capture-analysis-type.php'),
-      'capture-analysis-subtype' => 
-        realpath(__DIR__.'/capture-analysis-subtype.php')
+      'add-analysis-type' => realpath(__DIR__.'/add-analysis-type.php'),
+      'add-analysis-subtype' => 
+        realpath(__DIR__.'/add-analysis-subtype.php'),
+      'add-product' => realpath(__DIR__.'/add-product.php'),
+      'add-lab' => realpath(__DIR__.'/add-lab.php')
     ],
     'DELETE' => [
       'delete-lab/{document_id}' => realpath(__DIR__.'/delete-lab.php')

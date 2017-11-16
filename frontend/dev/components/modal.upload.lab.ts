@@ -269,7 +269,7 @@ export class LabDocumentUploadModalComponent
   // Esta funcion se invoca cuando el usuario hace clic en el boton de capturar 
   // documento
   onLabDocumentUpload(): void {
-    // preparamos los datos que seran enviados al servidor
+    // preparamos los danew File(tos que seran enviados al servidor
     let data = new FormData()
     data.append('document_type_id', this.selectedDocumentTypeID.toString())
     data.append('capture_date', this.global.getFormattedDate())

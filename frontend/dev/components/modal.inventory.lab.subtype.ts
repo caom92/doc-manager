@@ -73,13 +73,13 @@ export class LabSubTypesInventoryModalComponent
 
     // capturamos el nuevo subtipo de analisis en el servidor
     this.server.write(
-      'capture-analysis-subtype',
+      'add-analysis-subtype',
       data,
       (response: BackendResponse) => {
         // notificamos al usuario del resultado cuando el servidor responda
         this.toastManager.showText(
           this.langManager.getServiceMessage(
-            'capture-analysis-subtype',
+            'add-analysis-subtype',
             response.meta.return_code
           )
         )

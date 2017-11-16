@@ -2,7 +2,7 @@ include globals.pug
 
 mz-modal('[options]'='modalOptions')
   mz-modal-header
-    ='{{ langManager.messages.inventory.lab.typeTitle }}'
+    ='{{ langManager.messages.inventory.lab.labTitle }}'
   mz-modal-content
     div.container
       form(
@@ -12,7 +12,7 @@ mz-modal('[options]'='modalOptions')
         div.row: div.col.s12
           +textInput(
             'name',
-            'langManager.messages.upload.lab.typeNameLabel'
+            'langManager.messages.upload.lab.labNameLabel'
           )(
             formControlName='name'
             mz-validation

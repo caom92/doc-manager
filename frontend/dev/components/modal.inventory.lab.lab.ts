@@ -7,11 +7,10 @@ import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 
-// Este componente define el comportamiento de la pagina donde el usuario agrega un nuevo tipo de analisis de laboratorio
 @Component({
-  templateUrl: '../templates/modal.inventory.lab.type.html'
+  templateUrl: '../templates/modal.inventory.lab.lab.html'
 })
-export class LabTypesInventoryModalComponent
+export class LabLabInventoryModalComponent
   extends LabDefaultInventoryModalComponent
   implements OnInit
 {
@@ -45,7 +44,7 @@ export class LabTypesInventoryModalComponent
 
     // enviamos el nuevo tipo de analisis capturado al servidor
     this.server.write(
-      'add-analysis-type',
+      'add-lab',
       data,
       (response: BackendResponse) => {
         // notificamos al usuario del resultado cuando el servidor responda
@@ -80,4 +79,4 @@ export class LabTypesInventoryModalComponent
       } // (response: BackendResponse)
     ) // this.server.write
   } // onFormSubmit()
-} // export class LabTypesInventoryModalComponent
+}

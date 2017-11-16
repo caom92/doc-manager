@@ -106,13 +106,13 @@ export class LabProductInventoryModalComponent
     // capturamos el nuevo prodcuto o area registrado por el usuario en el 
     // formulario de captura
     this.server.write(
-      'capture-product',
+      'add-product',
       data,
       (response: BackendResponse) => {
         // notificamos al usuario del resultado cuando el servidor responda
         this.toastManager.showText(
           this.langManager.getServiceMessage(
-            'capture-product',
+            'add-product',
             response.meta.return_code
           )
         )

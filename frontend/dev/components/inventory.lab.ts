@@ -6,6 +6,7 @@ import { LanguageService } from '../services/app.language'
 import { LabTypesInventoryModalComponent } from './modal.inventory.lab.type'
 import { LabSubTypesInventoryModalComponent } from './modal.inventory.lab.subtype'
 import { LabProductInventoryModalComponent } from './modal.inventory.lab.product'
+import { LabLabInventoryModalComponent } from './modal.inventory.lab.lab'
 import { MzModalService } from 'ng2-materialize'
 
 // Componente que define el comportamiento de la pagina donde el usuario 
@@ -17,6 +18,12 @@ export class LabInventoryComponent implements OnInit
 {
   // La lista de categorias recuperada de la base de datos 
   rows: Array<any> = []
+
+  // La lista de laboratorios recuperada de la base de datos
+  laboratories: Array<{
+    id: number,
+    name: string
+  }> = []
 
   // El constructor de este componente, inyectando los servicios requeridos
   constructor(
@@ -48,6 +55,25 @@ export class LabInventoryComponent implements OnInit
         } // if (response.meta.return_code == 0)
       } // (response: BackendResponse)
     ) // this.server.read()
+
+    // recuperamos la lista de categorias de la base de datos 
+    this.server.read(
+      'list-labs',
+      {},
+      (response: BackendResponse) => {
+        if (response.meta.return_code == 0) {
+          this.laboratories = response.data
+        } else {
+          // si el servidor respondio con un error, notificamos al usuario
+          this.toastManager.showText(
+            this.langManager.getServiceMessage(
+              'list-labs',
+              response.meta.return_code
+            )
+          )
+        } // if (response.meta.return_code == 0)
+      } // (response: BackendResponse)
+    ) // this.server.read()
   } // ngOnInit(): void
 
   // Funcion que se invoca cuando el usuario hace clic en el boton de agregar 
@@ -70,6 +96,14 @@ export class LabInventoryComponent implements OnInit
   // producto o area
   onAddProductButtonClick(): void {
     this.modalManager.open(LabProductInventoryModalComponent, {
+      parent: this
+    })
+  }
+
+  // Funcion que se invoca cuando el usuario hace clic en el boton de agregar
+  // laboratorio
+  onAddLabButtonClick(): void {
+    this.modalManager.open(LabLabInventoryModalComponent, {
       parent: this
     })
   }

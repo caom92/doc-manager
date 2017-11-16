@@ -1,60 +1,87 @@
 include globals.pug
 
-div.row
-  div.col.s12.m4
-    +button(
-      'button',
-      'add-type',
-      '{{ langManager.messages.inventory.lab.addTypeButton }}',
-      'mdi mdi-plus'
-    )(
-      '(click)'='onAddTypeButtonClick()'
-    )
-  div.col.s12.m4
-    +button(
-      'button',
-      'add-subtype',
-      '{{ langManager.messages.inventory.lab.addSubTypeButton }}',
-      'mdi mdi-plus'
-    )(
-      '(click)'='onAddSubTypeButtonClick()'
-    )
-  div.col.s12.m4
-    +button(
-      'button',
-      'add-product',
-      '{{ langManager.messages.inventory.lab.addProductButton }}',
-      'mdi mdi-plus'
-    )(
-      '(click)'='onAddProductButtonClick()'
-    )
+mz-tab(
+  '[fixedTabWidth]'="'true'"
+)
+  mz-tab-item(
+    '[active]'="'true'"
+    '[label]'='langManager.messages.inventory.lab.categoriesTab'
+  )
+    div.row
+      div.col.s12.m4
+        +button(
+          'button',
+          'add-type',
+          '{{ langManager.messages.inventory.lab.addTypeButton }}',
+          'mdi mdi-plus'
+        )(
+          '(click)'='onAddTypeButtonClick()'
+        )
+      div.col.s12.m4
+        +button(
+          'button',
+          'add-subtype',
+          '{{ langManager.messages.inventory.lab.addSubTypeButton }}',
+          'mdi mdi-plus'
+        )(
+          '(click)'='onAddSubTypeButtonClick()'
+        )
+      div.col.s12.m4
+        +button(
+          'button',
+          'add-product',
+          '{{ langManager.messages.inventory.lab.addProductButton }}',
+          'mdi mdi-plus'
+        )(
+          '(click)'='onAddProductButtonClick()'
+        )
 
-  div.col.s12
-    +table('langManager.messages.inventory.lab.tableHeaders')
-      tr('*ngFor'='let row of rows')
-        td(
-          '*ngIf'='row.type.name && row.type.border'
-          '[attr.rowspan]'='row.type.rowspan'
-          style='border-top: 1px solid #d0d0d0'
+      div.col.s12
+        +table('langManager.messages.inventory.lab.tableHeaders')
+          tr('*ngFor'='let row of rows')
+            td(
+              '*ngIf'='row.type.name && row.type.border'
+              '[attr.rowspan]'='row.type.rowspan'
+              style='border-top: 1px solid #d0d0d0'
+            )
+              ='{{ row.type.name }}'
+            td(
+              '*ngIf'='row.type.name && !row.type.border'
+              '[attr.rowspan]'='row.type.rowspan'
+            )
+              ='{{ row.type.name }}'
+            td(
+              '*ngIf'='row.subtype.name && row.subtype.border'
+              '[attr.rowspan]'='row.subtype.rowspan'
+              style='border-top: 1px solid #d0d0d0'
+            )
+              ='{{ row.subtype.name }}'
+            td(
+              '*ngIf'='row.subtype.name && !row.subtype.border'
+              '[attr.rowspan]'='row.subtype.rowspan'
+            )
+              ='{{ row.subtype.name }}'
+            td(
+              style='border-top: 1px solid #d0d0d0'
+            )
+              ='{{ row.area.name }}'
+  mz-tab-item(
+    '[label]'='langManager.messages.inventory.lab.labsTab'
+  )
+    div.row
+      div.col.s6
+        +button(
+          'button',
+          'add-lab',
+          '{{ langManager.messages.inventory.lab.addLabButton }}',
+          'mdi mdi-plus'
+        )(
+          '(click)'='onAddLabButtonClick()'
         )
-          ='{{ row.type.name }}'
-        td(
-          '*ngIf'='row.type.name && !row.type.border'
-          '[attr.rowspan]'='row.type.rowspan'
+    div.row
+      div.col.s12
+        +table(
+          'langManager.messages.inventory.lab.labTableHeaders'
         )
-          ='{{ row.type.name }}'
-        td(
-          '*ngIf'='row.subtype.name && row.subtype.border'
-          '[attr.rowspan]'='row.subtype.rowspan'
-          style='border-top: 1px solid #d0d0d0'
-        )
-          ='{{ row.subtype.name }}'
-        td(
-          '*ngIf'='row.subtype.name && !row.subtype.border'
-          '[attr.rowspan]'='row.subtype.rowspan'
-        )
-          ='{{ row.subtype.name }}'
-        td(
-          style='border-top: 1px solid #d0d0d0'
-        )
-          ='{{ row.area.name }}'
+          tr('*ngFor'='let row of laboratories')
+            td='{{ row.name }}'
