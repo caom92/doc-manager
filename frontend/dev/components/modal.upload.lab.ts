@@ -17,35 +17,20 @@ export class LabDocumentUploadModalComponent
   extends DefaultDocumentUploadModalComponent
   implements OnInit
 {
-  // Las sugerencias de autocompletado del campo de laboratorio
-  labSuggestions: AutoCompleteObject = {
-    data: {},
-    limit: 4   
-  }
+  // La lista de productores a elegir por el usuario 
+  producers: Array<any> = []
 
-  // Las sugerencias de autocompletado del campo de tipos de analisis
-  typeSuggestions: AutoCompleteObject = {
-    data: {},
-    limit: 4   
-  }
+  // La lista de laboratorios a elegir por el usuario
+  labs: Array<any> = []
 
-  // Las sugerencias de autocompletado del campo de subtipos de analisis
-  subtypeSuggestions: AutoCompleteObject = {
-    data: {},
-    limit: 4   
-  }
+  // La lista de tipos de analisis a elegir por el usuario
+  types: Array<any> = []
 
-  // Las sugerencias de autocompletado del campo de productores
-  producerSuggestions: AutoCompleteObject = {
-    data: {},
-    limit: 4
-  }
+  // La lista de subtipos de analisis a elegir por el usuario
+  subtypes: Array<any> = []
 
-  // Las sugerencias de autocompletado del campo de areas o productos
-  areaSuggestions: AutoCompleteObject = {
-    data: {},
-    limit: 4
-  }
+  // La lista de areas o productos a elegir por el usuario
+  areas: Array<any> = []
 
   // El constructor de este componente, inyectando los servicios requeridos
   constructor(
@@ -75,13 +60,7 @@ export class LabDocumentUploadModalComponent
           if (response.meta.return_code == 0) {
             // si asi fue guardamos los productores en el objeto de sugerencias 
             // del campo de productores
-            this.producerSuggestions = {
-              data: {},
-              limit: 4
-            }
-            for (let producer of response.data) {
-              this.producerSuggestions.data[producer.name] = null
-            }
+            this.producers = response.data
           } else {
             // en caso de que el servidor responda con error, hay que notificar 
             // al usuario
@@ -105,13 +84,7 @@ export class LabDocumentUploadModalComponent
         if (response.meta.return_code == 0) {
           // si el servidor respondio con exito, cargamos la respuesta al 
           // objeto de sugerencias de zonas
-          this.labSuggestions = {
-            data: {},
-            limit: 4   
-          }
-          for (let lab of response.data) {
-            this.labSuggestions.data[lab.name] = null
-          }
+          this.labs = response.data
         } else {
           // si el servidor respondio con error, notificamos al usuario
           this.toastManager.showText(
@@ -133,13 +106,7 @@ export class LabDocumentUploadModalComponent
         if (response.meta.return_code == 0) {
           // si el servidor respondio con exito, cargamos la respuesta al 
           // objeto de sugerencias de zonas
-          this.typeSuggestions = {
-            data: {},
-            limit: 4   
-          }
-          for (let type of response.data) {
-            this.typeSuggestions.data[type.name] = null
-          }
+          this.types = response.data
         } else {
           // si el servidor respondio con error, notificamos al usuario
           this.toastManager.showText(
@@ -155,14 +122,8 @@ export class LabDocumentUploadModalComponent
     // configuramos las reglas de validacion del formulario de captura
     this.uploadForm = this.formBuilder.group({
       documentDate: [ null, Validators.required ],
-      typeName: [ null, Validators.compose([
-        Validators.required,
-        Validators.maxLength(255)
-      ])],
-      labName: [ null, Validators.compose([
-        Validators.required,
-        Validators.maxLength(255)
-      ])],
+      type: [ null, Validators.required ],
+      lab: [ null, Validators.required ],
       zone: [
         {
           value: this.global.zone,
@@ -172,18 +133,9 @@ export class LabDocumentUploadModalComponent
           Validators.required
         ])
       ],
-      subtype: [ null, Validators.compose([
-        Validators.required,
-        Validators.maxLength(255)
-      ])],
-      producer: [ null, Validators.compose([
-        Validators.required,
-        Validators.maxLength(255)
-      ])],
-      area: [ null, Validators.compose([
-        Validators.required,
-        Validators.maxLength(255)
-      ])],
+      subtype: [ null, Validators.required ],
+      producer: [ null, Validators.required ],
+      area: [ null, Validators.required ],
       notes: [ null, Validators.maxLength(65535)]
     })
   } // // ngOnInit(): void
@@ -213,13 +165,7 @@ export class LabDocumentUploadModalComponent
           if (response.meta.return_code == 0) {
             // si asi fue guardamos los productores en el objeto de sugerencias 
             // del campo de productores
-            this.producerSuggestions = {
-              data: {},
-              limit: 4
-            }
-            for (let producer of response.data) {
-              this.producerSuggestions.data[producer.name] = null
-            }
+            this.producers = response.data
           } else {
             // en caso de que el servidor responda con error, hay que notificar 
             // al usuario
@@ -235,34 +181,8 @@ export class LabDocumentUploadModalComponent
     } // if (this.uploadForm.controls.zone.valid)
   } // onZoneSelected(event: any): void
 
-  // Esta funcion se invoca cuando el usuario ingresa un productor
-  onProducerSelected(event: any): void {
-    // guardamos el productor ingresado
-    this.uploadForm.controls.producer.setValue(
-      event.target.value
-    )
-  } // onProducerSelected(event: any): void
-
-  // Esta funcion se invoca cuando el usuario ingresa el nombre de un 
-  // laboratorio
-  onLabSelected(event: any): void {
-    // necesitamos agregar el nombre ingresado al elegir una opcion de la lista 
-    // de sugerencias, de lo contrario, solo se guardara la tecla que el 
-    // usuario presiono para activar la lista de sugerencias
-    this.uploadForm.controls.labName.setValue(
-      event.target.value
-    )
-  }
-
   // Esta funcion se invoca cuando el usuario ingresa un tipo de analisis
-  onAnalysisTypeSelected(event: any): void {
-    // necesitamos agregar el nombre ingresado al elegir una opcion de la lista 
-    // de sugerencias, de lo contrario, solo se guardara la tecla que el 
-    // usuario presiono para activar la lista de sugerencias
-    this.uploadForm.controls.typeName.setValue(
-      event.target.value
-    )
-
+  onAnalysisTypeSelected(): void {
     // borramos los valores de subtipo en caso que ya hayan tenido 
     // algun valor previamente y el usuario este cambiando de tipo
     this.uploadForm.controls.subtype.setValue(null)
@@ -270,10 +190,10 @@ export class LabDocumentUploadModalComponent
 
     // si el tipo es valido, mandamos una peticion al servidor para recuperar 
     // la lista de subtipos
-    if (this.uploadForm.controls.typeName.valid) {
+    if (this.uploadForm.controls.type.valid) {
       // preparamos los datos que seran enviados al usuario
       let data = new FormData()
-      data.append('type_name', event.target.value)
+      data.append('type_name', this.uploadForm.controls.type.value)
 
       // recuperamos los ranchos del servidor
       this.server.write(
@@ -284,13 +204,7 @@ export class LabDocumentUploadModalComponent
           if (response.meta.return_code == 0) {
             // si asi fue, ingresamos los subtipos recuperados al objeto de 
             // sugerencias
-            this.subtypeSuggestions = {
-              data: {},
-              limit: 4
-            }
-            for (let subtype of response.data) {
-              this.subtypeSuggestions.data[subtype.name] = null
-            }
+            this.subtypes = response.data
           } else {
             // si el servidor repondio con error, notificamos al usuario
             this.toastManager.showText(
@@ -306,11 +220,7 @@ export class LabDocumentUploadModalComponent
   } // onAnalysisTypeSelected(event: any): void
 
   // Esta funcion se invoca cuando el usuario ingresa el nombre de un subtipo
-  onSubTypeSelected(event: any): void {
-    this.uploadForm.controls.subtype.setValue(
-      event.target.value
-    )
-
+  onSubTypeSelected(): void {
     this.uploadForm.controls.area.setValue(null)
 
     // si el tipo es valido, mandamos una peticion al servidor para recuperar 
@@ -318,7 +228,7 @@ export class LabDocumentUploadModalComponent
     if (this.uploadForm.controls.subtype.valid) {
       // preparamos los datos que seran enviados al usuario
       let data = new FormData()
-      data.append('subtype_name', event.target.value)
+      data.append('subtype_name', this.uploadForm.controls.subtype.value)
 
       // recuperamos los ranchos del servidor
       this.server.write(
@@ -327,15 +237,7 @@ export class LabDocumentUploadModalComponent
         (response: BackendResponse) => {
           // revisamos si el servidor respondio con exito
           if (response.meta.return_code == 0) {
-            // si asi fue, ingresamos los subtipos recuperados al objeto de 
-            // sugerencias
-            this.areaSuggestions = {
-              data: {},
-              limit: 4
-            }
-            for (let area of response.data) {
-              this.areaSuggestions.data[area.name] = null
-            }
+            this.areas = response.data
           } else {
             // si el servidor repondio con error, notificamos al usuario
             this.toastManager.showText(
@@ -349,14 +251,6 @@ export class LabDocumentUploadModalComponent
       ) // this.server.write
     } // if (this.uploadForm.controls.subtype.valid)
   } // onSubTypeSelected(event: any): void
-
-  // Esta funcion se invoca cuando el usuario ingresa un area o producto
-  onAreaSelected(event: any): void {
-    // guardamos el productor ingresado
-    this.uploadForm.controls.area.setValue(
-      event.target.value
-    )
-  } // onAreaSelected(event: any): void
 
   // Esta funcion se invoca cuando el usuario elije un archivo de solicitud
   onAnalysisFileSelected(event: any): void {
@@ -391,11 +285,11 @@ export class LabDocumentUploadModalComponent
     )
     data.append(
       'lab_name', 
-      this.uploadForm.controls.labName.value
+      this.uploadForm.controls.lab.value
     )
     data.append(
       'analysis_type_name',
-      this.uploadForm.controls.typeName.value
+      this.uploadForm.controls.type.value
     )
     data.append('subtype', this.uploadForm.controls.subtype.value)
     data.append(

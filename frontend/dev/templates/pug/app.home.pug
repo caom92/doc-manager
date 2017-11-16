@@ -70,6 +70,12 @@ include globals.pug
     )
       i.mdi.mdi-account-multiple.mdi-24px
       ='{{ langManager.messages.sideNav.users }}'
+  mz-sidenav-link('*ngIf'="global.roleName === 'Supervisor'")
+    +uiRouterLink('inventory')(
+      class='side-menu-link waves-effect waves-green'
+    )
+      i.mdi.mdi-briefcase.mdi-24px
+      ='{{ langManager.messages.sideNav.inventory }}'
 
 //- Area principal de la pagina
 div.container(

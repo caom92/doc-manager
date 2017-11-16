@@ -15,6 +15,7 @@ import { LogInComponent } from './app.login'
 import { EditProfileComponent } from './app.edit.profile'
 import { UsersComponent } from './app.users'
 import { ReportComponent } from './app.report'
+import { InventoryComponent } from './app.inventory'
 
 // Importamos los componentes de los modales
 import { ProgressModalComponent } from './modal.please.wait'
@@ -25,6 +26,10 @@ import { LabDocumentSearchModalComponent } from './modal.search.lab'
 import { LabSearchResultsListComponent } from './list.lab'
 import { LabDocumentReportModalComponent } from './modal.report.lab'
 import { LabReportResultsComponent } from './report.lab'
+import { LabInventoryComponent } from './inventory.lab'
+import { LabTypesInventoryModalComponent } from './modal.inventory.lab.type'
+import { LabSubTypesInventoryModalComponent } from './modal.inventory.lab.subtype'
+import { LabProductInventoryModalComponent } from './modal.inventory.lab.product'
 
 // Importamos los servicios que van a ser necesitados por cada pagina del 
 // sistema
@@ -81,6 +86,11 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
           name: 'report',
           url: '/report',
           component: ReportComponent
+        },
+        {
+          name: 'inventory',
+          url: '/inventory',
+          component: InventoryComponent
         }
       ],
       useHash: true,
@@ -113,7 +123,12 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     UsersComponent,
     ReportComponent,
     LabDocumentReportModalComponent,
-    LabReportResultsComponent
+    LabReportResultsComponent,
+    InventoryComponent,
+    LabInventoryComponent,
+    LabTypesInventoryModalComponent,
+    LabSubTypesInventoryModalComponent,
+    LabProductInventoryModalComponent,
   ],
   // declaramos cualquier componente que sera inyectado dinamicamente
   entryComponents: [
@@ -124,7 +139,11 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     LabSearchResultsListComponent,
     DeleteDocumentConfirmationModalComponent,
     LabDocumentReportModalComponent,
-    LabReportResultsComponent
+    LabReportResultsComponent,
+    LabInventoryComponent,
+    LabTypesInventoryModalComponent,
+    LabSubTypesInventoryModalComponent,
+    LabProductInventoryModalComponent
   ],
   // indicamos cual es el componente raiz
   bootstrap: [ HomeComponent ]

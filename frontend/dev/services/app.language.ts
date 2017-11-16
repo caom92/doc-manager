@@ -72,7 +72,8 @@ export class LanguageService
         editProfile: 'Editar Perfil',
         logout: 'Cerrar Sesión',
         users: 'Usuarios',
-        report: 'Reportes'
+        report: 'Reportes',
+        inventory: 'Inventario'
       },
       userProfile: {
         title: 'Su Perfil de Usuario',
@@ -188,6 +189,23 @@ export class LanguageService
           ]
         }
       },
+      inventory: {
+        title: 'Control de Inventario',
+        lab: {
+          categoriesTitle: 'Categorías de Análisis',
+          tableHeaders: [
+            'Tipo de Análisis',
+            'Subtupo de Análisis',
+            'Área o Producto'
+          ],
+          addTypeButton: 'Tipo',
+          addSubTypeButton: 'Subtipo',
+          addProductButton: 'Producto',
+          typeTitle: 'Agregar Tipo de Análisis',
+          subtypeTitle: 'Agregar Subtipo de Análisis',
+          areaTitle: 'Agregar Área o Producto'
+        }
+      },
       documents: {
         title: 'Tipos de Documento',
         tableHeaders: [
@@ -264,6 +282,9 @@ export class LanguageService
         0: 'Documento borrado exitosamente',
         1: 'Error al borrar el archivo del documento'
       },
+      'capture-product': {
+        0: 'El área o producto fue agregado exitosamente'
+      },
       100: 'No se pudo reconocer el servicio solicitado',
       101: 'Faltó enviar una entrada al servidor',
       102: 'Una entrada enviada al servidor no es un valor numérico',
@@ -329,7 +350,8 @@ export class LanguageService
         editProfile: 'Edit Profile',
         logout: 'Log Out',
         users: 'Users',
-        report: 'Reports'
+        report: 'Reports',
+        inventory: 'Inventory'
       },
       userProfile: {
         title: 'Your User Profile',
@@ -445,6 +467,23 @@ export class LanguageService
           ]
         }
       },
+      inventory: {
+        title: 'Inventory Management',
+        lab: {
+          categoriesTitle: 'Analysis Categories',
+          tableHeaders: [
+            'Analysis Type',
+            'Analysis Subtype',
+            'Area/Product'
+          ],
+          addTypeButton: 'Type',
+          addSubTypeButton: 'Subtype',
+          addProductButton: 'Area/Product',
+          typeTitle: 'Add Analysis Type',
+          subtypeTitle: 'Add Analysis Subtype',
+          areaTitle: 'Add Area or Products'
+        }
+      },
       documents: {
         title: 'Document Types',
         tableHeaders: [
@@ -521,6 +560,9 @@ export class LanguageService
         0: 'Document was deleted successfully',
         1: 'Failed to delete document file'
       },
+      'capture-product': {
+        0: 'Area or Product was added successfully'
+      },
       100: 'Unable to recognize the requested service',
       101: 'A server input argument was not send',
       102: 'A server input argument is not a numeric value',
@@ -548,6 +590,7 @@ export class LanguageService
   // desplegara cualquier texto que este almacenado aqui
   messages = {
     global: {
+      wait: null,
       selectPlaceholder: null,
       submit: null,
       datePickerConfig: null,
@@ -684,6 +727,19 @@ export class LanguageService
       title: null,
       lab: {
         tabs: [ null, null ]
+      }
+    },
+    inventory: {
+      title: null,
+      lab: {
+        categoriesTitle: null,
+        tableHeaders: [ null, null, null ],
+        addTypeButton: null,
+        addSubTypeButton: null,
+        addProductButton: null,
+        typeTitle: null,
+        subtypeTitle: null,
+        areaTitle: null
       }
     },
     documents: {

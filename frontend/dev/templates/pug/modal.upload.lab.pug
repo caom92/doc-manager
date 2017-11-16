@@ -38,71 +38,63 @@ mz-modal(
               required
             )
           div.col.s12.m4
-            +textInput(
-              'producer',
-              'langManager.messages.upload.producerLabel'
+            +select(
+              'producer', 'langManager.messages.upload.producerLabel',
+              'langManager.messages.global.selectPlaceholder',
+              'producers', '.name', '.name'
             )(
-              '(change)'='onProducerSelected($event)'
-              '[autocomplete]'='producerSuggestions'
               formControlName='producer'
               mz-validation
               required
-              length='255'
-              '[errorMessageResource]'='langManager.messages.upload.errors.producer'
+              '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
             )
           div.col.s12.m4
-            +textInput(
-              'lab-name', 
-              'langManager.messages.upload.lab.labNameLabel'
+            +select(
+              'lab', 'langManager.messages.upload.lab.labNameLabel',
+              'langManager.messages.global.selectPlaceholder',
+              'labs', '.name', '.name'
             )(
-              formControlName='labName'
+              formControlName='lab'
               mz-validation
               required
-              '[errorMessageResource]'='langManager.messages.upload.errors.ranch'
-              length='255'
-              '[autocomplete]'='labSuggestions'
-              '(change)'='onLabSelected($event)'
+              '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
             )
 
         div.row
           div.col.s12.m4
-            +textInput(
-              'analysis-type-name', 
-              'langManager.messages.upload.lab.typeNameLabel'
+            +select(
+              'type', 'langManager.messages.upload.lab.typeNameLabel',
+              'langManager.messages.global.selectPlaceholder',
+              'types', '.name', '.name',
+              'onAnalysisTypeSelected()'
             )(
-              formControlName='typeName'
+              formControlName='type'
               mz-validation
               required
-              '[errorMessageResource]'='langManager.messages.upload.errors.ranch'
-              length='255'
-              '[autocomplete]'='typeSuggestions'
-              '(change)'='onAnalysisTypeSelected($event)'
+              '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
             )
           div.col.s12.m4
-            +textInput(
-              'subtype',
-              'langManager.messages.upload.lab.subtype'
+            +select(
+              'subtype', 'langManager.messages.upload.lab.subtype',
+              'langManager.messages.global.selectPlaceholder',
+              'subtypes', '.name', '.name',
+              'onSubTypeSelected()'
             )(
-              '[autocomplete]'='subtypeSuggestions'
-              '(change)'='onSubTypeSelected($event)'
               formControlName='subtype'
               mz-validation
               required
-              length='255'
-              '[errorMessageResource]'='langManager.messages.upload.errors.ranch'
+              '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
             )
           div.col.s12.m4
-            +textInput(
-              'area',
-              'langManager.messages.upload.areaLabel'
+            +select(
+              'area', 'langManager.messages.upload.areaLabel',
+              'langManager.messages.global.selectPlaceholder',
+              'areas', '.name', '.name'
             )(
-              '(change)'='onAreaSelected($event)'
-              '[autocomplete]'='areaSuggestions'
               formControlName='area'
               mz-validation
               required
-              length='255'
-              '[errorMessageResource]'='langManager.messages.upload.errors.ranch'
+              '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
             )
 
         div.row

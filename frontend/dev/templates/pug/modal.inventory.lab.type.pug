@@ -1,0 +1,32 @@
+include globals.pug
+
+mz-modal('[options]'='modalOptions')
+  mz-modal-header
+    ='{{ langManager.messages.inventory.lab.typeTitle }}'
+  mz-modal-content
+    div.container
+      form(
+        '[formGroup]'='captureForm'
+        novalidate
+      )
+        div.row: div.col.s12
+          +textInput(
+            'name',
+            'langManager.messages.upload.lab.typeNameLabel'
+          )(
+            formControlName='name'
+            mz-validation
+            required
+            '[errorMessageResource]'='langManager.messages.inventory.lab.nameErrors'
+          )
+  mz-modal-footer
+    +button(
+      'submit',
+      'form-submit',
+      '{{ langManager.messages.global.submit }}',
+      'mdi mdi-send'
+    )(
+      '[disabled]'='captureForm.valid == false'
+      '(click)'='onFormSubmit()'
+      mz-modal-close
+    )

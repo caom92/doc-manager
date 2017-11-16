@@ -1,0 +1,61 @@
+include globals.pug
+
+mz-modal('[options]'='modalOptions')
+  mz-modal-header
+    ='{{ langManager.messages.inventory.lab.areaTitle }}'
+  mz-modal-content
+    div.container
+      form(
+        '[formGroup]'='captureForm'
+        novalidate
+      )
+        div.row 
+          div.col.s6
+            +select(
+              'analysis-type',
+              'langManager.messages.upload.lab.typeNameLabel',
+              'langManager.messages.global.selectPlaceholder',
+              'types',
+              '.name', '.name'
+            )(
+              formControlName='typeName'
+              mz-validation
+              required
+              '[errorMessageResource]'='langManager.messages.inventory.lab.parentErrors'
+              '(change)'='onAnalysisTypeSelected()'
+            )
+          div.col.s6
+            +select(
+              'analysis-subtype',
+              'langManager.messages.upload.lab.subtype',
+              'langManager.messages.global.selectPlaceholder',
+              'subtypes',
+              '.name', '.id'
+            )(
+              formControlName='subTypeID'
+              mz-validation
+              required
+              '[errorMessageResource]'='langManager.messages.inventory.lab.parentErrors'
+            )
+          div.row
+            div.col.s12
+              +textInput(
+                'name',
+                'langManager.messages.upload.areaLabel'
+              )(
+                formControlName='name'
+                mz-validation
+                required
+                '[errorMessageResource]'='langManager.messages.inventory.lab.errors'
+              )
+  mz-modal-footer
+    +button(
+      'submit',
+      'form-submit',
+      '{{ langManager.messages.global.submit }}',
+      'mdi mdi-send'
+    )(
+      '[disabled]'='captureForm.valid == false'
+      '(click)'='onFormSubmit()'
+      mz-modal-close
+    )
