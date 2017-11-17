@@ -5,7 +5,7 @@ mz-modal(
   '[fullscreen]'='"true"'
 )
   mz-modal-header
-    ='{{ langManager.messages.inventory.lab.subtypeTitle }}'
+    ='{{ langManager.messages.inventory.lab.producerTitle }}'
   mz-modal-content
     div.container
       form(
@@ -16,12 +16,12 @@ mz-modal(
           div.col.s6
             +select(
               'analysis-type',
-              'langManager.messages.upload.lab.typeNameLabel',
+              'langManager.messages.upload.zoneLabel',
               'langManager.messages.global.selectPlaceholder',
-              'types',
+              'zones',
               '.name', '.id'
             )(
-              formControlName='typeID'
+              formControlName='zoneID'
               mz-validation
               required
               '[errorMessageResource]'='langManager.messages.inventory.lab.parentErrors'
@@ -29,7 +29,7 @@ mz-modal(
           div.col.s6
             +textInput(
               'name',
-              'langManager.messages.upload.lab.subtype'
+              'langManager.messages.upload.producerLabel'
             )(
               formControlName='name'
               mz-validation

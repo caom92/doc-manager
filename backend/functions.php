@@ -72,20 +72,21 @@ function getLastCategoryID($daoFactory, $categoryStack, $parentID) {
   // primero revisamos si esta categoria existe en la BD
   $table = $daoFactory->get($categoryStack['table']);
   $currentName = strtoupper($categoryStack['name']);
-  $currentID = $table->getIDByName($currentName);
+  $hasParent = isset($parentID);
+  $currentID = ($hasParent) ?
+    $table->getIDByNameAndParentID($currentName, $parentID)
+    : $table->getIDByName($currentName);
 
   // si no existe, tenemos que agregarla
   if (!isset($currentID)) {
-    if (isset($parentID)) {
-      $currentID = $table->insert([
+    $currentID = ($hasParent) ?
+      $table->insert([
         ':name' => $currentName,
         ':parentID' => $parentID
-      ]);
-    } else {
-      $currentID = $table->insert([
+      ])
+      : $currentID = $table->insert([
         ':name' => $currentName
       ]);
-    }
   }
 
   // una vez que tenemos el ID de esta categoria, nos recorremos a la sig.

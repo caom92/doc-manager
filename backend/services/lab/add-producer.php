@@ -15,18 +15,18 @@ $service = [
   'callback' => function($scope, $request) {
     // nos aseguramos de que el nombre esta en mayusculas
     $name = strtoupper($request['name']);
-    
+
     // recuperamos el DAO de los subtipos de analisis
-    $products = $scope->docManagerTableFactory->get('Lab\Areas');
+    $producers = $scope->docManagerTableFactory->get('Producers');
 
     // revisamos si el subtipo de analisis ya esta registrado en la BD
-    $id = $products->getIDByNameAndParentID($name, $request['parent_id']);
+    $id = $producers->getIDByNameAndParentID($name, $request['parent_id']);
     if (isset($id)) {
       return;
     }
 
     // si no esta registrado, lo agregamos a la BD
-    $products->insert([
+    $producers->insert([
       ':parentID' => $request['parent_id'],
       ':name' => $name
     ]);

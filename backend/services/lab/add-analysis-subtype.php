@@ -20,7 +20,7 @@ $service = [
     $subtypes = $scope->docManagerTableFactory->get('Lab\AnalysisSubTypes');
 
     // revisamos si el subtipo de analisis ya esta registrado en la BD
-    $id = $subtypes->getIDByName($name);
+    $id = $subtypes->getIDByNameAndParentID($name, $request['parent_id']);
     if (isset($id)) {
       return;
     }

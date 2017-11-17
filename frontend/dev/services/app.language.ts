@@ -195,6 +195,8 @@ export class LanguageService
           categoriesTitle: 'Categorías de Análisis',
           categoriesTab: 'Categorías',
           labsTab: 'Laboratorios',
+          productionUnitsTab: 'U. Prod.',
+          producerTitle: 'Agregar Unidad de Producción',
           tableHeaders: [
             'Tipo de Análisis',
             'Subtupo de Análisis',
@@ -207,6 +209,7 @@ export class LanguageService
           addSubTypeButton: 'Subtipo',
           addProductButton: 'Producto',
           addLabButton: 'Agregar Lab',
+          addProducerButton: 'Agregar UP',
           typeTitle: 'Agregar Tipo de Análisis',
           subtypeTitle: 'Agregar Subtipo de Análisis',
           areaTitle: 'Agregar Área o Producto',
@@ -217,7 +220,7 @@ export class LanguageService
           errors: {
             required: 'Este campo es requerido',
             maxlength: 'Este campo no debe exceder los 255 caracteres de largo'
-          },
+          }
         }
       },
       documents: {
@@ -298,6 +301,18 @@ export class LanguageService
       },
       'add-product': {
         0: 'El área o producto fue agregado exitosamente'
+      },
+      'add-lab': {
+        0: 'El laboratorio fue agregado exitosamente'
+      },
+      'add-analysis-type': {
+        0: 'El tipo de análisis fue agregado exitosamente'
+      },
+      'add-analysis-subtype': {
+        0: 'El subtipo de análisis fue agregado exitosamente'
+      },
+      'add-producer': {
+        0: 'El productor fue agregado exitosamente'
       },
       100: 'No se pudo reconocer el servicio solicitado',
       101: 'Faltó enviar una entrada al servidor',
@@ -486,7 +501,9 @@ export class LanguageService
         lab: {
           categoriesTitle: 'Analysis Categories',
           categoriesTab: 'Categories',
+          productionUnitsTab: 'Prod. Units',
           labsTab: 'Laboratories',
+          producerTitle: 'Add Production Unit',
           tableHeaders: [
             'Analysis Type',
             'Analysis Subtype',
@@ -499,6 +516,7 @@ export class LanguageService
           addSubTypeButton: 'Subtype',
           addProductButton: 'Area/Product',
           addLabButton: 'Add Lab',
+          addProducerButton: 'Add PU',
           typeTitle: 'Add Analysis Type',
           subtypeTitle: 'Add Analysis Subtype',
           areaTitle: 'Add Area or Products',
@@ -590,6 +608,18 @@ export class LanguageService
       },
       'add-product': {
         0: 'Area or Product was added successfully'
+      },
+      'add-lab': {
+        0: 'The lab was added successfully'
+      },
+      'add-analysis-type': {
+        0: 'The analysis type was added successfully'
+      },
+      'add-analysis-subtype': {
+        0: 'The analysis subtype was added successfully'
+      },
+      'add-producer': {
+        0: 'The producer was added successfully'
       },
       100: 'Unable to recognize the requested service',
       101: 'A server input argument was not send',
@@ -763,12 +793,15 @@ export class LanguageService
         categoriesTitle: null,
         categoriesTab: null,
         labsTab: null,
+        productionUnitsTab: null,
+        producerTitle: null,
         tableHeaders: [ null, null, null ],
         labTableHeaders: [ null ],
         addTypeButton: null,
         addSubTypeButton: null,
         addProductButton: null,
         addLabButton: null,
+        addProducerButton: null,
         typeTitle: null,
         subtypeTitle: null,
         areaTitle: null,

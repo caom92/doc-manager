@@ -7,6 +7,7 @@ import { LabTypesInventoryModalComponent } from './modal.inventory.lab.type'
 import { LabSubTypesInventoryModalComponent } from './modal.inventory.lab.subtype'
 import { LabProductInventoryModalComponent } from './modal.inventory.lab.product'
 import { LabLabInventoryModalComponent } from './modal.inventory.lab.lab'
+import { LabProducerInventoryModalComponent } from './modal.inventory.lab.producer'
 import { MzModalService } from 'ng2-materialize'
 
 // Componente que define el comportamiento de la pagina donde el usuario 
@@ -24,6 +25,22 @@ export class LabInventoryComponent implements OnInit
     id: number,
     name: string
   }> = []
+
+  // La lista de zonas recuperada de la base de datos
+  zones: Array<{
+    id: number,
+    name: string
+  }> = []
+
+  // La lista de 
+  producers: Array<{
+    id: number,
+    name: string,
+    parent_id: number
+  }> = []
+
+  // La zona elegida por el usuario
+  selectedZone: any = null
 
   // El constructor de este componente, inyectando los servicios requeridos
   constructor(
@@ -74,7 +91,49 @@ export class LabInventoryComponent implements OnInit
         } // if (response.meta.return_code == 0)
       } // (response: BackendResponse)
     ) // this.server.read()
+
+    this.server.read(
+      'list-zones',
+      {},
+      (response: BackendResponse) => {
+        if (response.meta.return_code == 0) {
+          this.zones = response.data
+        } else {
+          // si el servidor respondio con un error, notificamos al usuario
+          this.toastManager.showText(
+            this.langManager.getServiceMessage(
+              'list-zones',
+              response.meta.return_code
+            )
+          )
+        } // if (response.meta.return_code == 0)
+      } // (response: BackendResponse)
+    ) // this.server.read
   } // ngOnInit(): void
+
+  // Esta funcion se ejecuta cuando el usuario selecciona una zona de la
+  // lista de seleccion
+  onZoneSelected(event: any): void {
+    let zoneID = event.target.value.split(': ')[1]
+    this.server.read(
+      'list-producers-of-zone',
+      {
+        zone_id: zoneID
+      },
+      (response: BackendResponse) => {
+        if (response.meta.return_code == 0) {
+          this.producers = response.data
+        } else {
+          this.toastManager.showText(
+            this.langManager.getServiceMessage(
+              'list-producers-of-zone',
+              response.meta.return_code
+            )
+          )
+        }
+      }
+    )
+  }
 
   // Funcion que se invoca cuando el usuario hace clic en el boton de agregar 
   // tipo de analisis
@@ -104,6 +163,14 @@ export class LabInventoryComponent implements OnInit
   // laboratorio
   onAddLabButtonClick(): void {
     this.modalManager.open(LabLabInventoryModalComponent, {
+      parent: this
+    })
+  }
+
+  // Funcion que se invoca cuando el usuario hace clic en el boton de agregar
+  // unidad de productor
+  onAddProducerButtonClick(): void {
+    this.modalManager.open(LabProducerInventoryModalComponent, {
       parent: this
     })
   }

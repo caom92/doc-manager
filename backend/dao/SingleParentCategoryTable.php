@@ -40,6 +40,25 @@ class SingleParentCategoryTable extends SearchableByNameTable
     $query->execute($row);
     return $this->db->lastInsertId();
   }
+
+  // Retorna el ID del elemento que tenga el nombre y padre especificados
+  // [in]   name (string): el nombre del elemento cuyo ID sera recuperado
+  // [in]   parentID (uint): el ID del padre cuyo elemento sera buscado
+  // [out]  return (uint): el ID del elemento especificado si este fue 
+  //        encontrado en la tabla, o nulo en caso contrario
+  function getIDByNameAndParentID($name, $parentID) {
+    $query = $this->getStatement(
+      "SELECT * 
+      FROM `$this->table` 
+      WHERE :parentID = parent_id AND :name = name"
+    );
+    $query->execute([
+      ':name' => $name,
+      ':parentID' => $parentID
+    ]);
+    $rows = $query->fetchAll();
+    return (count($rows) > 0) ? $rows[0]['id'] : NULL;
+  }
 }
 
 ?>

@@ -85,3 +85,33 @@ mz-tab(
         )
           tr('*ngFor'='let row of laboratories')
             td='{{ row.name }}'
+  mz-tab-item(
+    '[label]'='langManager.messages.inventory.lab.productionUnitsTab'
+  )
+    div.row
+      div.col.s6.m8
+        +select(
+          'zone',
+          'langManager.messages.upload.lab.zoneLabel',
+          'langManager.messages.global.selectPlaceholder',
+          'zones', '.name', '.id',
+          'onZoneSelected($event)'
+        )(
+          '[(ngModel)]'='selectedZone'
+        )
+      div.col.s6.m4
+        +button(
+          'button',
+          'add-producer',
+          '{{ langManager.messages.inventory.lab.addProducerButton }}',
+          'mdi mdi-plus'
+        )(
+          '(click)'='onAddProducerButtonClick()'
+        )
+    div.row('*ngIf'='producers.length > 0')
+      div.col.s12
+        +table(
+          'langManager.messages.inventory.lab.labTableHeaders'
+        )
+          tr('*ngFor'='let row of producers')
+            td='{{ row.name }}'

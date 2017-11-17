@@ -1,6 +1,9 @@
 include globals.pug
 
-mz-modal('[options]'='modalOptions')
+mz-modal(
+  '[options]'='modalOptions'
+  '[fullscreen]'='"true"'
+)
   mz-modal-header
     ='{{ langManager.messages.inventory.lab.typeTitle }}'
   mz-modal-content
@@ -18,6 +21,7 @@ mz-modal('[options]'='modalOptions')
             mz-validation
             required
             '[errorMessageResource]'='langManager.messages.inventory.lab.errors'
+            length=255
           )
   mz-modal-footer
     +button(
