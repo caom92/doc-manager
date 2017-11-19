@@ -15,7 +15,7 @@ class NoParentCategoryTable extends SearchableByNameTable
   // Retorna todos los elementos de la tabla organizado en renglones y columnas
   function selectAll() {
     $query = $this->getStatement(
-      "SELECT * FROM `$this->table`"
+      "SELECT * FROM `$this->table` ORDER BY name"
     );
     $query->execute();
     return $query->fetchAll();

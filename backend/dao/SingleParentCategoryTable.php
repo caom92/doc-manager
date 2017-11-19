@@ -21,7 +21,7 @@ class SingleParentCategoryTable extends SearchableByNameTable
   //        renglones y columnas
   function selectByParentID($parentID) {
     $query = $this->getStatement(
-      "SELECT * FROM `$this->table` WHERE parent_id = :parentID"
+      "SELECT * FROM `$this->table` WHERE parent_id = :parentID ORDER BY name"
     );
     $query->execute([
       ':parentID' => $parentID
