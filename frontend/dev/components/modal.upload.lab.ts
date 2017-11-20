@@ -258,7 +258,7 @@ export class LabDocumentUploadModalComponent
     this.selectedDocumentFile = null
     
     // recuperamos el archivo elegido
-    let files = event.srcElement.files
+    let files = event.target.files
     
     // si el usuario subio un archivo, lo guardamos para su futuro uso
     if (files.length > 0) {

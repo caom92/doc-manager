@@ -193,7 +193,7 @@ export class LanguageService
         title: 'Control de Inventario',
         lab: {
           categoriesTitle: 'Categorías de Análisis',
-          categoriesTab: 'Categorías',
+          categoriesTab: 'Categorias',
           labsTab: 'Laboratorios',
           productionUnitsTab: 'U. Prod.',
           producerTitle: 'Agregar Unidad de Producción',
