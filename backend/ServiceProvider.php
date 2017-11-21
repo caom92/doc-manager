@@ -337,7 +337,7 @@ class ServiceProvider
         'message' => $message
       ],
       'data' => $data
-    ]);
+    ], JSON_NUMERIC_CHECK);
   }
 
   // Revisa que el cliente envio los datos de entrada correctos para ejecutar
