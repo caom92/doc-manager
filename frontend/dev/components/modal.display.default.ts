@@ -3,6 +3,9 @@ import { MzBaseModal, MzModalComponent } from 'ng2-materialize'
 import { LanguageService } from '../services/app.language'
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser'
 import { environment } from '../environments/environment'
+import { BackendService, BackendResponse } from '../services/app.backend'
+import { ToastService } from '../services/app.toast'
+import { LabSearchResultsListComponent } from './list.lab'
 
 // El componente del modal que despliega el archivo buscado por el usuario
 @Component({
@@ -16,26 +19,18 @@ export class DefaultDocumentDisplayModalComponent
   modalOptions = {
   }
 
-  // El nombre del tipo de documento a desplegar
+  // El indice del documento cuyos datos vamos a desplegar
   @Input()
-  documentType: string = null
+  index: number = null
 
   // El nombre de la carpeta donde se encuentra almacenado el documento a 
   // desplegar
   @Input()
-  baseFolder: string = null 
+  baseFolder: string = null
 
-  // La fecha del archivo 
+  // El componente que lista los resultados de
   @Input()
-  fileDate: string = null
-
-  // El nombre del archivo
-  @Input()
-  fileName: string = null
-
-  // Las notas o comentarios escritos al capturar el documento
-  @Input()
-  notes: string = null
+  parent: LabSearchResultsListComponent = null
 
   // El URL al documento que sera desplegado
   sanitizedPath: SafeResourceUrl = null
@@ -44,7 +39,9 @@ export class DefaultDocumentDisplayModalComponent
   // de idioma
   constructor(
     protected langManager: LanguageService,
-    protected sanitizer: DomSanitizer
+    protected sanitizer: DomSanitizer,
+    protected server: BackendService,
+    protected toastManager: ToastService
   ) {
     super() // invocamos el constructor de la clase padre
   }
@@ -53,10 +50,40 @@ export class DefaultDocumentDisplayModalComponent
   ngOnInit(): void {
     this.sanitizedPath = (environment.production) ?
       this.sanitizer.bypassSecurityTrustResourceUrl(
-        `http://documents.jfdc.tech/backend/ViewerJS/#../documents/${ this.baseFolder }/${ this.fileName }`
+        `http://documents.jfdc.tech/backend/ViewerJS/#../documents/${ this.baseFolder }/${ this.parent.searchResults[this.index].file_path }`
       )
       : this.sanitizer.bypassSecurityTrustResourceUrl(
-        `http://localhost/doc-manager/backend/ViewerJS/#../documents/${ this.baseFolder }/${ this.fileName }`
+        `http://localhost/doc-manager/backend/ViewerJS/#../documents/${ this.baseFolder }/${ this.parent.searchResults[this.index].file_path }`
       )
   } // ngOnInit(): void
+
+  // Funcion que se invoca cuando el usuario hace clic en la caja para indicar 
+  // si el documento tiene una copia fisica
+  onPhysicalCopyCheckboxChanged(): void {
+    let document = this.parent.searchResults[this.index]
+    
+    if (document.has_physical_copy == 1) {
+      this.parent.numDocsWithPhysicalCopy++
+    } else {
+      this.parent.numDocsWithPhysicalCopy--
+    }
+
+    let data = new FormData()
+    data.append(
+      'document_id', 
+      document.document_id.toString()
+    )
+    this.server.write(
+      'toggle-physical-copy-lab',
+      data,
+      (response: BackendResponse) => {
+        this.toastManager.showText(
+          this.langManager.getServiceMessage(
+            'toggle-physical-copy-lab',
+            response.meta.return_code
+          )
+        )
+      }
+    )
+  } 
 }

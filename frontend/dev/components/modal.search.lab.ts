@@ -338,7 +338,9 @@ export class LabDocumentSearchModalComponent
         // si el servidor respondio con exito, reiniciamos el formulario para 
         // que el usuario capture un nuevo documento
         if (response.meta.return_code == 0) {
-          this.parent.searchResults = response.data
+          this.parent.numDocsWithPhysicalCopy = 
+            response.data.num_docs_with_physical_copy
+          this.parent.searchResults = response.data.documents
         } else {
           // notificamos al usuario del resultado obtenido
           this.toastManager.showText(

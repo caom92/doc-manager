@@ -13,7 +13,17 @@ mz-modal(
     div.container
       div.row
         div.col.s12
-          h6='{{ documentType }} - {{ fileDate }}'
+          h6='{{ documentType }} - {{ parent.searchResults[this.index].file_date }}'
+
+      div.row
+        div.col.s12
+          +checkboxInput(
+            'has-physical-copy',
+            'langManager.messages.display.checkbox'
+          )(
+            '[(ngModel)]'='parent._searchResults[this.index].has_physical_copy'
+            '(change)'='onPhysicalCopyCheckboxChanged()'
+          )
 
       div.row
         div.col.s12
@@ -22,7 +32,7 @@ mz-modal(
             65535,
             'langManager.messages.upload.notesLabel'
           )(
-            '[(ngModel)]'='notes'
+            '[(ngModel)]'='parent.searchResults[this.index].notes'
             '[readonly]'='true'
           )
       

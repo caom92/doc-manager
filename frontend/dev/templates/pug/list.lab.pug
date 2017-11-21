@@ -57,6 +57,10 @@ include globals.pug
 //-         ='{{ langManager.messages.global.erase }}'
 
 //- Despliega la info en forma de tabla
+div.col.s12
+  p 
+    ='{{ langManager.messages.list.numPhysicalDocs }}: {{ numDocsWithPhysicalCopy }}'
+
 div.col.s12('*ngIf'='searchResults.length > 0')
   div.scrollable-table-container
     +responsiveTable('langManager.messages.list.lab.tableHeaders')(
@@ -72,8 +76,12 @@ div.col.s12('*ngIf'='searchResults.length > 0')
         td.table-col-fixed='{{ document.analysis_type_name }}'
         td.table-col-fixed='{{ document.analysis_subtype_name }}'
         td.table-col-fixed='{{ document.area_name }}'
+        td('*ngIf'='document.has_physical_copy == 1')
+          i.mdi.mdi-24px.mdi-check.green-text
+        td('*ngIf'='document.has_physical_copy != 1')
+          i.mdi.mdi-24px.mdi-close.red-text
         td
-          +link()('(click)'='parent.onDocumentLinkClicked(document)')
+          +link()('(click)'='parent.onDocumentLinkClicked(i)')
             ='{{ langManager.messages.list.view }}'
         td
           +link()(

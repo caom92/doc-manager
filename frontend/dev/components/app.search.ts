@@ -103,18 +103,17 @@ export class SearchComponent
 
   // Esta funcion se invoca cuando el usuario hace clic en uno de los enlaces 
   // generados al buscar documentos en la base de datos
-  onDocumentLinkClicked(document: any): void {
+  onDocumentLinkClicked(index: number): void {
     switch (this.selectedDocument.name) {
       case 'LABORATORIOS':
         this.modalManager.open(DefaultDocumentDisplayModalComponent, {
+          index: index,
           documentType: this.selectedDocument.name,
           baseFolder: 'lab',
-          fileName: document.file_path,
-          fileDate: document.file_date,
-          notes: document.notes
+          parent: this.listComponent
         })
       break
-    }
+    } 
   } // onDocumentLinkClicked(document: SearchedDocument): void
 
   // Esta funcion se invoca cuando el usuario hace clic en el boton de 
@@ -163,6 +162,12 @@ export class SearchComponent
 
         // si el resultado fue exitoso, borramos el documento del arreglo
         if (response.meta.return_code == 0) {
+          // si el documento tenia una copia fisica, hay que actualizar el 
+          // conteo
+          if (this.listComponent.searchResults[idx].has_physical_copy == 1) {
+            this.listComponent.numDocsWithPhysicalCopy--
+          }
+
           this.listComponent.searchResults.splice(idx, 1)
         }
       } // (response: BackendResponse)

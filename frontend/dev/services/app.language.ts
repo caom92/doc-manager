@@ -182,6 +182,7 @@ export class LanguageService
       },
       display: {
         title: 'Visualizar Documento',
+        checkbox: '¿Tiene una copia física?',
         lab: {
           tabs: [
             'Solicitud',
@@ -239,6 +240,7 @@ export class LanguageService
       },
       list: {
         view: 'Ver',
+        numPhysicalDocs: 'Número de documentos con copias físicas',
         area: {
           tableHeaders: [
             'Fecha',
@@ -259,6 +261,7 @@ export class LanguageService
             'Tipo de Análisis',
             'Subtipo',
             'Área/Producto',
+            '¿Copia Física?',
             'Ver',
             'Borrar'
           ]
@@ -313,6 +316,9 @@ export class LanguageService
       },
       'add-producer': {
         0: 'El productor fue agregado exitosamente'
+      },
+      'toggle-physical-copy-lab': {
+        0: 'El estado de la copia física se guardó exitosamente'
       },
       100: 'No se pudo reconocer el servicio solicitado',
       101: 'Faltó enviar una entrada al servidor',
@@ -489,6 +495,7 @@ export class LanguageService
       },
       display: {
         title: 'Display Document',
+        checkbox: 'Has a physical copy?',
         lab: {
           tabs: [
             'Request',
@@ -546,6 +553,7 @@ export class LanguageService
       },
       list: {
         view: 'View',
+        numPhysicalDocs: 'Number of documents with physical copies',
         area: {
           tableHeaders: [
             'Date',
@@ -553,6 +561,7 @@ export class LanguageService
             'Ranch',
             'PU',
             'Area/Product',
+            'Physical Copy?',
             'View',
             'Delete'
           ]
@@ -620,6 +629,9 @@ export class LanguageService
       },
       'add-producer': {
         0: 'The producer was added successfully'
+      },
+      'toggle-physical-copy-lab': {
+        0: 'El estado de la copia física se guardó exitosamente'
       },
       100: 'Unable to recognize the requested service',
       101: 'A server input argument was not send',
@@ -783,6 +795,7 @@ export class LanguageService
     },
     display: {
       title: null,
+      checkbox: null,
       lab: {
         tabs: [ null, null ]
       }
@@ -829,6 +842,7 @@ export class LanguageService
     },
     list: {
       view: null,
+      numPhysicalDocs: null,
       area: {
         tableHeaders: [
           null,
@@ -842,6 +856,7 @@ export class LanguageService
       },
       lab: {
         tableHeaders: [
+          null,
           null,
           null,
           null,

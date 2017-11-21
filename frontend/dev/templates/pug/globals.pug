@@ -325,3 +325,19 @@ mixin viewerJSDoc(path)
     allowfullscreen
     webkitallowfullscreen
   )
+
+//- Agrega un checkbox
+//- [in]  name (string): el nombre del campo con el cual podra ser referenciado 
+//-       en el componente
+//- [in]  label (string): el nombre a desplegar en pantalla para distinguir el 
+//-       campo de fecha de los demas
+mixin checkboxInput(name, label)
+  mz-checkbox-container
+    input(
+      id=name
+      name=name
+      type='checkbox'
+      '[filledIn]'="'true'"
+      '[label]'=label
+      mz-checkbox
+    )&attributes(attributes)

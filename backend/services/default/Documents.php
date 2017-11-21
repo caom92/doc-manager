@@ -44,6 +44,18 @@ class Documents extends DataBaseTable
     $query->execute([ ':ID' => $id ]);
     return $query->rowCount();
   }
+
+  // Invierte el valor de la bandera que indica si existe una copia fisica del 
+  // documento que tenga el ID ingresado
+  function togglePhysicalCopyFlagByID($id) {
+    $query = $this->getStatement(
+      "UPDATE `$this->table` 
+      SET has_physical_copy = NOT has_physical_copy 
+      WHERE id = :ID"
+    );
+    $query->execute([ ':ID' => $id ]);
+    return $query->rowCount();
+  }
 }
 
 ?>

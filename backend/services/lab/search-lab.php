@@ -49,30 +49,54 @@ $service = [
     ]
   ],
   'callback' => function($scope, $request) {
-    $rows = $scope->docManagerTableFactory->get('Lab\Documents')
-      ->selectByDateInterval(
-        $request['document_type_id'],
-        $request['start_date'],
-        $request['end_date'],
-        (isset($request['zone_id']) 
-          && array_key_exists('zone_id', $request)) ? 
-            $request['zone_id'] : NULL,
-        (isset($request['producer_id'])
-          && array_key_exists('producer_id', $request)) ?
-            $request['producer_id'] : NULL,
-        (isset($request['lab_id']) 
-          && array_key_exists('lab_id', $request)) ? 
-            $request['lab_id'] : NULL,
-        (isset($request['analysis_type_id']) 
-          && array_key_exists('analysis_type_id', $request)) ? 
-            $request['analysis_type_id'] : NULL,
-        (isset($request['analysis_subtype_id']) 
-          && array_key_exists('analysis_subtype_id', $request)) ?
-            $request['analysis_subtype_id'] : NULL,
-        (isset($request['area_id']) 
-          && array_key_exists('area_id', $request)) ?
-            $request['area_id'] : NULL
-      );
+    $documents = $scope->docManagerTableFactory->get('Lab\Documents');
+    $rows = $documents->selectByDateInterval(
+      $request['document_type_id'],
+      $request['start_date'],
+      $request['end_date'],
+      (isset($request['zone_id']) 
+        && array_key_exists('zone_id', $request)) ? 
+          $request['zone_id'] : NULL,
+      (isset($request['producer_id'])
+        && array_key_exists('producer_id', $request)) ?
+          $request['producer_id'] : NULL,
+      (isset($request['lab_id']) 
+        && array_key_exists('lab_id', $request)) ? 
+          $request['lab_id'] : NULL,
+      (isset($request['analysis_type_id']) 
+        && array_key_exists('analysis_type_id', $request)) ? 
+          $request['analysis_type_id'] : NULL,
+      (isset($request['analysis_subtype_id']) 
+        && array_key_exists('analysis_subtype_id', $request)) ?
+          $request['analysis_subtype_id'] : NULL,
+      (isset($request['area_id']) 
+        && array_key_exists('area_id', $request)) ?
+          $request['area_id'] : NULL
+    );
+
+    $count = $documents->countPhysicalCopiesByDateInterval(
+      $request['document_type_id'],
+      $request['start_date'],
+      $request['end_date'],
+      (isset($request['zone_id']) 
+        && array_key_exists('zone_id', $request)) ? 
+          $request['zone_id'] : NULL,
+      (isset($request['producer_id'])
+        && array_key_exists('producer_id', $request)) ?
+          $request['producer_id'] : NULL,
+      (isset($request['lab_id']) 
+        && array_key_exists('lab_id', $request)) ? 
+          $request['lab_id'] : NULL,
+      (isset($request['analysis_type_id']) 
+        && array_key_exists('analysis_type_id', $request)) ? 
+          $request['analysis_type_id'] : NULL,
+      (isset($request['analysis_subtype_id']) 
+        && array_key_exists('analysis_subtype_id', $request)) ?
+          $request['analysis_subtype_id'] : NULL,
+      (isset($request['area_id']) 
+        && array_key_exists('area_id', $request)) ?
+          $request['area_id'] : NULL
+    );
 
     $fsmZones = $scope->fsmTableFactory->get('Zones');
     foreach ($rows as &$row) {
@@ -81,7 +105,10 @@ $service = [
     }
     unset($row);
 
-    return $rows;
+    return [
+      'num_docs_with_physical_copy' => $count,
+      'documents' => $rows
+    ];
   } // 'callback' => function($scope, $request)
 ];
 

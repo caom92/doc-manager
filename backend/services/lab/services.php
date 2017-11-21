@@ -28,7 +28,9 @@ $lab = [
         realpath(__DIR__.'/add-analysis-subtype.php'),
       'add-product' => realpath(__DIR__.'/add-product.php'),
       'add-lab' => realpath(__DIR__.'/add-lab.php'),
-      'add-producer' => realpath(__DIR__.'/add-producer.php')
+      'add-producer' => realpath(__DIR__.'/add-producer.php'),
+      'toggle-physical-copy-lab' => 
+        realpath(__DIR__.'/toggle-physical-copy-lab.php')
     ],
     'DELETE' => [
       'delete-lab/{document_id}' => realpath(__DIR__.'/delete-lab.php')

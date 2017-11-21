@@ -10,6 +10,11 @@ export class SearchResultsListComponent
   @Input()
   hasSearchResults: boolean = true
 
+  // Numero de documentos recuperados del servidor que tienen una copia fisica 
+  // registrada
+  @Input()
+  numDocsWithPhysicalCopy: number = 0
+
   // El componente responsable de la creacion de este componente
   @Input()
   parent: SearchComponent = null
@@ -32,5 +37,11 @@ export class SearchResultsListComponent
     protected global: GlobalElementsService,
     protected langManager: LanguageService
   ) {
+  }
+
+  // Cambia el valor de uno de los atributos de uno de los elementos de la 
+  // lista de resultados de busqueda
+  setItemValue(idx: number, attribute: string, value: any): void {
+    this._searchResults[idx][attribute] = value
   }
 }

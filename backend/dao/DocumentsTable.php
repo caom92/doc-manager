@@ -35,6 +35,23 @@ abstract class DocumentsTable extends DataBaseTable
     ...$categoryIDs
   );
 
+  // Retorna el numero de documentos que tienen la bandera de copia fisica 
+  // activada y que cumplan con las caracteristicas especificadas
+  // [in]   typeID (uint): el ID del tipo de documento cuyos elementos seran 
+  //        recuperados
+  // [in]   startDate (string): la fecha de inicio de la busqueda
+  // [in]   endDate (string): la fecha de fin de la busqueda
+  // [in]   [categoryIDs] (dictionary): la lista de los IDs de las categorias 
+  //        necesarias para buscar el documento en la BD
+  // [out]  return (dictionary): la lista de todos los documentos encontrados 
+  //        en el tabla organizados por renglones y columnas
+  abstract function countPhysicalCopiesByDateInterval(
+    $typeID,
+    $startDate, 
+    $endDate,
+    ...$categoryIDs
+  );
+
   // Retorna la informacion del documento que posea el ID especificado en esta 
   // tabla
   function getByID($id) {
