@@ -76,6 +76,7 @@ $service = [
 
     // inicializamos el indice del ultimo elemento en el arreglo de areas
     $a = -1;
+    $s = -1;
 
     // visitamos cada renglon obtenido de la BD uno por uno...
     foreach ($rows as $row) {
@@ -102,12 +103,13 @@ $service = [
           'start' => $a,
           'length' => 1
         ];
+        ++$s;
 
         // vigilamos el nuevo tipo
         $type = [
           'span' => 1,
           'name' => $row['type_name'],
-          'start' => $a,
+          'start' => $s,
           'length' => 1
         ];
       } else {
@@ -133,6 +135,7 @@ $service = [
             'start' => $a,
             'length' => 1
           ];
+          ++$s;
 
           // actualizamos los valores del tipo
           ++$type['span'];
@@ -155,7 +158,6 @@ $service = [
             ++$subtype['span'];
             ++$subtype['length'];
             ++$type['span'];
-            ++$type['length'];
           } // if ($hasAreaChanged)
         } // if ($hasSubtypeChanged)
       } // if ($hasTypeChanged)

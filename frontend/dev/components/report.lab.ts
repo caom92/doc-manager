@@ -104,123 +104,104 @@ export class LabReportResultsComponent extends ReportResultsComponent
 
   // Prepara los datos a enviar al servidor para generar el reporte PDF
   prepareReportHTML(): void {
-    // inicializamos el JSON que sera enviado
-    let content = [{
-      header: 
-        `<table>
-          <tr>
-            <td>
-              <b>${
-                (localStorage.lang == 'en') ?
-                  'From: ' : 'Del: ' 
-              }</b>
-              <span>${ this.startDate } </span>
-              <b>${
-                (localStorage.lang == 'en') ?
-                'To: ' : 'al: '
-              }</b>
-              <span>${ this.endDate }</span>
-              <br>
-              <b>${
-                (localStorage.lang == 'en') ?
-                  'Document Type: ' : 'Tipo de Documento: '
-              }</b>
-              <span>${
-                (localStorage.lang == 'en') ?
-                  'LABORATORIES' : 'LABORATORIOS'
-              }</span>
-              <br>
-              <b>${
-                (localStorage.lang == 'en') ?
-                  'Zone: ' : 'Zona: '
-              }</b>
-              <span>${ this.zone }</span>
-              <br>
-              <b>${
-                (localStorage.lang == 'en') ?
-                  'Analysis Type: ' : 'Tipo de Análisis: '
-              }</b>
-              <span>${ this.type }</span>
-              <br>
-              <b>${
-                (localStorage.lang == 'en') ?
-                  'Analysis Subtype: ' : 'Subtipo de Análisis: '
-              }</b>
-              <span>${ this.subtype }</span>
-            </td>
-          </tr>
-        </table>`,
-      body: '',
-      footer: `<span></span>`
-    }]
+    // preparamos el almacenamiento temporal donde se guardara el JSON con el 
+    // reporte a enviar al servidor
+    let content = []
 
-    // indicamos desde donde vamos a empezar a imprimir los valores de los 
-    // productores
-    let startingCol = 2
+    // obtenemos la lista de etiquetas a desplegar en el reporte dependiendo 
+    // del idioma elegido por el usuario
+    let labels = this.langManager.messages.report.lab
 
-    // Debido a que la tabla que sera desplegada en el reporte contiene tantas 
-    // columnas como Unidades de produccion, existe la posibilidad de que no 
-    // todas queden dentro del ancho de la hoja, asi que limitaremos el 
-    // despliegue de la tabla a un numero determinado de columnas
-    while (startingCol < this.tableHeaders.length) {
-      // comenzamos agregando el encabezado de la primera columna que contiene 
-      // el nombre de las areas
-      content[0].body += 
-        `<table>
-          <thead>
+    // visitamos cada tipo de analisis ...
+    for (let type of this.reportData.types) {
+      // almacenamiento temporal para el JSON del reporte de este tipo
+      let temp = {
+        header:
+          `<table>
             <tr>
-              <th>${
-                (localStorage.lang == 'en') ?
-                  'Area/Product' : 'Área/Producto'
-              }</th>`
-      
-      // luego agregamos cada celda que contiene el nombre de la unidad 
-      // productora, imprimiendolas hasta que se agoten o hasta que se hayan 
-      // impreso 9 de ellas, lo que sea que llegue primero
-      for (
-        let i = startingCol; 
-        i < this.tableHeaders.length && i < startingCol + 9; 
-        ++i
-      ) {
-        content[0].body += 
-          `<th class="producer-cell">${ this.tableHeaders[i] }</th>`
+              <td>
+                <b>${ labels.from }</b>
+                <span>${ this.startDate } </span>
+                <b>${ labels.to }</b>
+                <span>${ this.endDate }</span>
+                <br>
+                <b>${ labels.docTypeLabel }</b>
+                <span>${ labels.name }</span>
+                <br>
+                <b>${ labels.zone }</b>
+                <span>${ this.zone }</span>
+                <br>
+                <b>${ labels.typeLabel }</b>
+                <span>${ type.name }</span>
+              </td>
+            </tr>
+          </table>`,
+        body: '',
+        footer: `<span></span>`
       }
-      content[0].body += `</tr></thead><tbody>`
 
-      // una vez impresos los encabezados, imprimimos los datos renglon por 
-      // renglon
-      for (let row of this.reportData) {
-        // primero imprimimos la 1ra columna, que contiene el nombre del area
-        content[0].body += 
-          `<tr>
-            <td>${ row.name }</td>`
-        
-        // luego imprimiremos 10 columnas o las que sobren, lo que llegue 1ro
-        for (
-          let j = startingCol - 2; 
-          j < row.values.length && j < startingCol + 7; 
-          ++j
-        ) {
-          if (row.values[j] > 0) {
-            content[0].body += 
-              `<td class="producer-cell" style="background-color:yellow">
-                ${ row.values[j] }
-              </td>`
-          } else {
-            content[0].body += `<td class="producer-cell">${ row.values[j] }</td>`
-          }
+      // almacenamiento temporal para el cuerpo del reporte
+      let body = ''
+
+      // visitamos cada subtipo perteneciente al tipo de esta iteracion
+      for (let s = type.start; s < type.start + type.length; ++s) {
+        // obtenemos los datos del subtipo de esta iteracion
+        let subtype = this.reportData.subtypes[s]
+
+        // inicializamos el encabezado de la tabla
+        body += 
+          `<table>
+            <thead>
+              <tr>
+                <th rowspan="2">${ labels.producer}</th>
+                <th colspan="${ subtype.span }">${ subtype.name}</th>
+              </tr>
+              <tr>`
+
+        // visitamos cada area perteneciente al subtipo de la iteracion actual
+        for (let a = subtype.start; a < subtype.start + subtype.length; ++a) {
+          // agregamos cada area al encabezado de la tabla
+          body += `<th>${ this.reportData.areas[a] }</th>`
         }
-        content[0].body += `</tr>`
+
+        // cerramos el encabezado e inicializamos el cuerpo de la tabla
+        body += `</tr></thead><tbody>`
+
+        // visitamos cada productor de la zona elegida por el usuario
+        for (let producer of this.reportData.producers) {
+          // agregamos el nombre del productor en la 1ra columna de la tabla
+          body += `<tr><td>${ producer.name }</td>`
+
+          // visitamos cada valor registrado en el productor de la iteracion 
+          // actual que concuerde con el area del subtipo de la iteracion actual
+          for (let i = subtype.start; i < subtype.start + subtype.length; ++i) {
+            // obtenemos el valor del area
+            let value = producer.values[i]
+
+            // pintamos la celda de amarillo si tiene registrado al menos 1 
+            // documento
+            if (value > 0) {
+              body += `<td style="background-color:yellow">${ value }</td>` 
+            } else {
+              body += `<td>${ value }</td>` 
+            }
+          }
+
+          // cerramos el renglon
+          body += `</tr>`
+        }
+
+        // cerramos la tabla
+        body += `</tbody></table>`
       }
 
-      // cerramos la tabla
-      content[0].body += '</tbody></table><br><br>'
+      // agregamos las tablas de subtipo creadas contenido final 
+      temp.body = body
+      content.push(temp)
+    }
 
-      // avanzamos al siguiente grupo de 10 columnas
-      startingCol += 9
-    } // for (let row of this.reportData)
-
-    // generamos la cadena que representa el JSON que sera enviado al servidor
+    // tras procesar todos los tipos, generamos el JSON en preparacion a ser 
+    // enviado al servidor
     this.content = JSON.stringify(content)
-  } // prepareReportHTML(): void
+  } // prepareReportHTML()
 } // export class LabReportResultsComponent extends ReportResultsComponent

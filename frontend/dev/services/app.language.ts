@@ -268,7 +268,16 @@ export class LanguageService
         }
       },
       report: {
-        title: 'Reporte de Documentos'
+        title: 'Reporte de Documentos',
+        lab: {
+          from: 'Del: ',
+          to: 'Al: ',
+          docTypeLabel: 'Tipo de Documento: ',
+          name: 'LABORATORIOS',
+          zone: 'Zona: ',
+          typeLabel: 'Tipo de Análisis: ',
+          producer: 'U. P.'
+        }
       },
       login: {
         0: 'Sesión iniciada exitosamente',
@@ -581,7 +590,16 @@ export class LanguageService
         }
       },
       report: {
-        title: 'Document Reports'
+        title: 'Document Reports',
+        lab: {
+          from: 'From: ',
+          to: 'To: ',
+          docTypeLabel: 'Document Type: ',
+          name: 'LABORATORIES',
+          zone: 'Zone: ',
+          typeLabel: 'Analysis Type: ',
+          producer: 'P. U.'
+        }
       },
       login: {
         0: 'Logged in successfully',
@@ -870,7 +888,16 @@ export class LanguageService
       }
     },
     report: {
-      title: null
+      title: null,
+      lab: {
+        from: null,
+        to: null,
+        docTypeLabel: null,
+        name: null,
+        zone: null,
+        typeLabel: null,
+        producer: null
+      }
     }
   }
 
