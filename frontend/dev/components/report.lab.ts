@@ -13,7 +13,7 @@ export class LabReportResultsComponent extends ReportResultsComponent
 {
   // La lista de productores que se van a desplegar como encabezados de la tabla
   @Input()
-  tableHeaders: Array<string> = []
+  tableHeaders: Array<any> = []
 
   // La fecha de inicio en la que se realizo la busqueda
   @Input()

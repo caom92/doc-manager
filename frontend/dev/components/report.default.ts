@@ -8,7 +8,7 @@ export class ReportResultsComponent
 {
   // Bandera que indica si el reporte se encuentra vacio o no
   @Input()
-  hasData: boolean = true
+  hasData: boolean = false
 
   // El componente responsable de la creacion de este componente
   @Input()
@@ -20,7 +20,7 @@ export class ReportResultsComponent
   set reportData(value: any) {
     this._reportData = value
     this.hasData = (this._reportData !== null) ?
-      this._reportData.length > 0
+      this._reportData.length > 0 || Object.keys(this._reportData).length > 0
       : false
   }
   get reportData() {

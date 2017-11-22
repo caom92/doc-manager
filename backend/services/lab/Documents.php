@@ -230,19 +230,27 @@ class Documents extends DocumentsTable
 
   // Retorna una tabla que cuenta cuantos documentos fueron capturados de cada 
   // area para cada productor
-  // [in]   zoneID (uint): el ID de la zona cuyos productores van a ser 
-  //        buscados en la BD
-  // [in]   subtypeID (uint): el ID del subtipo de analisis que sera buscado
   // [in]   startDate (string): la fecha de inicio en la que se realizara la 
   //        busqueda
   // [in]   endDate (string): la fecha final en la que se realizara la busqueda
+  // [in]   zoneID (uint): el ID de la zona cuyos productores van a ser 
+  //        buscados en la BD
+  // [in]   [typeID] (uint): el ID del tipo de analisis que sera buscado
+  // [in]   [subtypeID] (uint): el ID del subtipo de analisis que sera buscado
   // [out]  return (dictionary): la tabla que contiene cuantos documentos hay 
   //        organizados por renglones y columnas
-  function countByDateIntervalAndZoneAndSubtype(
-    $zoneID, $subtypeID, $startDate, $endDate
+  function countByDateIntervalAndZoneID(
+    $startDate, $endDate, $zoneID, $typeID = NULL, $subtypeID = NULL
   ) {
-    $query = $this->getStatement(
+    $values = [
+      ':zoneID' => $zoneID,
+      ':startDate' => $startDate,
+      ':endDate' => $endDate
+    ];
+
+    $queryStr = 
       "SELECT
+        ap.type_name AS type_name,
         ap.subtype_name AS subtype_name,
         ap.area_name AS area_name,
         ap.producer_name AS producer_name,
@@ -252,6 +260,8 @@ class Documents extends DocumentsTable
       RIGHT JOIN
         (
           SELECT
+            t.id AS type_id,
+            t.name AS type_name,
             s.id AS subtype_id,
             s.name AS subtype_name,
             a.id AS area_id,
@@ -263,13 +273,25 @@ class Documents extends DocumentsTable
           INNER JOIN
             `analysis_subtypes` AS s
             ON a.parent_id = s.id
+          INNER JOIN
+            `analysis_types` AS t
+            ON s.parent_id = t.id
           RIGHT JOIN 
             `producers` AS p 
             ON 1
           WHERE 
-            p.parent_id = :zoneID
-            AND a.parent_id = :subtypeID
-        ) AS ap
+            p.parent_id = :zoneID ";
+
+    if (isset($subtypeID)) {
+      $queryStr .= "AND a.parent_id = :subtypeID)";
+      $values[':subtypeID'] = $subtypeID;
+    } else if (isset($typeID)) {
+      $queryStr .= "AND s.parent_id = :typeID)";
+      $values[':typeID'] = $typeID;
+    }
+      
+    $queryStr .= 
+        " AS ap
         ON 
           l.area_id = ap.area_id
           AND l.producer_id = ap.producer_id
@@ -286,17 +308,13 @@ class Documents extends DocumentsTable
         ) AS d 
       ON l.document_id = d.id
       GROUP BY
+        type_name,
         subtype_name,
         area_name,
-        producer_name"
-    );
-
-    $query->execute([
-      ':zoneID' => $zoneID,
-      ':subtypeID' => $subtypeID,
-      ':startDate' => $startDate,
-      ':endDate' => $endDate
-    ]);
+        producer_name";
+    
+    $query = $this->getStatement($queryStr);
+    $query->execute($values);
     return $query->fetchAll();
   }
 }

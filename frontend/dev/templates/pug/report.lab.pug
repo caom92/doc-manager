@@ -68,28 +68,23 @@ div.row
 div.row
   div.col.s12('*ngIf'='hasData === true')
     div.scrollable-table-container
-      +table('tableHeaders')(
-        class='scrollable-table'
-      )
-        ng-container(
-          '*ngFor'='let row of reportData'
-        )
-          tr(
-            '*ngIf'='row.subtype !== undefined'
-            style='border-top: 1px solid #d0d0d0'
-          )
-            td.table-col-fixed(
-              '[attr.rowspan]'='row.rowspan'
-            )
-              ='{{ row.subtype }}'
-            td='{{ row.name }}'
-            td.table-col-fixed(
-              '*ngFor'='let col of row.values'
-            )='{{ col }}'
-          tr(
-            '*ngIf'='row.subtype === undefined'
-          )
-            td='{{ row.name }}'
-            td.table-col-fixed(
-              '*ngFor'='let col of row.values'
-            )='{{ col }}'
+      table.highlight.scrollable-table
+        thead
+          tr
+            th('[attr.rowspan]'='3')='U. P.'
+            ng-container('*ngFor'='let type of reportData.types')
+              th('[attr.colspan]'='type.span')
+                ='{{ type.name }}'
+          tr 
+            ng-container('*ngFor'='let subtype of reportData.subtypes')
+              th('[attr.colspan]'='subtype.span')
+                ='{{ subtype.name }}'
+          tr 
+            ng-container('*ngFor'='let area of reportData.areas')
+              th='{{ area }}'
+        tbody
+          ng-container('*ngFor'='let producer of reportData.producers')
+            tr
+              td='{{ producer.name }}'
+              td('*ngFor'='let value of producer.values')
+                ='{{ value }}'

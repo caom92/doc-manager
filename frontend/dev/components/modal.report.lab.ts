@@ -143,8 +143,8 @@ export class LabDocumentReportModalComponent
         // si el servidor respondio con exito, reiniciamos el formulario para 
         // que el usuario capture un nuevo documento
         if (response.meta.return_code == 0) {
-          this.parent.tableHeaders = response.data.headers
-          this.parent.reportData = response.data.body
+          // this.parent.tableHeaders = response.data.types
+          this.parent.reportData = response.data
           this.parent.startDate = this.reportForm.controls.startDate.value
           this.parent.endDate = this.reportForm.controls.endDate.value
           this.parent.zone = this.reportForm.controls.zone.value.name
