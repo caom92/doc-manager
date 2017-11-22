@@ -18,10 +18,21 @@ export class LabDocumentReportModalComponent
   implements OnInit
 {
   // La lista de analisis de laboratorio a elegir por el usuario
-  analysisTypes: Array<NoParentElement> = []
+  analysisTypes: Array<NoParentElement> = [
+    {
+      id: 0,
+      name: 'TODOS - ALL'
+    }
+  ]
 
   // La lista de subtipos de analisis de laboratorio a elegir por el usuario
-  subTypes: Array<SingleParentElement> = [] 
+  subTypes: Array<SingleParentElement> = [
+    {
+      id: 0,
+      name: 'TODOS - ALL',
+      parent_id: 0
+    }
+  ] 
 
   // El constructor de este componente, inyectando los servicios requeridos
   constructor(
@@ -56,8 +67,8 @@ export class LabDocumentReportModalComponent
           },
         Validators.required
       ],
-      type: [ null, Validators.required ],
-      subtype: [ null, Validators.required ]
+      type: [ null ],
+      subtype: [ null ]
     })
 
     // obtenemos la lista de zonas del servidor
@@ -81,6 +92,9 @@ export class LabDocumentReportModalComponent
         } // if (response.meta.return_code == 0)
       } // (response: BackendResponse)
     ) // this.server.read
+
+    this.reportForm.controls.subtype.setValue(this.subTypes[0])
+    this.reportForm.controls.type.setValue(this.analysisTypes[0])
   }
 
   // Funcion que se invoca cuando un tipo de analisis es seleccionado
@@ -88,7 +102,13 @@ export class LabDocumentReportModalComponent
     // borramos los valores de subtipo en caso que ya hayan tenido 
     // algun valor previamente y el usuario este cambiando de tipo
     this.reportForm.controls.subtype.setValue(null)
-    this.subTypes = []
+    this.subTypes = [
+      {
+        id: 0,
+        name: 'TODOS - ALL',
+        parent_id: 0
+      }
+    ]
 
     // si el tipo es valido, mandamos una peticion al servidor para recuperar 
     // la lista de subtipos
@@ -107,6 +127,7 @@ export class LabDocumentReportModalComponent
           // revisamos si el servidor respondio con exito
           if (response.meta.return_code == 0) {
             this.subTypes = this.subTypes.concat(response.data)
+            this.reportForm.controls.subtype.setValue(this.subTypes[0])
           } else {
             // si el servidor repondio con error, notificamos al usuario
             this.toastManager.showText(
@@ -126,16 +147,22 @@ export class LabDocumentReportModalComponent
   onLabDocumentReport(): void {
     // mostramos el modal de espera
     let modal = this.modalManager.open(ProgressModalComponent)
+    
+    let data = new FormData()
+    data.append('start_date', this.reportForm.controls.startDate.value)
+    data.append('end_date', this.reportForm.controls.endDate.value)
+    data.append('zone_id', this.reportForm.controls.zone.value.id)
+
+    if (this.reportForm.controls.type.value.name != 'TODOS - ALL') {
+      data.append('type_id', this.reportForm.controls.type.value.id)
+    } else if (this.reportForm.controls.subtype.value.name != 'TODOS - ALL') {
+      data.append('subtype_id', this.reportForm.controls.subtype.value.id)
+    }
 
     // enviamos los datos al servidor
-    this.server.read(
+    this.server.write(
       'report-lab',
-      {
-        start_date: this.reportForm.controls.startDate.value,
-        end_date: this.reportForm.controls.endDate.value,
-        zone_id: this.reportForm.controls.zone.value.id,
-        subtype_id: this.reportForm.controls.subtype.value.id
-      },
+      data,
       (response: BackendResponse) => {
         // al responder el servidor, cerramos el modal de espera
         modal.instance.modalComponent.close()

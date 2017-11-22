@@ -12,8 +12,6 @@ $lab = [
     'GET' => [
       'list-labs' => realpath(__DIR__.'/list-labs.php'),
       'list-analysis-types' => realpath(__DIR__.'/list-analysis-types.php'),
-      'report-lab/{start_date}/{end_date}/{zone_id}/{subtype_id}' =>
-        realpath(__DIR__.'/report-lab.php'),
       'list-lab-categories' => realpath(__DIR__.'/list-lab-categories.php')
     ],
     'POST' => [
@@ -30,7 +28,8 @@ $lab = [
       'add-lab' => realpath(__DIR__.'/add-lab.php'),
       'add-producer' => realpath(__DIR__.'/add-producer.php'),
       'toggle-physical-copy-lab' => 
-        realpath(__DIR__.'/toggle-physical-copy-lab.php')
+        realpath(__DIR__.'/toggle-physical-copy-lab.php'),
+      'report-lab' => realpath(__DIR__.'/report-lab.php')
     ],
     'DELETE' => [
       'delete-lab/{document_id}' => realpath(__DIR__.'/delete-lab.php')

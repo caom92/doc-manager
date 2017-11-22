@@ -283,15 +283,15 @@ class Documents extends DocumentsTable
             p.parent_id = :zoneID ";
 
     if (isset($subtypeID)) {
-      $queryStr .= "AND a.parent_id = :subtypeID)";
+      $queryStr .= "AND a.parent_id = :subtypeID";
       $values[':subtypeID'] = $subtypeID;
     } else if (isset($typeID)) {
-      $queryStr .= "AND s.parent_id = :typeID)";
+      $queryStr .= "AND s.parent_id = :typeID";
       $values[':typeID'] = $typeID;
     }
       
     $queryStr .= 
-        " AS ap
+        ") AS ap
         ON 
           l.area_id = ap.area_id
           AND l.producer_id = ap.producer_id
