@@ -37,34 +37,21 @@ mz-tab(
         )
 
       div.col.s12
-        +table('langManager.messages.inventory.lab.tableHeaders')
+        +table('langManager.messages.inventory.lab.tableHeaders')(
+          class='bordered-cells'
+        )
           tr('*ngFor'='let row of rows')
             td(
-              '*ngIf'='row.type.name && row.type.border'
-              '[attr.rowspan]'='row.type.rowspan'
-              style='border-top: 1px solid #d0d0d0'
-            )
-              ='{{ row.type.name }}'
-            td(
-              '*ngIf'='row.type.name && !row.type.border'
+              '*ngIf'='row.type.name'
               '[attr.rowspan]'='row.type.rowspan'
             )
               ='{{ row.type.name }}'
             td(
-              '*ngIf'='row.subtype.name && row.subtype.border'
-              '[attr.rowspan]'='row.subtype.rowspan'
-              style='border-top: 1px solid #d0d0d0'
-            )
-              ='{{ row.subtype.name }}'
-            td(
-              '*ngIf'='row.subtype.name && !row.subtype.border'
+              '*ngIf'='row.subtype.name'
               '[attr.rowspan]'='row.subtype.rowspan'
             )
               ='{{ row.subtype.name }}'
-            td(
-              style='border-top: 1px solid #d0d0d0'
-            )
-              ='{{ row.area.name }}'
+            td='{{ row.area.name }}'
   mz-tab-item(
     '[label]'='langManager.messages.inventory.lab.labsTab'
   )
