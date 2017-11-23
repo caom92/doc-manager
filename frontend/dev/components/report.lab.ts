@@ -192,7 +192,7 @@ export class LabReportResultsComponent extends ReportResultsComponent
         }
 
         // cerramos la tabla
-        body += `</tbody></table>`
+        body += `</tbody></table><br><br>`
       }
 
       // agregamos las tablas de subtipo creadas contenido final 
