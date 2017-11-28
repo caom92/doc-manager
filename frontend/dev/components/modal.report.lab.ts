@@ -9,7 +9,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { NoParentElement, SingleParentElement } from './modal.search.default'
 import { DefaultDocumentReportModalComponent } from './modal.report.default'
 
-// Esta funcion 
 @Component({
   templateUrl: '../templates/modal.report.lab.html'
 })
@@ -117,7 +116,7 @@ export class LabDocumentReportModalComponent
     if (selectedType.id) {
       // preparamos los datos que seran enviados al usuario
       let data = new FormData()
-      data.append('type_name', selectedType.name)
+      data.append('type', selectedType.id.toString())
 
       // recuperamos los ranchos del servidor
       this.server.write(

@@ -210,7 +210,7 @@ export class LabDocumentSearchModalComponent
     if (selectedType.id) {
       // preparamos los datos que seran enviados al usuario
       let data = new FormData()
-      data.append('type_name', selectedType.name)
+      data.append('type_name', selectedType.id.toString())
 
       // recuperamos los ranchos del servidor
       this.server.write(
@@ -247,7 +247,7 @@ export class LabDocumentSearchModalComponent
     if (selectedSubType.id) {
       // preparamos los datos que seran enviados al usuario
       let data = new FormData()
-      data.append('subtype_name', selectedSubType.name)
+      data.append('subtype', selectedSubType.id.toString())
 
       // recuperamos los ranchos del servidor
       this.server.write(
@@ -261,7 +261,7 @@ export class LabDocumentSearchModalComponent
             // si el servidor repondio con error, notificamos al usuario
             this.toastManager.showText(
               this.langManager.getServiceMessage(
-                'list-analysis-subtypes-of-type',
+                'list-areas-of-subtype',
                 response.meta.return_code
               )
             )

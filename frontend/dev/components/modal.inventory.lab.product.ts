@@ -74,8 +74,10 @@ export class LabProductInventoryModalComponent
   // de seleccion de tipos de analisis
   onAnalysisTypeSelected(): void {
     // preparamos los datos a enviar al servidor
+    let selectedType = <any> this.captureForm.controls.typeName.value
+
     let data = new FormData()
-    data.append('type_name', this.captureForm.controls.typeName.value)
+    data.append('type', selectedType.id)
 
     // recuperamos la lista de subtipos de analisis correspondientes a ese 
     // tipo de analisis

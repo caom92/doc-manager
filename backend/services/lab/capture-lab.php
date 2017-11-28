@@ -17,34 +17,17 @@ $service = [
       'type' => 'datetime',
       'format' => 'Y-m-d'
     ],
-    'zone' => [
+    'producer' => [
       'type' => 'int',
       'min' => 1
     ],
-    'producer' => [
-      'type' => 'string',
-      'min_length' => 1,
-      'max_length' => 255
-    ],
-    'lab_name' => [
-      'type' => 'string',
-      'min_length' => 1,
-      'max_length' => 255
-    ],
-    'analysis_type_name' => [
-      'type' => 'string',
-      'min_length' => 1,
-      'max_length' => 255
-    ],
-    'subtype' => [
-      'type' => 'string',
-      'min_length' => 1,
-      'max_length' => 255
+    'lab' => [
+      'type' => 'int',
+      'min' => 1
     ],
     'area' => [
-      'type' => 'string',
-      'min_length' => 1,
-      'max_length' => 255
+      'type' => 'int',
+      'min' => 1
     ],
     'notes' => [
       'type' => 'string',
@@ -57,71 +40,6 @@ $service = [
     ]
   ],
   'callback' => function($scope, $request) {
-    // obtenemos el ID del laboratorio, agregandolo a la BD si aun no esta 
-    // registrado
-    $labID = 
-      Core\getCategoryID(
-        $scope->docManagerTableFactory,
-        [
-          'lab' => [
-            'name' => $request['lab_name'],
-            'table' => 'Lab\Laboratories'
-          ]
-        ]
-      )['lab']['id'];
-
-    // recuperamos el ID local de la zona
-    $zones = $scope->docManagerTableFactory->get('Zones');
-    $zoneID = $zones->getIDByForeignID($request['zone']);
-    
-    // si el ID local no existe, tal vez es porque esta zona fue agregada 
-    // recientemente en la BD foranea, hay que asignarle un ID local
-    if (!isset($zoneID)) {
-      // primero revisamos si el ID proveido existe en la BD foranea
-      $isValid = 
-        $scope->fsmTableFactory->get('Zones')->hasByID($request['zone']);
-      if ($isValid) {
-        $zoneID = $zones->insert([ ':foreignID' => $request['zone'] ]);
-      } else {
-        // lanzamos una excepcion
-        throw new \Exception(
-          "The value for 'zone_id' is not registered in the foreign data base",
-          1
-        );
-      }
-    }
-
-    // obtenemos el ID del proveedor, agregandolo a la BD si aun no esta 
-    // registrado
-    $producerID = Core\getLastCategoryID(
-      $scope->docManagerTableFactory,
-      [
-        'name' => $request['producer'],
-        'table' => 'Producers',
-        'child' => NULL
-      ],
-      $zoneID
-    );
-
-    // obtenemos el ID del area, agregandolo a la BD si aun no esta regsistrado
-    $areaID = Core\getLastCategoryID(
-      $scope->docManagerTableFactory,
-      [
-        'name' => $request['analysis_type_name'],
-        'table' => 'Lab\AnalysisTypes',
-        'child' => [
-          'name' => $request['subtype'],
-          'table' => 'Lab\AnalysisSubTypes',
-          'child' => [
-            'name' => $request['area'],
-            'table' => 'Lab\Areas',
-            'child' => NULL
-          ]
-        ]
-      ],
-      NULL
-    );
-
     // finalmente, capturamos los comentarios adicionales si estos fueron
     // proveidos
     $notesID = NULL;
@@ -132,7 +50,7 @@ $service = [
       $_FILES['analysis_file']['name'],
       $_FILES['analysis_file']['tmp_name'],
       realpath(__DIR__.'/../../documents/lab'),
-      "{$producerID}_{$labID}_{$areaID}"
+      "{$request['producer']}_{$request['lab']}_{$request['area']}"
     );
 
     // si el archivo no pudo ser subido, truncamos el programa con un error
@@ -156,9 +74,9 @@ $service = [
       // guardamos el registro
       return $scope->docManagerTableFactory->get('Lab\Documents')->insert([
         ':documentID' => $analysisID,
-        ':producerID' => $producerID,
-        ':labID' => $labID,
-        ':areaID' => $areaID,
+        ':producerID' => $request['producer'],
+        ':labID' => $request['lab'],
+        ':areaID' => $request['area'],
         ':notes' => ($hasNotes) ? $request['notes'] : ''
       ]);
     } catch (\Exception $e) {

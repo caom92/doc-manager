@@ -3,19 +3,14 @@
 $service = [
   'requirements_desc' => [
     'logged_in' => 'any',
-    'subtype_name' => [
-      'type' => 'string',
-      'min_length' => 1
+    'subtype' => [
+      'type' => 'int',
+      'min' => 1
     ]
   ],
   'callback' => function($scope, $request) {
-    $subtypeID = $scope->docManagerTableFactory->get('Lab\AnalysisSubTypes')
-      ->getIDByName($request['subtype_name']);
-
-    return (isset($subtypeID)) ? 
-      $scope->docManagerTableFactory->get('Lab\Areas')
-        ->selectByParentID($subtypeID)
-      : [];
+    return $scope->docManagerTableFactory->get('Lab\Areas')
+      ->selectByParentID($request['subtype']);
   }
 ];
 

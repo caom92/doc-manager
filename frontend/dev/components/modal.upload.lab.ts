@@ -7,6 +7,7 @@ import { MzModalService, MzBaseModal } from 'ng2-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { DefaultDocumentUploadModalComponent, AutoCompleteObject } from './modal.upload.default'
+import { NoParentElement, SingleParentElement } from './modal.search.default'
 
 // Este componente define el comportamiento de la pagina donde el usuario 
 // capturara un archivo de laboratorio
@@ -18,19 +19,19 @@ export class LabDocumentUploadModalComponent
   implements OnInit
 {
   // La lista de productores a elegir por el usuario 
-  producers: Array<any> = []
+  producers: Array<SingleParentElement> = []
 
   // La lista de laboratorios a elegir por el usuario
-  labs: Array<any> = []
+  labs: Array<NoParentElement> = []
 
   // La lista de tipos de analisis a elegir por el usuario
-  types: Array<any> = []
+  types: Array<NoParentElement> = []
 
   // La lista de subtipos de analisis a elegir por el usuario
-  subtypes: Array<any> = []
+  subtypes: Array<SingleParentElement> = []
 
   // La lista de areas o productos a elegir por el usuario
-  areas: Array<any> = []
+  areas: Array<SingleParentElement> = []
 
   // El constructor de este componente, inyectando los servicios requeridos
   constructor(
@@ -151,7 +152,7 @@ export class LabDocumentUploadModalComponent
     if (this.uploadForm.controls.zone.valid) {
       // preparamos los datos que seran enviados al servidor
       let selectedZone = 
-        <any>this.uploadForm.controls.zone.value
+        <NoParentElement>this.uploadForm.controls.zone.value
 
       // enviamos la peticion al servidor para recuperar los productores de 
       // este rancho
@@ -192,8 +193,11 @@ export class LabDocumentUploadModalComponent
     // la lista de subtipos
     if (this.uploadForm.controls.type.valid) {
       // preparamos los datos que seran enviados al usuario
+      let selectedType = 
+        <NoParentElement>this.uploadForm.controls.type.value
+
       let data = new FormData()
-      data.append('type_name', this.uploadForm.controls.type.value)
+      data.append('type', selectedType.id.toString())
 
       // recuperamos los ranchos del servidor
       this.server.write(
@@ -227,8 +231,11 @@ export class LabDocumentUploadModalComponent
     // la lista de subtipos
     if (this.uploadForm.controls.subtype.valid) {
       // preparamos los datos que seran enviados al usuario
+      let selectedSubType = 
+        <SingleParentElement>this.uploadForm.controls.subtype.value
+
       let data = new FormData()
-      data.append('subtype_name', this.uploadForm.controls.subtype.value)
+      data.append('subtype', selectedSubType.id.toString())
 
       // recuperamos los ranchos del servidor
       this.server.write(
@@ -242,7 +249,7 @@ export class LabDocumentUploadModalComponent
             // si el servidor repondio con error, notificamos al usuario
             this.toastManager.showText(
               this.langManager.getServiceMessage(
-                'list-analysis-subtypes-of-type',
+                'list-areas-of-subtype',
                 response.meta.return_code
               )
             )
@@ -277,24 +284,26 @@ export class LabDocumentUploadModalComponent
       'file_date', 
       this.uploadForm.controls.documentDate.value
     )
-    let selectedZone = <any>this.uploadForm.controls.zone.value
-    data.append('zone', selectedZone.id)
+
+    let selectedProducer = 
+      <SingleParentElement>this.uploadForm.controls.producer.value
     data.append(
       'producer', 
-      this.uploadForm.controls.producer.value
+      selectedProducer.id.toString()
     )
+
+    let selectedLab = 
+      <NoParentElement>this.uploadForm.controls.lab.value
     data.append(
-      'lab_name', 
-      this.uploadForm.controls.lab.value
+      'lab', 
+      selectedLab.id.toString()
     )
-    data.append(
-      'analysis_type_name',
-      this.uploadForm.controls.type.value
-    )
-    data.append('subtype', this.uploadForm.controls.subtype.value)
+
+    let selectedArea = 
+      <SingleParentElement>this.uploadForm.controls.area.value
     data.append(
       'area',
-      this.uploadForm.controls.area.value
+      selectedArea.id.toString()
     )
 
     if (this.uploadForm.controls.notes.value) {

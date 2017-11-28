@@ -3,19 +3,14 @@
 $service = [
   'requirements_desc' => [
     'logged_in' => 'any',
-    'type_name' => [
-      'type' => 'string',
-      'min_length' => 1
+    'type' => [
+      'type' => 'int',
+      'min' => 1
     ]
   ],
   'callback' => function($scope, $request) {
-    $typeID = $scope->docManagerTableFactory->get('Lab\AnalysisTypes')
-      ->getIDByName($request['type_name']);
-
-    return (isset($typeID)) ? 
-      $scope->docManagerTableFactory->get('Lab\AnalysisSubTypes')
-        ->selectByParentID($typeID)
-      : [];
+    return $scope->docManagerTableFactory->get('Lab\AnalysisSubTypes')
+      ->selectByParentID($request['type']);
   }
 ];
 
