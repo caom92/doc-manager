@@ -25,9 +25,20 @@ $service = [
       return;
     }
 
+    // obtenemos el ID de la zona en la BD de este sistema
+    $zones = $scope->docManagerTableFactory->get('Zones');
+    $parentID = $zones->getIDByForeignID($request['parent_id']);
+    
+    // si la zona no esta registrada en esta BD, hay que agregarla
+    if (!isset($parentID)) {
+      $parentID = $zones->insert([
+        ':foreignID' => $request['parent_id']
+      ]);
+    }
+
     // si no esta registrado, lo agregamos a la BD
     $producers->insert([
-      ':parentID' => $request['parent_id'],
+      ':parentID' => $parentID,
       ':name' => $name
     ]);
   }

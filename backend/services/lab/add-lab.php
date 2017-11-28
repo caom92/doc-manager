@@ -1,6 +1,6 @@
 <?php
 
-$services = [
+$service = [
   'requirements_desc' => [
     'logged_in' => [ 'Supervisor' ],
     'name' => [
