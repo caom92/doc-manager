@@ -96,6 +96,14 @@ export class LabDocumentReportModalComponent
     this.reportForm.controls.type.setValue(this.analysisTypes[0])
   }
 
+  // Esta funcion se invoca cuando el usuario selecciona una zona
+  onZoneSelected(): void {
+    let selectedZone = <any>this.reportForm.controls.zone.value
+    this.parent.company = selectedZone.company_name
+    this.parent.address = selectedZone.address
+    this.parent.logo = selectedZone.logo_path
+  } // onZoneSelected(): void
+
   // Funcion que se invoca cuando un tipo de analisis es seleccionado
   onAnalysisTypeSelected(): void {
     // borramos los valores de subtipo en caso que ya hayan tenido 

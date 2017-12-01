@@ -47,6 +47,7 @@ mz-modal(
               mz-validation
               required
               '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
+              '(change)'='onZoneSelected()'
             )
           div.col.s12.m4
             +select(

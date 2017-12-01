@@ -23,7 +23,7 @@ export class DefaultDocumentReportModalComponent
   }
 
   // La lista de zonas a elegir por el usuario
-  zones: Array<NoParentElement> = [
+  zones: Array<any> = [
   ]
 
   // El componente que invoco este componente
