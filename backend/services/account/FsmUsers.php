@@ -99,7 +99,7 @@ class Users extends DataBaseTable
   // [out]    return: the number of rows affected
   function updateLogInNameByUserID($id, $newName) {
     $query = $this->getStatement(
-      "UPDATE `$this->table` SET login = :newName WHERE id = :userID"
+      "UPDATE `$this->table` SET login_name = :newName WHERE id = :userID"
     );
     $query->execute([
       ':userID' => $id, 
