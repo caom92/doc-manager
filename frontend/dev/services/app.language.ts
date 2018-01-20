@@ -145,6 +145,9 @@ export class LanguageService
           typeNameLabel: 'Tipo de Análisis',
           subtype: 'Subtipo de Análisis'
         },
+        guarantee: {
+          supplierNameLabel: 'Nombre del Proveedor'
+        },
         title: 'Captura de Documento',
         typeLabel: 'Tipo de Documento',
         zoneLabel: 'Zona',
@@ -155,6 +158,7 @@ export class LanguageService
         docDateLabel: 'Fecha del Documento',
         fileLabel: 'Archivo del Documento',
         fileButtonLabel: 'Subir',
+        supplierLabel: 'Proveedor',
         errors: {
           documentDate: {
             required: 'Este campo es obligatorio'
@@ -222,6 +226,14 @@ export class LanguageService
             required: 'Este campo es requerido',
             maxlength: 'Este campo no debe exceder los 255 caracteres de largo'
           }
+        },
+        guarantee: {
+          addSupplier: 'Agregar Proveedor',
+          labTableHeaders: [
+            'Proveedor'
+          ],
+          supplierTitle: 'Agregar Proveedor',
+          addSupplierButton: 'Agregar'
         }
       },
       documents: {
@@ -262,6 +274,15 @@ export class LanguageService
             'Subtipo',
             'Área/Producto',
             '¿Copia Física?',
+            'Ver',
+            'Borrar'
+          ]
+        },
+        guarantee: {
+          tableHeaders: [
+            'Fecha',
+            'Zona',
+            'Proveedor',
             'Ver',
             'Borrar'
           ]
@@ -467,6 +488,9 @@ export class LanguageService
           typeNameLabel: 'Analysis Type',
           subtype: 'Analysis Subtype'
         },
+        guarantee: {
+          supplierNameLabel: 'Supplier Name'
+        },
         title: 'Document Upload',
         typeLabel: 'Document Type',
         zoneLabel: 'Zone',
@@ -477,6 +501,7 @@ export class LanguageService
         docDateLabel: 'Document Date',
         fileLabel: 'Document File',
         fileButtonLabel: 'Upload',
+        supplierLabel: 'Supplier',
         errors: {
           documentDate: {
             required: 'This field is required'
@@ -544,6 +569,14 @@ export class LanguageService
             required: 'This field is required',
             maxlength: 'This field must not exceed 255 characters long'
           }
+        },
+        guarantee: {
+          addSupplier: 'Add Supplier',
+          labTableHeaders: [
+            'Supplier'
+          ],
+          supplierTitle: 'Add Supplier',
+          addSupplierButton: 'Add'
         }
       },
       documents: {
@@ -584,6 +617,15 @@ export class LanguageService
             'Analysis Type',
             'Sub-Type',
             'Area/Product',
+            'View',
+            'Delete'
+          ]
+        },
+        guarantee: {
+          tableHeaders: [
+            'Date',
+            'Zone',
+            'Supplier',
             'View',
             'Delete'
           ]
@@ -776,6 +818,9 @@ export class LanguageService
         typeNameLabel: null,
         subtype: null
       },
+      guarantee: {
+        supplierNameLabel: null
+      },
       title: null,
       typeLabel: null,
       zoneLabel: null,
@@ -786,6 +831,7 @@ export class LanguageService
       docDateLabel: null,
       fileLabel: null,
       fileButtonLabel: null,
+      supplierLabel: null,
       errors: {
         documentDate: {
           required: null
@@ -844,7 +890,15 @@ export class LanguageService
           required: null,
           maxlength: null
         }
-      }
+      },
+      guarantee: {
+        addSupplier: null,
+        labTableHeaders: [
+          null
+        ]
+      },
+      supplierTitle: null,
+      addSupplierButton: null
     },
     documents: {
       title: null,
@@ -879,6 +933,15 @@ export class LanguageService
           null,
           null,
           null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      guarantee: {
+        tableHeaders: [
           null,
           null,
           null,

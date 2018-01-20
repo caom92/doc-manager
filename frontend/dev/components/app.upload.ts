@@ -6,6 +6,7 @@ import { LanguageService } from '../services/app.language'
 import { MzModalService } from 'ng2-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
 import { LabDocumentUploadModalComponent } from './modal.upload.lab'
+import { GuaranteeDocumentUploadModalComponent } from './modal.upload.guarantee'
 
 // Componente que define el comportamiento de la pagina donde el usuario puede 
 // capturar nuevos documentos
@@ -69,6 +70,12 @@ export class UploadComponent implements OnInit
     switch (this.selectedDocument.name) {
       case 'LABORATORIOS':
         this.modalManager.open(LabDocumentUploadModalComponent, {
+          selectedDocumentTypeID: this.selectedDocument.id
+        })
+      break
+
+      case 'CARTAS DE GARANTÍA':
+        this.modalManager.open(GuaranteeDocumentUploadModalComponent, {
           selectedDocumentTypeID: this.selectedDocument.id
         })
       break

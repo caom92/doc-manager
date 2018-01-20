@@ -7,6 +7,7 @@ import { MzModalService } from 'ng2-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
 import { DynamicComponentResolver } from './dynamic.resolver'
 import { LabInventoryComponent } from './inventory.lab'
+import { GuaranteeInventoryComponent } from './inventory.guarantee'
 
 // Componente que define el comportamiento de la pagina donde se cargara el 
 // inventario dependiendo del tipo de archivo elegido 
@@ -80,6 +81,10 @@ export class InventoryComponent
     switch (this.selectedDocument.name) {
       case 'LABORATORIOS':
         this.inventoryComponent = this.loadComponent(LabInventoryComponent, {})
+      break
+
+      case 'CARTAS DE GARANTÍA':
+      this.inventoryComponent = this.loadComponent(GuaranteeInventoryComponent, {})
       break
     } // switch (this.selectedDocument.name)
   } // onDocumentTypeSelected(): void

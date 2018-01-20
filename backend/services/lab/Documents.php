@@ -312,7 +312,7 @@ class Documents extends DocumentsTable
         subtype_name,
         area_name,
         producer_name";
-    
+        
     $query = $this->getStatement($queryStr);
     $query->execute($values);
     return $query->fetchAll();

@@ -33,12 +33,16 @@ $service = [
     $hasTypeID = 
       isset($request['type_id']) && array_key_exists('type_id', $request);
 
+    // recuperamos el ID local de la zona usando el ID foraneo recibido
+    $zoneID = $scope->docManagerTableFactory->get('Zones')
+      ->getIDByForeignID($request['zone_id']);
+
     // primero obtenemos los valores del reporte de la BD
     $rows = $scope->docManagerTableFactory->get('Lab\Documents')
       ->countByDateIntervalAndZoneID(
         $request['start_date'],
         $request['end_date'],
-        $request['zone_id'],
+        $zoneID,
         ($hasTypeID) ? $request['type_id'] : NULL,
         ($hasSubtypeID) ? $request['subtype_id'] : NULL
       );

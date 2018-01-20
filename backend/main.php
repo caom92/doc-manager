@@ -59,13 +59,14 @@ ServiceProvider::addValidationRule(
 $controller = new ServiceProvider(
   [
     'docManagerTableFactory' => function($config) 
-    use ($default, $lab, $types) {
+    use ($default, $lab, $types, $guarantee) {
       return new TableFactory(
         'DocManager',
         'DataBase\\',
         $default['tables']['dm'] + 
         $lab['tables'] +
-        $types['tables']
+        $types['tables'] +
+        $guarantee['tables']
       );
     },
     'fsmTableFactory' => function($config) 
@@ -85,11 +86,13 @@ $controller = new ServiceProvider(
       $lab['services']['GET'] +
       $types['services']['GET'] +
       $session['services']['GET'] +
-      $account['services']['GET'],
+      $account['services']['GET'] +
+      $guarantee['services']['GET'],
     'POST' =>
       $lab['services']['POST'] +
       $account['services']['POST'] +
-      $session['services']['POST'],
+      $session['services']['POST'] +
+      $guarantee['services']['POST'],
     'DELETE' =>
       $lab['services']['DELETE']
   ]

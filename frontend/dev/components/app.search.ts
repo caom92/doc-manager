@@ -10,6 +10,8 @@ import { DefaultDocumentDisplayModalComponent } from './modal.display.default'
 import { DynamicComponentResolver } from './dynamic.resolver'
 import { LabSearchResultsListComponent } from './list.lab'
 import { DeleteDocumentConfirmationModalComponent } from './modal.confirmation.delete'
+import { GuaranteeDocumentSearchModalComponent } from './modal.search.guarantee'
+import { GuaranteeSearchResultsListComponent } from './list.guarantee'
 
 // Componente que define el comportamiento de la pagina donde el usuario puede 
 // buscar documentos 
@@ -98,6 +100,18 @@ export class SearchComponent
           selectedDocumentTypeID: this.selectedDocument.id
         })
       break
+
+      case 'CARTAS DE GARANTÍA':
+      this.listComponent = 
+        this.loadComponent(GuaranteeSearchResultsListComponent, {
+          parent: this
+        }).instance
+
+      this.modalManager.open(GuaranteeDocumentSearchModalComponent, {
+        parent: this.listComponent,
+        selectedDocumentTypeID: this.selectedDocument.id
+      })
+      break
     } // switch (this.selectedDocument.name)
   } // onDocumentTypeSelected(): void
 
@@ -112,6 +126,15 @@ export class SearchComponent
           baseFolder: 'lab',
           parent: this.listComponent
         })
+      break
+
+      case 'CARTAS DE GARANTÍA':
+      this.modalManager.open(DefaultDocumentDisplayModalComponent, {
+        index: index,
+        documentType: this.selectedDocument.name,
+        baseFolder: 'guarantee',
+        parent: this.listComponent
+      })
       break
     } 
   } // onDocumentLinkClicked(document: SearchedDocument): void

@@ -32,6 +32,11 @@ import { LabSubTypesInventoryModalComponent } from './modal.inventory.lab.subtyp
 import { LabProductInventoryModalComponent } from './modal.inventory.lab.product'
 import { LabLabInventoryModalComponent } from './modal.inventory.lab.lab'
 import { LabProducerInventoryModalComponent } from './modal.inventory.lab.producer'
+import { GuaranteeDocumentUploadModalComponent } from './modal.upload.guarantee'
+import { GuaranteeDocumentSearchModalComponent } from './modal.search.guarantee'
+import { GuaranteeSearchResultsListComponent } from './list.guarantee'
+import { GuaranteeInventoryComponent } from './inventory.guarantee'
+import { SupplierGuaranteeInventoryModalComponent } from './modal.inventory.guarantee.supplier'
 
 // Importamos los servicios que van a ser necesitados por cada pagina del 
 // sistema
@@ -132,7 +137,12 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     LabSubTypesInventoryModalComponent,
     LabProductInventoryModalComponent,
     LabLabInventoryModalComponent,
-    LabProducerInventoryModalComponent
+    LabProducerInventoryModalComponent,
+    GuaranteeDocumentUploadModalComponent,
+    GuaranteeDocumentSearchModalComponent,
+    GuaranteeSearchResultsListComponent,
+    GuaranteeInventoryComponent,
+    SupplierGuaranteeInventoryModalComponent
   ],
   // declaramos cualquier componente que sera inyectado dinamicamente
   entryComponents: [
@@ -149,7 +159,12 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     LabSubTypesInventoryModalComponent,
     LabProductInventoryModalComponent,
     LabLabInventoryModalComponent,
-    LabProducerInventoryModalComponent
+    LabProducerInventoryModalComponent,
+    GuaranteeDocumentUploadModalComponent,
+    GuaranteeDocumentSearchModalComponent,
+    GuaranteeSearchResultsListComponent,
+    SupplierGuaranteeInventoryModalComponent,
+    GuaranteeInventoryComponent
   ],
   // indicamos cual es el componente raiz
   bootstrap: [ HomeComponent ]

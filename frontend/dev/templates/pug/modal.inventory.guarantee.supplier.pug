@@ -1,0 +1,36 @@
+include globals.pug
+
+mz-modal(
+  '[options]'='modalOptions'
+  '[fullscreen]'='"true"'
+)
+  mz-modal-header
+    ='{{ langManager.messages.inventory.guarantee.supplierTitle }}'
+  mz-modal-content
+    div.container
+      form(
+        '[formGroup]'='captureForm'
+        novalidate
+      )
+        div.row: div.col.s12
+          +textInput(
+            'name',
+            'langManager.messages.upload.guarantee.supplierNameLabel'
+          )(
+            formControlName='name'
+            mz-validation
+            required
+            '[errorMessageResource]'='langManager.messages.inventory.lab.errors'
+            length=255
+          )
+  mz-modal-footer
+    +button(
+      'submit',
+      'form-submit',
+      '{{ langManager.messages.global.submit }}',
+      'mdi mdi-send'
+    )(
+      '[disabled]'='captureForm.valid == false'
+      '(click)'='onFormSubmit()'
+      mz-modal-close
+    )

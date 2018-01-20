@@ -6,7 +6,6 @@ import { LanguageService } from '../services/app.language'
 import { MzModalService, MzBaseModal } from 'ng2-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { LabSearchResultsListComponent } from './list.lab'
 import { DefaultDocumentSearchModalComponent, NoParentElement, SingleParentElement } from './modal.search.default'
 
 // Este componente define el comportamiento de la pagina donde el usuario puede 
@@ -210,7 +209,7 @@ export class LabDocumentSearchModalComponent
     if (selectedType.id) {
       // preparamos los datos que seran enviados al usuario
       let data = new FormData()
-      data.append('type_name', selectedType.id.toString())
+      data.append('type', selectedType.id.toString())
 
       // recuperamos los ranchos del servidor
       this.server.write(
