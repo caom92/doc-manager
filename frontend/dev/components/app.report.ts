@@ -80,8 +80,8 @@ export class ReportComponent
   // Esta funcion se invoca cuando el usuario elije un documento de la lista de 
   // seleccion
   onDocumentTypeSelected(): void {
-    switch (this.selectedDocument.name) {
-      case 'LABORATORIOS':
+    switch (this.selectedDocument.id) {
+      case 1:
         this.reportComponent =
           this.loadComponent(LabReportResultsComponent, {
             parent: this

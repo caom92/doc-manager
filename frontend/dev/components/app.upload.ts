@@ -67,14 +67,14 @@ export class UploadComponent implements OnInit
     // dependiendo del tipo de documento elegido, se cargara el componente que 
     // le corresponde donde el usuario podra capturar el documento y la info. 
     // relacionada con el
-    switch (this.selectedDocument.name) {
-      case 'LABORATORIOS':
+    switch (this.selectedDocument.id) {
+      case 1:
         this.modalManager.open(LabDocumentUploadModalComponent, {
           selectedDocumentTypeID: this.selectedDocument.id
         })
       break
 
-      case 'CARTAS DE GARANTÍA':
+      case 2:
         this.modalManager.open(GuaranteeDocumentUploadModalComponent, {
           selectedDocumentTypeID: this.selectedDocument.id
         })

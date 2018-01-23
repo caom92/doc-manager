@@ -88,8 +88,8 @@ export class SearchComponent
     // dependiendo del tipo de documento elegido, se cargara el componente que 
     // le corresponde donde el usuario podra capturar el documento y la info. 
     // relacionada con el
-    switch (this.selectedDocument.name) {
-      case 'LABORATORIOS':
+    switch (this.selectedDocument.id) {
+      case 1:
         this.listComponent = 
           this.loadComponent(LabSearchResultsListComponent, {
             parent: this
@@ -101,7 +101,7 @@ export class SearchComponent
         })
       break
 
-      case 'CARTAS DE GARANTÍA':
+      case 2:
       this.listComponent = 
         this.loadComponent(GuaranteeSearchResultsListComponent, {
           parent: this
@@ -118,8 +118,8 @@ export class SearchComponent
   // Esta funcion se invoca cuando el usuario hace clic en uno de los enlaces 
   // generados al buscar documentos en la base de datos
   onDocumentLinkClicked(index: number): void {
-    switch (this.selectedDocument.name) {
-      case 'LABORATORIOS':
+    switch (this.selectedDocument.id) {
+      case 1:
         this.modalManager.open(DefaultDocumentDisplayModalComponent, {
           index: index,
           documentType: this.selectedDocument.name,
@@ -128,7 +128,7 @@ export class SearchComponent
         })
       break
 
-      case 'CARTAS DE GARANTÍA':
+      case 2:
       this.modalManager.open(DefaultDocumentDisplayModalComponent, {
         index: index,
         documentType: this.selectedDocument.name,
