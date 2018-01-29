@@ -50,15 +50,8 @@ class Documents extends DocumentsTable {
         `suppliers` AS s
         ON s.id = supplier_id
       INNER JOIN
-        `zones` AS z
-        ON z.foreign_id = :zoneID
-      INNER JOIN
-        `documents` AS d
-        ON document_id = d.id
-      WHERE
-        d.file_date >= :startDate AND d.file_date <= :endDate
-        AND d.type_id = :documentTypeID ";
-
+        `zones` AS z ";
+        
     $values = [
       ':documentTypeID' => $typeID,
       ':startDate' => $startDate,
@@ -66,8 +59,18 @@ class Documents extends DocumentsTable {
     ];
 
     if (isset($categoryIDs[0])) {
+      $queryStr .= "ON z.foreign_id = :zoneID ";
       $values[':zoneID'] = $categoryIDs[0];
+    } else {
+      $queryStr .= "ON z.id = zone_id ";
     }
+
+    $queryStr .= "INNER JOIN
+        `documents` AS d
+        ON document_id = d.id
+      WHERE
+        d.file_date >= :startDate AND d.file_date <= :endDate
+        AND d.type_id = :documentTypeID ";
 
     if (isset($categoryIDs[1])) {
       $queryStr .= "AND s.id = :supplierID ";

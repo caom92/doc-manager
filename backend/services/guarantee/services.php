@@ -13,6 +13,9 @@ $guarantee = [
       'capture-guarantee' => realpath(__DIR__.'/capture-guarantee.php'),
       'search-guarantee' => realpath(__DIR__.'/search-guarantee.php'),
       'add-supplier' => realpath(__DIR__.'/add-supplier.php')
+    ],
+    'DELETE' => [
+      'delete-guarantee/{document_id}' => realpath(__DIR__.'/delete-guarantee.php')
     ]
   ]
 ];
