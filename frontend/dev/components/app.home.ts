@@ -70,10 +70,6 @@ export class HomeComponent implements OnInit
         } // if (result.meta.return_code == 0)
       } // (response: Response)
     ) // this.server.update
-
-    // desplegamos el menu lateral y escondemos la animacion de carga
-    // this.global.displaySideNav()
-    // this.global.hideSpinner()
   } // ngOnInit()
 
   // Esta funcion se ejecuta cuando el usuario cambio el idioma de la pagina

@@ -1,0 +1,21 @@
+include globals.pug
+
+div.col.s12('*ngIf'='searchResults.length > 0')
+  div.scrollable-table-container
+    +responsiveTable('langManager.messages.list.procedure.tableHeaders')(
+      class='scrollable-table'
+    )
+      tr(
+        '*ngFor'='let document of searchResults; let i = index'
+      )
+        td.table-col-fixed='{{ document.file_date }}'
+        td='{{ document.zone_name }}'
+        td
+          +link()('(click)'='parent.onDocumentLinkClicked(i)')
+            ='{{ langManager.messages.list.view }}'
+        td
+          +link()(
+            class='red-text'
+            '(click)'='parent.onDocumentDeletionRequested("procedure", document.id, i)'
+          )
+            ='{{ langManager.messages.global.erase }}'

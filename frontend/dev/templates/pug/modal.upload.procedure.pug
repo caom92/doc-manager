@@ -19,7 +19,7 @@ mz-modal(
             'document-date', 
             'langManager.messages.upload.docDateLabel',
             'langManager.messages.global.datePickerConfig',
-            'col s12'
+            'col s12 m6'
           )(
             formControlName='documentDate'
             mz-validation
@@ -36,17 +36,6 @@ mz-modal(
               mz-validation
               required
             )
-          div.col.s12.m6
-            +select(
-              'suppliers', 'langManager.messages.upload.supplierLabel',
-              'langManager.messages.global.selectPlaceholder',
-              'suppliers', '.name'
-            )(
-              formControlName='supplier'
-              mz-validation
-              required
-              '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
-            )
 
         div.row
           div.col.s12
@@ -61,11 +50,11 @@ mz-modal(
             )
           div.col.s12
             +fileInput(
-              'analysis-document',
-              '{{ langManager.messages.upload.guarantee.letterLabel }}',
+              'procedure-document',
+              '{{ langManager.messages.upload.procedure.procedureLabel }}',
               '{{ langManager.messages.upload.fileButtonLabel }}'
             )(
-              '(change)'='onGuaranteeFileSelected($event)'
+              '(change)'='onProcedureFileSelected($event)'
             )
   mz-modal-footer
     +button(
@@ -75,6 +64,6 @@ mz-modal(
       'mdi mdi-send'
     )(
       '[disabled]'='!uploadForm.valid || !selectedDocumentFile'
-      '(click)'='onGuaranteeDocumentUpload()'
+      '(click)'='onProcedureFileUpload()'
       mz-modal-close
     )

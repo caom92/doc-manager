@@ -12,6 +12,8 @@ import { LabSearchResultsListComponent } from './list.lab'
 import { DeleteDocumentConfirmationModalComponent } from './modal.confirmation.delete'
 import { GuaranteeDocumentSearchModalComponent } from './modal.search.guarantee'
 import { GuaranteeSearchResultsListComponent } from './list.guarantee'
+import { ProcedureDocumentSearchModalComponent } from './modal.search.procedure'
+import { ProcedureSearchResultsListComponent } from './list.procedure'
 
 // Componente que define el comportamiento de la pagina donde el usuario puede 
 // buscar documentos 
@@ -102,15 +104,27 @@ export class SearchComponent
       break
 
       case 2:
-      this.listComponent = 
-        this.loadComponent(GuaranteeSearchResultsListComponent, {
-          parent: this
-        }).instance
+        this.listComponent = 
+          this.loadComponent(GuaranteeSearchResultsListComponent, {
+            parent: this
+          }).instance
 
-      this.modalManager.open(GuaranteeDocumentSearchModalComponent, {
-        parent: this.listComponent,
-        selectedDocumentTypeID: this.selectedDocument.id
-      })
+        this.modalManager.open(GuaranteeDocumentSearchModalComponent, {
+          parent: this.listComponent,
+          selectedDocumentTypeID: this.selectedDocument.id
+        })
+      break
+
+      case 3:
+        this.listComponent = 
+          this.loadComponent(ProcedureSearchResultsListComponent, {
+            parent: this
+          }).instance
+
+        this.modalManager.open(ProcedureDocumentSearchModalComponent, {
+          parent: this.listComponent,
+          selectedDocumentTypeID: this.selectedDocument.id
+        })
       break
     } // switch (this.selectedDocument.name)
   } // onDocumentTypeSelected(): void
@@ -129,12 +143,21 @@ export class SearchComponent
       break
 
       case 2:
-      this.modalManager.open(DefaultDocumentDisplayModalComponent, {
-        index: index,
-        documentType: this.selectedDocument.name,
-        baseFolder: 'guarantee',
-        parent: this.listComponent
-      })
+        this.modalManager.open(DefaultDocumentDisplayModalComponent, {
+          index: index,
+          documentType: this.selectedDocument.name,
+          baseFolder: 'guarantee',
+          parent: this.listComponent
+        })
+      break
+
+      case 3:
+        this.modalManager.open(DefaultDocumentDisplayModalComponent, {
+          index: index,
+          documentType: this.selectedDocument.name,
+          baseFolder: 'procedure',
+          parent: this.listComponent
+        })
       break
     } 
   } // onDocumentLinkClicked(document: SearchedDocument): void

@@ -37,6 +37,9 @@ import { GuaranteeDocumentSearchModalComponent } from './modal.search.guarantee'
 import { GuaranteeSearchResultsListComponent } from './list.guarantee'
 import { GuaranteeInventoryComponent } from './inventory.guarantee'
 import { SupplierGuaranteeInventoryModalComponent } from './modal.inventory.guarantee.supplier'
+import { ProcedureDocumentUploadModalComponent } from './modal.upload.procedure'
+import { ProcedureDocumentSearchModalComponent } from './modal.search.procedure'
+import { ProcedureSearchResultsListComponent } from './list.procedure'
 
 // Importamos los servicios que van a ser necesitados por cada pagina del 
 // sistema
@@ -142,7 +145,10 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     GuaranteeDocumentSearchModalComponent,
     GuaranteeSearchResultsListComponent,
     GuaranteeInventoryComponent,
-    SupplierGuaranteeInventoryModalComponent
+    SupplierGuaranteeInventoryModalComponent,
+    ProcedureDocumentUploadModalComponent,
+    ProcedureDocumentSearchModalComponent,
+    ProcedureSearchResultsListComponent
   ],
   // declaramos cualquier componente que sera inyectado dinamicamente
   entryComponents: [
@@ -164,7 +170,10 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     GuaranteeDocumentSearchModalComponent,
     GuaranteeSearchResultsListComponent,
     SupplierGuaranteeInventoryModalComponent,
-    GuaranteeInventoryComponent
+    GuaranteeInventoryComponent,
+    ProcedureDocumentUploadModalComponent,
+    ProcedureDocumentSearchModalComponent,
+    ProcedureSearchResultsListComponent
   ],
   // indicamos cual es el componente raiz
   bootstrap: [ HomeComponent ]

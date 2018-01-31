@@ -146,7 +146,11 @@ export class LanguageService
           subtype: 'Subtipo de Análisis'
         },
         guarantee: {
-          supplierNameLabel: 'Nombre del Proveedor'
+          supplierNameLabel: 'Nombre del Proveedor',
+          letterLabel: 'Carta de Garantía'
+        },
+        procedure: {
+          procedureLabel: 'Procedimiento'
         },
         title: 'Captura de Documento',
         typeLabel: 'Tipo de Documento',
@@ -283,6 +287,14 @@ export class LanguageService
             'Fecha',
             'Zona',
             'Proveedor',
+            'Ver',
+            'Borrar'
+          ]
+        },
+        procedure: {
+          tableHeaders: [
+            'Fecha',
+            'Zona',
             'Ver',
             'Borrar'
           ]
@@ -489,7 +501,11 @@ export class LanguageService
           subtype: 'Analysis Subtype'
         },
         guarantee: {
-          supplierNameLabel: 'Supplier Name'
+          supplierNameLabel: 'Supplier Name',
+          letterLabel: 'Guarantee Letter'
+        },
+        procedure: {
+          procedureLabel: 'Procedure'
         },
         title: 'Document Upload',
         typeLabel: 'Document Type',
@@ -626,6 +642,14 @@ export class LanguageService
             'Date',
             'Zone',
             'Supplier',
+            'View',
+            'Delete'
+          ]
+        },
+        procedure: {
+          tableHeaders: [
+            'Date',
+            'Zone',
             'View',
             'Delete'
           ]
@@ -821,6 +845,9 @@ export class LanguageService
       guarantee: {
         supplierNameLabel: null
       },
+      procedure: {
+        procedureLabel: null
+      },
       title: null,
       typeLabel: null,
       zoneLabel: null,
@@ -943,6 +970,14 @@ export class LanguageService
       guarantee: {
         tableHeaders: [
           null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      procedure: {
+        tableHeaders: [
           null,
           null,
           null,
