@@ -44,7 +44,15 @@ class Documents extends DocumentsTable {
       FROM
         `$this->table`
       INNER JOIN
-        `zones` AS z ";
+        `zones` AS z 
+        ON z.id = zone_id
+      INNER JOIN
+        `documents` AS d
+        ON document_id = d.id
+      WHERE
+        d.file_date >= :startDate 
+        AND d.file_date <= :endDate
+        AND d.type_id = :documentTypeID ";
         
     $values = [
       ':documentTypeID' => $typeID,
@@ -53,18 +61,9 @@ class Documents extends DocumentsTable {
     ];
 
     if (isset($categoryIDs[0])) {
-      $queryStr .= "ON z.foreign_id = :zoneID ";
+      $queryStr .= "AND z.foreign_id = :zoneID ";
       $values[':zoneID'] = $categoryIDs[0];
-    } else {
-      $queryStr .= "ON z.id = zone_id ";
     }
-
-    $queryStr .= "INNER JOIN
-        `documents` AS d
-        ON document_id = d.id
-      WHERE
-        d.file_date >= :startDate AND d.file_date <= :endDate
-        AND d.type_id = :documentTypeID ";
 
     $queryStr .= "ORDER BY d.file_date";
 
