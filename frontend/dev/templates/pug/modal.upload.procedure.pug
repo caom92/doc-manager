@@ -39,6 +39,18 @@ mz-modal(
 
         div.row
           div.col.s12
+            +textInput(
+              'document-name',
+              'langManager.messages.upload.lab.documentName'
+            )(
+              required
+              formControlName='documentName',
+              mz-validation
+              '[errorMessageResource]'='langManager.messages.upload.errors.ranch'
+            )
+
+        div.row
+          div.col.s12
             +textArea(
               'notes',
               65535,

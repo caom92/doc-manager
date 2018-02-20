@@ -169,4 +169,46 @@ export class GlobalElementsService
     // retornamos la cadena de fecha formateada
     return `${ year }-${ month }-${ day }`
   }
+
+  // Convierte la fecha en formato YYYY-MM-DD a formato DD-mmm-YY, donde mmm
+  // son las primeras 3 letras del mes en cuestión en el idioma elegido por lang
+  translateDate(date: string, lang: string) {
+    const translations = {
+      es: {
+        '01': 'Ene',
+        '02': 'Feb',
+        '03': 'Mar',
+        '04': 'Abr',
+        '05': 'May',
+        '06': 'Jun',
+        '07': 'Jul',
+        '08': 'Ago',
+        '09': 'Sep',
+        '10': 'Oct',
+        '11': 'Nov',
+        '12': 'Dic'
+      },
+      en: {
+        '01': 'Jan',
+        '02': 'Feb',
+        '03': 'Mar',
+        '04': 'Apr',
+        '05': 'May',
+        '06': 'Jun',
+        '07': 'Jul',
+        '08': 'Aug',
+        '09': 'Sep',
+        '10': 'Oct',
+        '11': 'Nov',
+        '12': 'Dec'
+      }
+    }
+
+    const dateParts = date.split('-')
+    const year = dateParts[0].slice(-2)
+    const month = translations[lang][dateParts[1]]
+    const day = dateParts[2]
+
+    return `${ day }-${ month }-${ year }`
+  }
 } // export class HomeElementsService

@@ -15,11 +15,11 @@ mz-modal(
         div.col.s12
           h6='{{ documentType }} - {{ parent.searchResults[this.index].file_date }}'
 
-      div.row
+      div.row('*ngIf'='countsPhysicalCopies !== false')
         div.col.s12
           +checkboxInput(
             'has-physical-copy',
-            'langManager.messages.display.checkbox'
+            'checkboxLabel[localStorage.lang]'
           )(
             '[(ngModel)]'='parent._searchResults[this.index].has_physical_copy'
             '(change)'='onPhysicalCopyCheckboxChanged()'

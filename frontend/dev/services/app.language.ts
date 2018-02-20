@@ -41,7 +41,9 @@ export class LanguageService
           clear: 'Borrar',
           close: 'Cerrar',
           format: 'dddd, dd mmmm, yyyy',
-          formatSubmit: "yyyy-mm-dd"
+          formatSubmit: "yyyy-mm-dd",
+          selectYears: true,
+          selectMonths: true,
         },
         reportButton: 'Reporte'
       },
@@ -50,6 +52,7 @@ export class LanguageService
         username: 'Nombre de Usuario',
         password: 'Contraseña',
         submit: 'Entrar',
+        goTo: 'Ir A Principal',
         errors: {
           username: {
             required: 'Este campo es obligatorio',
@@ -143,7 +146,9 @@ export class LanguageService
           resultLabel: 'Resultado de Estudio',
           labNameLabel: 'Nombre del Laboratorio',
           typeNameLabel: 'Tipo de Análisis',
-          subtype: 'Subtipo de Análisis'
+          subtype: 'Subtipo de Análisis',
+          dateLabel: 'Fecha de Muestreo',
+          documentName: 'Nombre del Documento'
         },
         guarantee: {
           supplierNameLabel: 'Nombre del Proveedor',
@@ -294,6 +299,7 @@ export class LanguageService
         procedure: {
           tableHeaders: [
             'Fecha',
+            'Nombre del Doc.',
             'Zona',
             'Ver',
             'Borrar'
@@ -396,7 +402,9 @@ export class LanguageService
           closeOnSelect: true,
           closeOnClear: false,
           format: 'dddd, dd mmmm, yyyy',
-          formatSubmit: "yyyy-mm-dd"
+          formatSubmit: "yyyy-mm-dd",
+          selectYears: true,
+          selectMonths: true,
         },
         reportButton: 'Report'
       },
@@ -405,6 +413,7 @@ export class LanguageService
         username: 'Username',
         password: 'Password',
         submit: 'Enter',
+        goTo: 'Go to Main',
         errors: {
           username: {
             required: 'This field is required',
@@ -498,7 +507,9 @@ export class LanguageService
           resultLabel: 'Result Document',
           labNameLabel: "Lab's Name",
           typeNameLabel: 'Analysis Type',
-          subtype: 'Analysis Subtype'
+          subtype: 'Analysis Subtype',
+          dateLabel: 'Sample Date',
+          documentName: 'Document Name'
         },
         guarantee: {
           supplierNameLabel: 'Supplier Name',
@@ -649,6 +660,7 @@ export class LanguageService
         procedure: {
           tableHeaders: [
             'Date',
+            'Doc. Name',
             'Zone',
             'View',
             'Delete'
@@ -757,6 +769,7 @@ export class LanguageService
       username: null,
       password: null,
       submit: null,
+      goTo: null,
       errors: {
         username: {
           required: null,
@@ -840,7 +853,9 @@ export class LanguageService
         resultLabel: null,
         labNameLabel: null,
         typeNameLabel: null,
-        subtype: null
+        subtype: null,
+        dateLabel: null,
+        documentName: null
       },
       guarantee: {
         supplierNameLabel: null
@@ -981,6 +996,7 @@ export class LanguageService
           null,
           null,
           null,
+          null,
           null
         ]
       }
@@ -997,6 +1013,10 @@ export class LanguageService
         producer: null
       }
     }
+  }
+
+  get lang(): string {
+    return localStorage.lang
   }
 
   // Inicializa todos los textos de la aplicacion con el idioma que este 

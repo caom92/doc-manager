@@ -5,7 +5,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser'
 import { environment } from '../environments/environment'
 import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
-import { LabSearchResultsListComponent } from './list.lab'
+import { SearchResultsListComponent } from './list.default'
 
 // El componente del modal que despliega el archivo buscado por el usuario
 @Component({
@@ -19,6 +19,13 @@ export class DefaultDocumentDisplayModalComponent
   modalOptions = {
   }
 
+  countsPhysicalCopies: boolean = false
+
+  checkboxLabel: { en: string, es: string } = {
+    en: 'Has a physical copy?',
+    es: '¿Tiene una copia física?'
+  }
+
   // El indice del documento cuyos datos vamos a desplegar
   @Input()
   index: number = null
@@ -30,7 +37,7 @@ export class DefaultDocumentDisplayModalComponent
 
   // El componente que lista los resultados de
   @Input()
-  parent: LabSearchResultsListComponent = null
+  parent: SearchResultsListComponent = null
 
   // El URL al documento que sera desplegado
   sanitizedPath: SafeResourceUrl = null

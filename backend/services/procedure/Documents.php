@@ -14,11 +14,13 @@ class Documents extends DocumentsTable {
       "INSERT INTO `$this->table` (
         document_id,
         zone_id,
+        document_name,
         notes
       ) 
       VALUES (
         :documentID,
         :zoneID,
+        :documentName,
         :notes
       )"
     );
@@ -40,6 +42,7 @@ class Documents extends DocumentsTable {
         d.file_date AS file_date,
         d.file_path AS file_path,
         z.foreign_id AS zone_id,
+        document_name AS name,
         notes
       FROM
         `$this->table`

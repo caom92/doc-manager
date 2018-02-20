@@ -41,6 +41,9 @@ export class ProcedureDocumentUploadModalComponent
           Validators.required
         ])
       ],
+      documentName: [ null, Validators.compose([
+        Validators.required, Validators.maxLength(255)
+      ])],
       notes: [ null, Validators.maxLength(65535)]
     })
   }
@@ -65,6 +68,8 @@ export class ProcedureDocumentUploadModalComponent
     let selectedZone =
       <NoParentElement>this.uploadForm.controls.zone.value
     data.append('zone', selectedZone.id.toString())
+
+    data.append('document_name', this.uploadForm.controls.documentName.value)
 
     if (this.uploadForm.controls.notes.value) {
       data.append(

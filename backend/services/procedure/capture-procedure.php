@@ -21,6 +21,10 @@ $service = [
       'type' => 'int',
       'min' => 1
     ],
+    'document_name' => [
+      'type' => 'string',
+      'max_length' => 255
+    ],
     'notes' => [
       'type' => 'string',
       'max_length' => 65535,
@@ -65,6 +69,7 @@ $service = [
         ->insert([
           ':documentID' => $procedureID,
           ':zoneID' => $zoneID,
+          ':documentName' => $request['document_name'],
           ':notes' => ($hasNotes) ? $request['notes'] : ''
         ]);
     } catch (\Exception $e) {

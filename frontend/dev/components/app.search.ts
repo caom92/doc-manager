@@ -14,6 +14,7 @@ import { GuaranteeDocumentSearchModalComponent } from './modal.search.guarantee'
 import { GuaranteeSearchResultsListComponent } from './list.guarantee'
 import { ProcedureDocumentSearchModalComponent } from './modal.search.procedure'
 import { ProcedureSearchResultsListComponent } from './list.procedure'
+import { LabDocumentDisplayModalComponent } from './modal.display.lab'
 
 // Componente que define el comportamiento de la pagina donde el usuario puede 
 // buscar documentos 
@@ -133,8 +134,8 @@ export class SearchComponent
   // generados al buscar documentos en la base de datos
   onDocumentLinkClicked(index: number): void {
     switch (this.selectedDocument.id) {
-      case 1:
-        this.modalManager.open(DefaultDocumentDisplayModalComponent, {
+      case 1: // lab
+        this.modalManager.open(LabDocumentDisplayModalComponent, {
           index: index,
           documentType: this.selectedDocument.name,
           baseFolder: 'lab',
@@ -142,7 +143,7 @@ export class SearchComponent
         })
       break
 
-      case 2:
+      case 2: // cartas de garantia
         this.modalManager.open(DefaultDocumentDisplayModalComponent, {
           index: index,
           documentType: this.selectedDocument.name,
@@ -151,7 +152,7 @@ export class SearchComponent
         })
       break
 
-      case 3:
+      case 3: // SOP
         this.modalManager.open(DefaultDocumentDisplayModalComponent, {
           index: index,
           documentType: this.selectedDocument.name,
