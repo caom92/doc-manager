@@ -33,7 +33,6 @@ export function uiRouterAuthenticatedNavConfig(
       // iniciamos ciertas banderas que nos diran de donde viene y a 
       // donde va el usuario
       let isComingFromOutside = from.name.length == 0
-      let isComingFromLogIn = from.name == 'login'
       let isGoingToLogIn = to.name == 'login'
 
       // una funcion que revisa si el usuario ya inicio sesion o no

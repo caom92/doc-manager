@@ -43,5 +43,8 @@ div.row
             '[flat]'="'true'"
             '[disabled]'="!loginForm.valid"
           )
-          a(mz-button href='http://manual.jfdc.tech/')
+          a(mz-button 
+            href='http://manual.jfdc.tech/'
+            '[flat]'="'true'"
+          )
             ='{{ langManager.messages.loginForm.goTo }}'
