@@ -10,7 +10,8 @@ $procedure = [
       'search-procedure' => realpath(__DIR__.'/search-procedure.php')
     ],
     'DELETE' => [
-      'delete-procedure' => realpath(__DIR__.'/delete-procedure.php')
+      'delete-procedure/{document_id}' => 
+        realpath(__DIR__.'/delete-procedure.php')
     ]
   ]
 ];

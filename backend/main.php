@@ -97,7 +97,8 @@ $controller = new ServiceProvider(
       $procedure['services']['POST'],
     'DELETE' =>
       $lab['services']['DELETE'] + 
-      $guarantee['services']['DELETE']
+      $guarantee['services']['DELETE'] +
+      $procedure['services']['DELETE']
   ]
 );
 
