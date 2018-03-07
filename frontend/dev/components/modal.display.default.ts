@@ -6,6 +6,7 @@ import { environment } from '../environments/environment'
 import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { SearchResultsListComponent } from './list.default'
+import { GlobalElementsService } from '../services/app.globals'
 
 // El componente del modal que despliega el archivo buscado por el usuario
 @Component({
@@ -48,7 +49,8 @@ export class DefaultDocumentDisplayModalComponent
     protected langManager: LanguageService,
     protected sanitizer: DomSanitizer,
     protected server: BackendService,
-    protected toastManager: ToastService
+    protected toastManager: ToastService,
+    protected globals: GlobalElementsService
   ) {
     super() // invocamos el constructor de la clase padre
   }

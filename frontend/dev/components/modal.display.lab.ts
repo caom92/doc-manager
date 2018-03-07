@@ -4,6 +4,7 @@ import { DomSanitizer } from '@angular/platform-browser'
 import { LanguageService } from '../services/app.language'
 import { BackendService } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
+import { GlobalElementsService } from '../services/app.globals'
 
 @Component({
   templateUrl: '../templates/modal.display.default.html'
@@ -15,9 +16,10 @@ export class LabDocumentDisplayModalComponent
     langManager: LanguageService,
     sanitizer: DomSanitizer,
     server: BackendService,
-    toastManager: ToastService
+    toastManager: ToastService,
+    globals: GlobalElementsService
   ) {
-    super(langManager, sanitizer, server, toastManager)
+    super(langManager, sanitizer, server, toastManager, globals)
     this.countsPhysicalCopies = true
     this.checkboxLabel = {
       en: 'Has original analysis document?',

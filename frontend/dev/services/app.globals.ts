@@ -145,6 +145,14 @@ export class GlobalElementsService
     return this._zone
   }
 
+  get lang(): string {
+    return localStorage.lang
+  }
+
+  set lang(value: string) {
+    localStorage.lang = value
+  }
+
   // Retorna la fecha de hoy en una cadena con formato AAAA-MM-DD
   getFormattedDate(): string {
     // primero obtenemos la fecha de hoy 

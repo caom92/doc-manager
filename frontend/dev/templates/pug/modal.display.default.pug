@@ -19,7 +19,7 @@ mz-modal(
         div.col.s12
           +checkboxInput(
             'has-physical-copy',
-            'checkboxLabel[localStorage.lang]'
+            'checkboxLabel[globals.lang]'
           )(
             '[(ngModel)]'='parent._searchResults[this.index].has_physical_copy'
             '(change)'='onPhysicalCopyCheckboxChanged()'
