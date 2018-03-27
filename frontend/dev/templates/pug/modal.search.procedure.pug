@@ -45,7 +45,14 @@ mz-modal(
               'zones', '.name'
             )(
               formControlName='zone'
-            )          
+            )
+          div.col.s12.m6
+            +select(
+              'section', 'langManager.messages.upload.sectionLabel', 'langManager.messages.global.selectPlaceholder',
+              'sections', '.name'
+            )(
+              formControlName='section'
+            )        
   mz-modal-footer
     +button(
       'search',

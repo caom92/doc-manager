@@ -38,7 +38,7 @@ mz-modal(
             )
 
         div.row
-          div.col.s12
+          div.col.s12.m6
             +textInput(
               'document-name',
               'langManager.messages.upload.lab.documentName'
@@ -47,6 +47,17 @@ mz-modal(
               formControlName='documentName',
               mz-validation
               '[errorMessageResource]'='langManager.messages.upload.errors.ranch'
+            )
+          div.col.s12.m6
+            +select(
+              'sections', 'langManager.messages.upload.sectionLabel',
+              'langManager.messages.global.selectPlaceholder',
+              'sections', '.name'
+            )(
+              formControlName='section'
+              mz-validation
+              required
+              '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
             )
 
         div.row

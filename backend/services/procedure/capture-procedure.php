@@ -25,6 +25,10 @@ $service = [
       'type' => 'string',
       'max_length' => 255
     ],
+    'section_id' => [
+      'type' => 'int',
+      'min' => 1
+    ],
     'notes' => [
       'type' => 'string',
       'max_length' => 65535,
@@ -69,6 +73,7 @@ $service = [
         ->insert([
           ':documentID' => $procedureID,
           ':zoneID' => $zoneID,
+          ':sectionID' => $request['section_id'],
           ':documentName' => $request['document_name'],
           ':notes' => ($hasNotes) ? $request['notes'] : ''
         ]);

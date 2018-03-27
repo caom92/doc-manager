@@ -17,6 +17,8 @@ export class ProcedureDocumentUploadModalComponent
   extends DefaultDocumentUploadModalComponent
   implements OnInit
 {
+  sections: Array<SingleParentElement> = []
+
   constructor(
     server: BackendService,
     toastManager: ToastService,
@@ -30,6 +32,25 @@ export class ProcedureDocumentUploadModalComponent
 
   ngOnInit(): void {
     super.ngOnInit()
+
+    this.server.read(
+      'list-sections',
+      {},
+      (response: BackendResponse) => {
+        if (response.meta.return_code == 0) {
+          this.sections = response.data
+          console.log(response.data)
+        } else {
+          this.toastManager.showText(
+            this.langManager.getServiceMessage(
+              'list-suppliers',
+              response.meta.return_code
+            )
+          )
+        }
+      }
+    )
+
     this.uploadForm = this.formBuilder.group({
       documentDate: [ null, Validators.required ],
       zone: [
@@ -42,6 +63,9 @@ export class ProcedureDocumentUploadModalComponent
         ])
       ],
       documentName: [ null, Validators.compose([
+        Validators.required, Validators.maxLength(255)
+      ])],
+      section: [ null, Validators.compose([
         Validators.required, Validators.maxLength(255)
       ])],
       notes: [ null, Validators.maxLength(65535)]
@@ -70,6 +94,10 @@ export class ProcedureDocumentUploadModalComponent
     data.append('zone', selectedZone.id.toString())
 
     data.append('document_name', this.uploadForm.controls.documentName.value)
+
+    let selectedSection =
+      <NoParentElement>this.uploadForm.controls.section.value
+    data.append('section_id', selectedSection.id.toString())
 
     if (this.uploadForm.controls.notes.value) {
       data.append(

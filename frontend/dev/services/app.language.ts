@@ -155,6 +155,7 @@ export class LanguageService
           letterLabel: 'Carta de Garantía'
         },
         procedure: {
+          sectionNameLabel: 'Nombre de la Sección',
           procedureLabel: 'Procedimiento'
         },
         title: 'Captura de Documento',
@@ -168,6 +169,7 @@ export class LanguageService
         fileLabel: 'Archivo del Documento',
         fileButtonLabel: 'Subir',
         supplierLabel: 'Proveedor',
+        sectionLabel: 'Sección Correspondiente',
         errors: {
           documentDate: {
             required: 'Este campo es obligatorio'
@@ -243,6 +245,14 @@ export class LanguageService
           ],
           supplierTitle: 'Agregar Proveedor',
           addSupplierButton: 'Agregar'
+        },
+        procedure: {
+          addSection: 'Agregar Sección',
+          labTableHeaders: [
+            'Sección'
+          ],
+          sectionTitle: 'Agregar Sección',
+          addSectionButton: 'Agregar'
         }
       },
       documents: {
@@ -301,6 +311,7 @@ export class LanguageService
             'Fecha',
             'Nombre del Doc.',
             'Zona',
+            'Sección',
             'Ver',
             'Borrar'
           ]
@@ -355,6 +366,9 @@ export class LanguageService
       },
       'add-lab': {
         0: 'El laboratorio fue agregado exitosamente'
+      },
+      'add-section': {
+        0: 'La sección fue agregada exitosamente'
       },
       'add-analysis-type': {
         0: 'El tipo de análisis fue agregado exitosamente'
@@ -516,6 +530,7 @@ export class LanguageService
           letterLabel: 'Guarantee Letter'
         },
         procedure: {
+          sectionNameLabel: 'Section Name',
           procedureLabel: 'Procedure'
         },
         title: 'Document Upload',
@@ -529,6 +544,7 @@ export class LanguageService
         fileLabel: 'Document File',
         fileButtonLabel: 'Upload',
         supplierLabel: 'Supplier',
+        sectionLabel: 'Corresponding Section',
         errors: {
           documentDate: {
             required: 'This field is required'
@@ -604,6 +620,14 @@ export class LanguageService
           ],
           supplierTitle: 'Add Supplier',
           addSupplierButton: 'Add'
+        },
+        procedure: {
+          addSection: 'Add Section',
+          labTableHeaders: [
+            'Section'
+          ],
+          sectionTitle: 'Add Section',
+          addSectionButton: 'Add'
         }
       },
       documents: {
@@ -662,6 +686,7 @@ export class LanguageService
             'Date',
             'Doc. Name',
             'Zone',
+            'Section',
             'View',
             'Delete'
           ]
@@ -716,6 +741,9 @@ export class LanguageService
       },
       'add-lab': {
         0: 'The lab was added successfully'
+      },
+      'add-section': {
+        0: 'The section was added successfully'
       },
       'add-analysis-type': {
         0: 'The analysis type was added successfully'

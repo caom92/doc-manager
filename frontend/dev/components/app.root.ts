@@ -40,6 +40,8 @@ import { SupplierGuaranteeInventoryModalComponent } from './modal.inventory.guar
 import { ProcedureDocumentUploadModalComponent } from './modal.upload.procedure'
 import { ProcedureDocumentSearchModalComponent } from './modal.search.procedure'
 import { ProcedureSearchResultsListComponent } from './list.procedure'
+import { ProcedureInventoryComponent } from './inventory.procedure'
+import { SectionProcedureInventoryModalComponent } from './modal.inventory.procedure.section'
 import { LabDocumentDisplayModalComponent } from './modal.display.lab'
 
 // Importamos los servicios que van a ser necesitados por cada pagina del 
@@ -150,6 +152,8 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     ProcedureDocumentUploadModalComponent,
     ProcedureDocumentSearchModalComponent,
     ProcedureSearchResultsListComponent,
+    ProcedureInventoryComponent,
+    SectionProcedureInventoryModalComponent,
     LabDocumentDisplayModalComponent
   ],
   // declaramos cualquier componente que sera inyectado dinamicamente
@@ -176,6 +180,8 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     ProcedureDocumentUploadModalComponent,
     ProcedureDocumentSearchModalComponent,
     ProcedureSearchResultsListComponent,
+    SectionProcedureInventoryModalComponent,
+    ProcedureInventoryComponent,
     LabDocumentDisplayModalComponent
   ],
   // indicamos cual es el componente raiz

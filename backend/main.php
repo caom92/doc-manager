@@ -88,7 +88,8 @@ $controller = new ServiceProvider(
       $types['services']['GET'] +
       $session['services']['GET'] +
       $account['services']['GET'] +
-      $guarantee['services']['GET'],
+      $guarantee['services']['GET'] +
+      $procedure['services']['GET'],
     'POST' =>
       $lab['services']['POST'] +
       $account['services']['POST'] +

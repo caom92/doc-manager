@@ -16,6 +16,10 @@ export class ProcedureDocumentSearchModalComponent
   extends DefaultDocumentSearchModalComponent
   implements OnInit
 {
+  sections: Array<NoParentElement> = [
+    this.noParentOptionAll
+  ]
+
   constructor(
     server: BackendService,
     toastManager: ToastService,
@@ -29,6 +33,24 @@ export class ProcedureDocumentSearchModalComponent
 
   ngOnInit(): void {
     super.ngOnInit()
+
+    this.server.read(
+      'list-sections',
+      {},
+      (response: BackendResponse) => {
+        if (response.meta.return_code == 0) {
+          this.sections = this.sections.concat(response.data)
+        } else {
+          this.toastManager.showText(
+            this.langManager.getServiceMessage(
+              'list-suppliers',
+              response.meta.return_code
+            )
+          )
+        }
+      }
+    )
+
     this.searchForm = this.formBuilder.group({
       startDate: [ null, Validators.required ],
       endDate: [ null, Validators.required ],
@@ -42,6 +64,12 @@ export class ProcedureDocumentSearchModalComponent
             value: null,
             disabled: false
           }
+      ],
+      section: [
+        {
+          value: null,
+          disabled: false
+        }
       ]
     })
   }
@@ -65,6 +93,12 @@ export class ProcedureDocumentSearchModalComponent
       <NoParentElement>this.searchForm.controls.zone.value
     if (selectedZone && selectedZone != this.noParentOptionAll) {
       data.append('zone_id', selectedZone.id.toString())
+    }
+
+    let selectedSection =
+      <NoParentElement>this.searchForm.controls.section.value
+    if (selectedSection && selectedSection != this.noParentOptionAll) {
+      data.append('section_id', selectedSection.id.toString())
     }
 
     let modal = this.modalManager.open(ProgressModalComponent)

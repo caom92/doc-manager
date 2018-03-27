@@ -14,12 +14,14 @@ class Documents extends DocumentsTable {
       "INSERT INTO `$this->table` (
         document_id,
         zone_id,
+        section_id,
         document_name,
         notes
       ) 
       VALUES (
         :documentID,
         :zoneID,
+        :sectionID,
         :documentName,
         :notes
       )"
@@ -42,6 +44,8 @@ class Documents extends DocumentsTable {
         d.file_date AS file_date,
         d.file_path AS file_path,
         z.foreign_id AS zone_id,
+        s.id AS section_id,
+        s.name AS section_name,
         document_name AS name,
         notes
       FROM
@@ -49,6 +53,9 @@ class Documents extends DocumentsTable {
       INNER JOIN
         `zones` AS z 
         ON z.id = zone_id
+      INNER JOIN
+        `sections` AS s 
+        ON s.id = section_id
       INNER JOIN
         `documents` AS d
         ON document_id = d.id
@@ -66,6 +73,11 @@ class Documents extends DocumentsTable {
     if (isset($categoryIDs[0])) {
       $queryStr .= "AND z.foreign_id = :zoneID ";
       $values[':zoneID'] = $categoryIDs[0];
+    }
+
+    if (isset($categoryIDs[1])) {
+      $queryStr .= "AND s.id = :sectionID ";
+      $values[':sectionID'] = $categoryIDs[1];
     }
 
     $queryStr .= "ORDER BY d.file_date";

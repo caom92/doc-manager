@@ -15,6 +15,11 @@ $service = [
       'type' => 'datetime',
       'format' => 'Y-m-d'
     ],
+    'section_id' => [
+      'type' => 'int',
+      'min' => 1,
+      'optional' => TRUE
+    ],
     'zone_id' => [
       'type' => 'int',
       'min' => 1,
@@ -29,7 +34,10 @@ $service = [
       $request['end_date'],
       (isset($request['zone_id']) 
         && array_key_exists('zone_id', $request)) ? 
-          $request['zone_id'] : NULL
+          $request['zone_id'] : NULL,
+      (isset($request['section_id']) 
+        && array_key_exists('section_id', $request)) ? 
+          $request['section_id'] : NULL
     );
 
     $fsmZones = $scope->fsmTableFactory->get('Zones');

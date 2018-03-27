@@ -8,6 +8,7 @@ import { ProgressModalComponent } from './modal.please.wait'
 import { DynamicComponentResolver } from './dynamic.resolver'
 import { LabInventoryComponent } from './inventory.lab'
 import { GuaranteeInventoryComponent } from './inventory.guarantee'
+import { ProcedureInventoryComponent } from './inventory.procedure'
 
 // Componente que define el comportamiento de la pagina donde se cargara el 
 // inventario dependiendo del tipo de archivo elegido 
@@ -84,7 +85,11 @@ export class InventoryComponent
       break
 
       case 2:
-      this.inventoryComponent = this.loadComponent(GuaranteeInventoryComponent, {})
+        this.inventoryComponent = this.loadComponent(GuaranteeInventoryComponent, {})
+      break
+      
+      case 3:
+        this.inventoryComponent = this.loadComponent(ProcedureInventoryComponent, {})
       break
     } // switch (this.selectedDocument.name)
   } // onDocumentTypeSelected(): void
