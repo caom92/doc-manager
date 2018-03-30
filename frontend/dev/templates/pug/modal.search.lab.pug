@@ -63,7 +63,7 @@ mz-modal(
             )
 
         div.row
-          div.col.s12.m4
+          div.col.s12.m6
             +select(
               'type', 'langManager.messages.upload.lab.typeNameLabel', 'langManager.messages.global.selectPlaceholder',
               'analysisTypes', '.name', '',
@@ -71,7 +71,7 @@ mz-modal(
             )(
               formControlName='type'
             )
-          div.col.s12.m4
+          div.col.s12.m6
             +select(
               'subtype', 'langManager.messages.upload.lab.subtype', 'langManager.messages.global.selectPlaceholder',
               'subTypes', '.name', '',
@@ -79,12 +79,21 @@ mz-modal(
             )(
               formControlName='subtype'
             )
-          div.col.s12.m4
+        div.row
+          div.col.s12.m6
             +select(
               'area', 'langManager.messages.upload.areaLabel', 'langManager.messages.global.selectPlaceholder',
-              'areas', '.name'
+              'areas', '.name', '',
+              'onAreaSelected()'
             )(
               formControlName='area'
+            )
+          div.col.s12.m6
+            +select(
+              'subarea', 'langManager.messages.upload.subAreaLabel', 'langManager.messages.global.selectPlaceholder',
+              'subareas', '.name'
+            )(
+              formControlName='subarea'
             )
   mz-modal-footer
     +button(

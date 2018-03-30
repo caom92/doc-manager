@@ -15,6 +15,7 @@ import { GuaranteeSearchResultsListComponent } from './list.guarantee'
 import { ProcedureDocumentSearchModalComponent } from './modal.search.procedure'
 import { ProcedureSearchResultsListComponent } from './list.procedure'
 import { LabDocumentDisplayModalComponent } from './modal.display.lab'
+import { LabSubAreaReassignComponent } from './modal.subarea.lab'
 
 // Componente que define el comportamiento de la pagina donde el usuario puede 
 // buscar documentos 
@@ -42,6 +43,8 @@ export class SearchComponent
     searchResults: [],
     hasSearchResults: true
   }
+
+  lastSearch: FormData
 
   // El constructor de este componente, inyectando los servicios requeridos
   constructor(
@@ -100,6 +103,7 @@ export class SearchComponent
 
         this.modalManager.open(LabDocumentSearchModalComponent, {
           parent: this.listComponent,
+          searchPage: this,
           selectedDocumentTypeID: this.selectedDocument.id
         })
       break
@@ -129,6 +133,40 @@ export class SearchComponent
       break
     } // switch (this.selectedDocument.name)
   } // onDocumentTypeSelected(): void
+
+  onAssignSubProductClicked(document: any): void {
+    this.modalManager.open(LabSubAreaReassignComponent, {areaID: document.area_id, documentID: document.id, parent: this})
+  }
+
+  // TEMP: Actualiza la búsqueda tras una actualización del subarea
+  updateSearch(): void {
+    let modal = this.modalManager.open(ProgressModalComponent)
+
+    this.server.write(
+      'search-lab',
+      this.lastSearch,
+      (response: BackendResponse) => {
+        // al responder el servidor, cerramos el modal de espera
+        modal.instance.modalComponent.close()
+
+        // si el servidor respondio con exito, reiniciamos el formulario para 
+        // que el usuario capture un nuevo documento
+        if (response.meta.return_code == 0) {
+          this.listComponent.numDocsWithPhysicalCopy =
+            response.data.num_docs_with_physical_copy
+          this.listComponent.searchResults = response.data.documents
+        } else {
+          // notificamos al usuario del resultado obtenido
+          this.toastManager.showText(
+            this.langManager.getServiceMessage(
+              'search-lab',
+              response.meta.return_code
+            )
+          )
+        }
+      } // (response: BackendResponse)
+    ) // this.server.write
+  }
 
   // Esta funcion se invoca cuando el usuario hace clic en uno de los enlaces 
   // generados al buscar documentos en la base de datos

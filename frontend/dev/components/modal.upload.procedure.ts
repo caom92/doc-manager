@@ -39,7 +39,6 @@ export class ProcedureDocumentUploadModalComponent
       (response: BackendResponse) => {
         if (response.meta.return_code == 0) {
           this.sections = response.data
-          console.log(response.data)
         } else {
           this.toastManager.showText(
             this.langManager.getServiceMessage(

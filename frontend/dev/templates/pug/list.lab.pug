@@ -20,6 +20,10 @@ div.col.s12('*ngIf'='searchResults.length > 0')
         td.table-col-fixed='{{ document.analysis_type_name }}'
         td.table-col-fixed='{{ document.analysis_subtype_name }}'
         td.table-col-fixed='{{ document.area_name }}'
+        td.table-col-fixed(*ngIf='document.subarea_id != null')='{{ document.subarea_name }}'
+        td.table-col-fixed(*ngIf='document.subarea_id == null' class='red-text')
+          +link()(class='green-text', '(click)'='parent.onAssignSubProductClicked(document)')
+            ='{{ langManager.messages.list.assign }}'
         td('*ngIf'='document.has_physical_copy == 1')
           i.mdi.mdi-24px.mdi-check.green-text
         td('*ngIf'='document.has_physical_copy != 1')

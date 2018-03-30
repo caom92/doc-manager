@@ -23,19 +23,34 @@ class Documents extends DocumentsTable
         document_id,
         producer_id,
         lab_id,
-        area_id,
+        subarea_id,
         notes
       ) 
       VALUES (
         :documentID,
         :producerID,
         :labID,
-        :areaID,
+        :subareaID,
         :notes
       )"
     );
     $query->execute($row);
     return $this->db->lastInsertId();
+  }
+
+  // Actualiza los viejos registros para que estos también tengan subarea
+  // o subproducto
+  // [in]   row (dictionary): el ID del subarea, asi como el ID del documento
+  //        que debe ser reasignado, organizado en renglones y columnas
+  //        
+  function editSubArea($row) {
+    $query = $this->getStatement(
+      "UPDATE `$this->table` SET 
+        area_id = NULL,
+        subarea_id = :subareaID
+      WHERE id = :documentID"
+    );
+    $query->execute($row);
   }
 
   // Retorna una lista de todos los documentos que tengan registradas las 
@@ -68,9 +83,18 @@ class Documents extends DocumentsTable
         t.name AS analysis_type_name,
         s.name AS analysis_subtype_name,
         a.name AS area_name,
+        sa.name AS subarea_name,
+        area_id,
+        subarea_id,
         notes
       FROM
         `$this->table`
+      LEFT JOIN
+        `lab_subareas` AS sa
+        ON sa.id = subarea_id
+      LEFT JOIN
+        `lab_areas` AS a
+        ON a.id = sa.parent_id OR a.id = area_id
       INNER JOIN
         `producers` AS p
         ON p.id = producer_id
@@ -80,9 +104,6 @@ class Documents extends DocumentsTable
       INNER JOIN
         `laboratories` AS l
         ON lab_id = l.id
-      INNER JOIN
-        `lab_areas` AS a
-        ON a.id = area_id
       INNER JOIN 
         `analysis_subtypes` AS s
         ON s.id = a.parent_id
@@ -128,8 +149,13 @@ class Documents extends DocumentsTable
     }
 
     if (isset($categoryIDs[5])) {
-      $queryStr .= "AND area_id = :areaID ";
+      $queryStr .= "AND a.id = :areaID ";
       $values[':areaID'] = $categoryIDs[5];
+    }
+
+    if (isset($categoryIDs[6])) {
+      $queryStr .= "AND subarea_id = :subareaID ";
+      $values[':subareaID'] = $categoryIDs[6];
     }
 
     $queryStr .= "ORDER BY d.file_date";
@@ -170,8 +196,8 @@ class Documents extends DocumentsTable
         `laboratories` AS l
         ON lab_id = l.id
       INNER JOIN
-        `lab_areas` AS a
-        ON a.id = area_id
+        `lab_subareas` AS a
+        ON a.id = subarea_id
       INNER JOIN 
         `analysis_subtypes` AS s
         ON s.id = a.parent_id
@@ -218,8 +244,8 @@ class Documents extends DocumentsTable
     }
 
     if (isset($categoryIDs[5])) {
-      $queryStr .= "AND area_id = :areaID ";
-      $values[':areaID'] = $categoryIDs[5];
+      $queryStr .= "AND subarea_id = :subareaID ";
+      $values[':subareaID'] = $categoryIDs[5];
     }
 
     $query = $this->getStatement($queryStr);
@@ -252,7 +278,7 @@ class Documents extends DocumentsTable
       "SELECT
         ap.type_name AS type_name,
         ap.subtype_name AS subtype_name,
-        ap.area_name AS area_name,
+        ap.subarea_name AS subarea_name,
         ap.producer_name AS producer_name,
         COUNT(d.id) AS num_documents
       FROM 
@@ -264,12 +290,12 @@ class Documents extends DocumentsTable
             t.name AS type_name,
             s.id AS subtype_id,
             s.name AS subtype_name,
-            a.id AS area_id,
-            a.name AS area_name,
+            a.id AS subarea_id,
+            a.name AS subarea_name,
             p.id AS producer_id,
             p.name AS producer_name
           FROM 
-            `lab_areas` AS a 
+            `lab_subareas` AS a 
           INNER JOIN
             `analysis_subtypes` AS s
             ON a.parent_id = s.id
@@ -293,7 +319,7 @@ class Documents extends DocumentsTable
     $queryStr .= 
         ") AS ap
         ON 
-          l.area_id = ap.area_id
+          l.subarea_id = ap.subarea_id
           AND l.producer_id = ap.producer_id
       LEFT JOIN 
         (
@@ -310,7 +336,7 @@ class Documents extends DocumentsTable
       GROUP BY
         type_name,
         subtype_name,
-        area_name,
+        subarea_name,
         producer_name";
         
     $query = $this->getStatement($queryStr);

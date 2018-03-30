@@ -25,7 +25,7 @@ $service = [
       'type' => 'int',
       'min' => 1
     ],
-    'area' => [
+    'subarea' => [
       'type' => 'int',
       'min' => 1
     ],
@@ -50,7 +50,7 @@ $service = [
       $_FILES['analysis_file']['name'],
       $_FILES['analysis_file']['tmp_name'],
       realpath(__DIR__.'/../../documents/lab'),
-      "{$request['producer']}_{$request['lab']}_{$request['area']}"
+      "{$request['producer']}_{$request['lab']}_{$request['subarea']}"
     );
 
     // si el archivo no pudo ser subido, truncamos el programa con un error
@@ -76,7 +76,7 @@ $service = [
         ':documentID' => $analysisID,
         ':producerID' => $request['producer'],
         ':labID' => $request['lab'],
-        ':areaID' => $request['area'],
+        ':subareaID' => $request['subarea'],
         ':notes' => ($hasNotes) ? $request['notes'] : ''
       ]);
     } catch (\Exception $e) {

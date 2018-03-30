@@ -30,6 +30,8 @@ import { LabInventoryComponent } from './inventory.lab'
 import { LabTypesInventoryModalComponent } from './modal.inventory.lab.type'
 import { LabSubTypesInventoryModalComponent } from './modal.inventory.lab.subtype'
 import { LabProductInventoryModalComponent } from './modal.inventory.lab.product'
+import { LabSubProductInventoryModalComponent } from './modal.inventory.lab.subproduct'
+import { LabSubAreaReassignComponent } from './modal.subarea.lab'
 import { LabLabInventoryModalComponent } from './modal.inventory.lab.lab'
 import { LabProducerInventoryModalComponent } from './modal.inventory.lab.producer'
 import { GuaranteeDocumentUploadModalComponent } from './modal.upload.guarantee'
@@ -142,6 +144,8 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     LabTypesInventoryModalComponent,
     LabSubTypesInventoryModalComponent,
     LabProductInventoryModalComponent,
+    LabSubProductInventoryModalComponent,
+    LabSubAreaReassignComponent,
     LabLabInventoryModalComponent,
     LabProducerInventoryModalComponent,
     GuaranteeDocumentUploadModalComponent,
@@ -170,6 +174,8 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     LabTypesInventoryModalComponent,
     LabSubTypesInventoryModalComponent,
     LabProductInventoryModalComponent,
+    LabSubProductInventoryModalComponent,
+    LabSubAreaReassignComponent,
     LabLabInventoryModalComponent,
     LabProducerInventoryModalComponent,
     GuaranteeDocumentUploadModalComponent,

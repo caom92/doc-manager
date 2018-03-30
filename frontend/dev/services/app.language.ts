@@ -163,6 +163,7 @@ export class LanguageService
         zoneLabel: 'Zona',
         ranchLabel: 'Rancho',
         areaLabel: 'Área o Producto',
+        subAreaLabel: 'Subárea o Subproducto',
         notesLabel: 'Notas o Comentarios',
         producerLabel: 'Unidad de Producción',
         docDateLabel: 'Fecha del Documento',
@@ -216,7 +217,8 @@ export class LanguageService
           tableHeaders: [
             'Tipo de Análisis',
             'Subtupo de Análisis',
-            'Área o Producto'
+            'Área o Producto',
+            'Subárea o Subproducto'
           ],
           labTableHeaders: [
             'Nombre'
@@ -224,11 +226,13 @@ export class LanguageService
           addTypeButton: 'Tipo',
           addSubTypeButton: 'Subtipo',
           addProductButton: 'Producto',
+          addSubProductButton: 'Subproducto',
           addLabButton: 'Agregar Lab',
           addProducerButton: 'Agregar UP',
           typeTitle: 'Agregar Tipo de Análisis',
           subtypeTitle: 'Agregar Subtipo de Análisis',
           areaTitle: 'Agregar Área o Producto',
+          subAreaTitle: 'Agregar Subárea o Subproducto',
           labTitle: 'Agregar Laboratorio',
           parentErrors: {
             required: 'Este campo es requerido'
@@ -271,6 +275,7 @@ export class LanguageService
       },
       list: {
         view: 'Ver',
+        assign: 'Asignar Subárea/Subproducto',
         numPhysicalDocs: 'Número de documentos con copias físicas',
         area: {
           tableHeaders: [
@@ -292,6 +297,7 @@ export class LanguageService
             'Tipo de Análisis',
             'Subtipo',
             'Área/Producto',
+            'Subárea/Subproducto',
             '¿Copia Física?',
             'Ver',
             'Borrar'
@@ -363,6 +369,12 @@ export class LanguageService
       },
       'add-product': {
         0: 'El área o producto fue agregado exitosamente'
+      },
+      'add-subarea': {
+        0: 'El subárea o subproducto fue agregado exitosamente'
+      },
+      'edit-lab-subarea': {
+        0: 'La subárea o subproducto fue actualizado exitosamente'
       },
       'add-lab': {
         0: 'El laboratorio fue agregado exitosamente'
@@ -591,7 +603,8 @@ export class LanguageService
           tableHeaders: [
             'Analysis Type',
             'Analysis Subtype',
-            'Area/Product'
+            'Area/Product',
+            'Subarea/Subproduct'
           ],
           labTableHeaders: [
             'Name'
@@ -599,11 +612,13 @@ export class LanguageService
           addTypeButton: 'Type',
           addSubTypeButton: 'Subtype',
           addProductButton: 'Area/Product',
+          addSubProductButton: 'Subproduct',
           addLabButton: 'Add Lab',
           addProducerButton: 'Add PU',
           typeTitle: 'Add Analysis Type',
           subtypeTitle: 'Add Analysis Subtype',
           areaTitle: 'Add Area or Products',
+          subAreaTitle: 'Add Subarea or Subproducts',
           labTitle: 'Add Laboratory',
           parentErrors: {
             required: 'This field is required'
@@ -646,6 +661,7 @@ export class LanguageService
       },
       list: {
         view: 'View',
+        assign: 'Asign Subarea/Subproduct',
         numPhysicalDocs: 'Number of documents with physical copies',
         area: {
           tableHeaders: [
@@ -668,6 +684,7 @@ export class LanguageService
             'Analysis Type',
             'Sub-Type',
             'Area/Product',
+            'Subarea/Subproduct',
             'View',
             'Delete'
           ]
@@ -738,6 +755,12 @@ export class LanguageService
       },
       'add-product': {
         0: 'Area or Product was added successfully'
+      },
+      'add-subarea': {
+        0: 'Subarea or Subproduct was added successfully'
+      },
+      'edit-lab-subarea': {
+        0: 'Subarea or Subproduct was updated successfully'
       },
       'add-lab': {
         0: 'The lab was added successfully'

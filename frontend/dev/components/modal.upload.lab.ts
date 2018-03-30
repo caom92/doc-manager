@@ -33,6 +33,9 @@ export class LabDocumentUploadModalComponent
   // La lista de areas o productos a elegir por el usuario
   areas: Array<SingleParentElement> = []
 
+  // La lista de subareas o subproductos a elegir por el usuario
+  subareas: Array<SingleParentElement> = []
+
   // El constructor de este componente, inyectando los servicios requeridos
   constructor(
     server: BackendService,
@@ -137,6 +140,7 @@ export class LabDocumentUploadModalComponent
       subtype: [ null, Validators.required ],
       producer: [ null, Validators.required ],
       area: [ null, Validators.required ],
+      subarea: [ null, Validators.required ],
       notes: [ null, Validators.maxLength(65535)]
     })
   } // // ngOnInit(): void
@@ -188,6 +192,7 @@ export class LabDocumentUploadModalComponent
     // algun valor previamente y el usuario este cambiando de tipo
     this.uploadForm.controls.subtype.setValue(null)
     this.uploadForm.controls.area.setValue(null)
+    this.uploadForm.controls.subarea.setValue(null)
 
     // si el tipo es valido, mandamos una peticion al servidor para recuperar 
     // la lista de subtipos
@@ -226,6 +231,7 @@ export class LabDocumentUploadModalComponent
   // Esta funcion se invoca cuando el usuario ingresa el nombre de un subtipo
   onSubTypeSelected(): void {
     this.uploadForm.controls.area.setValue(null)
+    this.uploadForm.controls.subarea.setValue(null)
 
     // si el tipo es valido, mandamos una peticion al servidor para recuperar 
     // la lista de subtipos
@@ -258,6 +264,39 @@ export class LabDocumentUploadModalComponent
       ) // this.server.write
     } // if (this.uploadForm.controls.subtype.valid)
   } // onSubTypeSelected(event: any): void
+
+  onAreaSelected(): void {
+    // si el tipo es valido, mandamos una peticion al servidor para recuperar 
+    // la lista de subtipos
+    if (this.uploadForm.controls.area.valid) {
+      // preparamos los datos que seran enviados al usuario
+      let selectedArea =
+        <SingleParentElement>this.uploadForm.controls.area.value
+
+      let data = new FormData()
+      data.append('area', selectedArea.id.toString())
+
+      // recuperamos los ranchos del servidor
+      this.server.write(
+        'list-subareas-of-area',
+        data,
+        (response: BackendResponse) => {
+          // revisamos si el servidor respondio con exito
+          if (response.meta.return_code == 0) {
+            this.subareas = response.data
+          } else {
+            // si el servidor repondio con error, notificamos al usuario
+            this.toastManager.showText(
+              this.langManager.getServiceMessage(
+                'list-areas-of-subtype',
+                response.meta.return_code
+              )
+            )
+          } // if (response.meta.return_code == 0)
+        } // (response: BackendResponse)
+      ) // this.server.write
+    } // if (this.uploadForm.controls.subtype.valid)
+  }
 
   // Esta funcion se invoca cuando el usuario elije un archivo de solicitud
   onAnalysisFileSelected(event: any): void {
@@ -299,11 +338,11 @@ export class LabDocumentUploadModalComponent
       selectedLab.id.toString()
     )
 
-    let selectedArea = 
-      <SingleParentElement>this.uploadForm.controls.area.value
+    let selectedSubArea = 
+      <SingleParentElement>this.uploadForm.controls.subarea.value
     data.append(
-      'area',
-      selectedArea.id.toString()
+      'subarea',
+      selectedSubArea.id.toString()
     )
 
     if (this.uploadForm.controls.notes.value) {

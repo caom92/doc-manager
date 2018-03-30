@@ -61,7 +61,7 @@ mz-modal(
             )
 
         div.row
-          div.col.s12.m4
+          div.col.s12.m6
             +select(
               'type', 'langManager.messages.upload.lab.typeNameLabel',
               'langManager.messages.global.selectPlaceholder',
@@ -73,7 +73,7 @@ mz-modal(
               required
               '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
             )
-          div.col.s12.m4
+          div.col.s12.m6
             +select(
               'subtype', 'langManager.messages.upload.lab.subtype',
               'langManager.messages.global.selectPlaceholder',
@@ -85,13 +85,26 @@ mz-modal(
               required
               '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
             )
-          div.col.s12.m4
+        div.row
+          div.col.s12.m6
             +select(
               'area', 'langManager.messages.upload.areaLabel',
               'langManager.messages.global.selectPlaceholder',
-              'areas', '.name'
+              'areas', '.name', '',
+              'onAreaSelected()'
             )(
               formControlName='area'
+              mz-validation
+              required
+              '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
+            )
+          div.col.s12.m6
+            +select(
+              'subarea', 'langManager.messages.upload.subAreaLabel',
+              'langManager.messages.global.selectPlaceholder',
+              'subareas', '.name'
+            )(
+              formControlName='subarea'
               mz-validation
               required
               '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'

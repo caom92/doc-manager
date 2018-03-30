@@ -42,6 +42,14 @@ export class LabDocumentSearchModalComponent
     this.singleParentOptionAll
   ]
 
+  // La lista de subareas a elegir por el usuario
+  subareas: Array<SingleParentElement> = [
+    this.singleParentOptionAll
+  ]
+
+  // El formdata con la última búsqueda realizada, necesaria para refrescar
+  searchPage
+
   // El constructor de este componente, inyectando los servicios requeridos
   constructor(
     server: BackendService,
@@ -146,6 +154,7 @@ export class LabDocumentSearchModalComponent
       subtype: [ null ],
       producer: [ null ],
       area: [ null ],
+      subarea: [ null ],
       lab: [ null ],
       type: [ null ]
     })
@@ -198,7 +207,8 @@ export class LabDocumentSearchModalComponent
     // algun valor previamente y el usuario este cambiando de tipo
     this.searchForm.controls.subtype.setValue(null)
     this.searchForm.controls.area.setValue(null)
-    this.subTypes = this.areas = [
+    this.searchForm.controls.subarea.setValue(null)
+    this.subTypes = this.areas = this.subareas = [
       this.singleParentOptionAll
     ]
 
@@ -237,7 +247,8 @@ export class LabDocumentSearchModalComponent
   // seleccion
   onSubTypeSelected(): void {
     this.searchForm.controls.area.setValue(null)
-    this.areas = [
+    this.searchForm.controls.subarea.setValue(null)
+    this.areas = this.subareas = [
       this.singleParentOptionAll
     ]
 
@@ -269,6 +280,41 @@ export class LabDocumentSearchModalComponent
       ) // this.server.write
     } // if (selectedSubType.id)
   } // onSubTypeSelected(): void
+
+  onAreaSelected() {
+    this.searchForm.controls.subarea.setValue(null)
+    this.subareas = [
+      this.singleParentOptionAll
+    ]
+
+    let selectedArea = 
+      <SingleParentElement>this.searchForm.controls.subtype.value
+    if (selectedArea.id) {
+      // preparamos los datos que seran enviados al usuario
+      let data = new FormData()
+      data.append('area', selectedArea.id.toString())
+
+      // recuperamos los ranchos del servidor
+      this.server.write(
+        'list-subareas-of-area',
+        data,
+        (response: BackendResponse) => {
+          // revisamos si el servidor respondio con exito
+          if (response.meta.return_code == 0) {
+            this.subareas = this.subareas.concat(response.data)
+          } else {
+            // si el servidor repondio con error, notificamos al usuario
+            this.toastManager.showText(
+              this.langManager.getServiceMessage(
+                'list-areas-of-subtype',
+                response.meta.return_code
+              )
+            )
+          } // if (response.meta.return_code == 0)
+        } // (response: BackendResponse)
+      ) // this.server.write
+    } // if (selectedSubType.id)
+  }
 
   // Esta funcion se invoca cuando el formulario de captura de documento es 
   // enviado al servidor
@@ -323,13 +369,20 @@ export class LabDocumentSearchModalComponent
       data.append('area_id', selectedArea.id.toString())
     }
 
+    let selectedSubArea =
+      <SingleParentElement>this.searchForm.controls.subarea.value
+    if (selectedSubArea && selectedSubArea != this.singleParentOptionAll) {
+      data.append('subarea_id', selectedSubArea.id.toString())
+    }
+
     // mostramos el modal de espera
     let modal = this.modalManager.open(ProgressModalComponent)
     
     // enviamos los datos al servidor
+    this.searchPage.lastSearch = data
     this.server.write(
       'search-lab',
-      data,
+      this.searchPage.lastSearch,
       (response: BackendResponse) => {
         // al responder el servidor, cerramos el modal de espera
         modal.instance.modalComponent.close()

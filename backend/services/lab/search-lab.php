@@ -46,6 +46,11 @@ $service = [
       'type' => 'int',
       'min' => 1,
       'optional' => TRUE
+    ],
+    'subarea_id' => [
+      'type' => 'int',
+      'min' => 1,
+      'optional' => TRUE
     ]
   ],
   'callback' => function($scope, $request) {
@@ -71,7 +76,10 @@ $service = [
           $request['analysis_subtype_id'] : NULL,
       (isset($request['area_id']) 
         && array_key_exists('area_id', $request)) ?
-          $request['area_id'] : NULL
+          $request['area_id'] : NULL,
+      (isset($request['subarea_id']) 
+        && array_key_exists('subarea_id', $request)) ?
+          $request['subarea_id'] : NULL
     );
 
     $count = $documents->countPhysicalCopiesByDateInterval(
@@ -95,7 +103,10 @@ $service = [
           $request['analysis_subtype_id'] : NULL,
       (isset($request['area_id']) 
         && array_key_exists('area_id', $request)) ?
-          $request['area_id'] : NULL
+          $request['area_id'] : NULL,
+      (isset($request['subarea_id']) 
+        && array_key_exists('subarea_id', $request)) ?
+          $request['subarea_id'] : NULL
     );
 
     $fsmZones = $scope->fsmTableFactory->get('Zones');
