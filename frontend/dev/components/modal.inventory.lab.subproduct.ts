@@ -135,7 +135,7 @@ export class LabSubProductInventoryModalComponent
   onFormSubmit(): void {
     // preparamos los datos a enviar al servidor
     let data = new FormData()
-    data.append('parent_id', this.captureForm.controls.subTypeID.value)
+    data.append('parent_id', this.captureForm.controls.areaID.value)
     data.append('name', this.captureForm.controls.name.value)
 
     // capturamos el nuevo prodcuto o area registrado por el usuario en el 
