@@ -275,70 +275,84 @@ class Documents extends DocumentsTable
     ];
 
     $queryStr = 
-      "SELECT
-        ap.type_name AS type_name,
-        ap.subtype_name AS subtype_name,
-        ap.subarea_name AS subarea_name,
-        ap.producer_name AS producer_name,
-        COUNT(d.id) AS num_documents
+      "SELECT areas.type_name AS type_name, areas.subtype_name AS subtype_name, areas.area_name AS area_name, areas.producer_name AS producer_name, IFNULL(docs.num_documents, 0) as num_documents FROM (SELECT
+        t.id AS type_id,
+        t.name AS type_name,
+        s.id AS subtype_id,
+        s.name AS subtype_name,
+        a.id AS area_id,
+        a.name AS area_name,
+        p.id AS producer_id,
+        p.name AS producer_name
       FROM 
-        `lab_documents` AS l
-      RIGHT JOIN
-        (
-          SELECT
-            t.id AS type_id,
-            t.name AS type_name,
-            s.id AS subtype_id,
-            s.name AS subtype_name,
-            a.id AS subarea_id,
-            a.name AS subarea_name,
-            p.id AS producer_id,
-            p.name AS producer_name
-          FROM 
-            `lab_subareas` AS a 
-          INNER JOIN
-            `analysis_subtypes` AS s
-            ON a.parent_id = s.id
-          INNER JOIN
-            `analysis_types` AS t
-            ON s.parent_id = t.id
-          RIGHT JOIN 
-            `producers` AS p 
-            ON 1
-          WHERE 
-            p.parent_id = :zoneID ";
+        `lab_areas` AS a
+      INNER JOIN
+        `analysis_subtypes` AS s
+        ON a.parent_id = s.id
+      INNER JOIN
+        `analysis_types` AS t
+        ON s.parent_id = t.id
+      RIGHT JOIN 
+        `producers` AS p 
+        ON 1
+      WHERE 
+        p.parent_id = :zoneID ";
 
     if (isset($subtypeID)) {
-      $queryStr .= "AND a.parent_id = :subtypeID";
+      $queryStr .= "AND a.parent_id = :subtypeID ";
       $values[':subtypeID'] = $subtypeID;
     } else if (isset($typeID)) {
-      $queryStr .= "AND s.parent_id = :typeID";
+      $queryStr .= "AND s.parent_id = :typeID ";
       $values[':typeID'] = $typeID;
     }
       
     $queryStr .= 
-        ") AS ap
-        ON 
-          l.subarea_id = ap.subarea_id
-          AND l.producer_id = ap.producer_id
-      LEFT JOIN 
-        (
-          SELECT
-            id,
-            file_date
-          FROM 
-            `documents`
-          WHERE 
-            file_date >= :startDate
-            AND file_date <= :endDate
-        ) AS d 
-      ON l.document_id = d.id
-      GROUP BY
-        type_name,
-        subtype_name,
-        subarea_name,
-        producer_name";
-        
+        "GROUP BY
+          type_name,
+          subtype_name,
+          area_name,
+          producer_name) AS areas
+        LEFT JOIN
+        (SELECT
+          t.name AS type_name,
+          s.name AS subtype_name,
+          a.name AS area_name,
+          p.name AS producer_name,
+          COUNT(a.name) AS num_documents
+        FROM
+          lab_documents AS l
+        LEFT JOIN
+          `lab_subareas` AS sa
+          ON sa.id = l.subarea_id
+        RIGHT JOIN
+          `lab_areas` AS a
+          ON a.id = sa.parent_id OR a.id = l.area_id
+        INNER JOIN
+          `producers` AS p
+          ON p.id = l.producer_id
+        INNER JOIN 
+          `analysis_subtypes` AS s
+          ON s.id = a.parent_id
+        INNER JOIN
+          `analysis_types` AS t
+          ON t.id = s.parent_id
+        INNER JOIN
+          `documents` AS d
+          ON l.document_id = d.id
+        WHERE
+          d.file_date >= :startDate AND d.file_date <= :endDate
+        GROUP BY
+          type_name,
+          subtype_name,
+          area_name,
+          producer_name) AS docs
+        ON areas.producer_name = docs.producer_name AND areas.area_name = docs.area_name AND areas.subtype_name = docs.subtype_name AND areas.type_name = docs.type_name
+        GROUP BY
+          areas.type_name,
+          areas.subtype_name,
+          areas.area_name,
+          areas.producer_name";
+
     $query = $this->getStatement($queryStr);
     $query->execute($values);
     return $query->fetchAll();

@@ -39,9 +39,14 @@ html(lang='es')
     //- El titulo de la pagina del sitio
     title='Document Manager'
 
+    //- Estilos de la splash screen
+    style=' .centered { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); } .spinner { width: 240px; height: 240px; -webkit-animation: spin 2s linear infinite; -moz-animation: spin 2s linear infinite; animation: spin 2s linear infinite; } @-moz-keyframes spin { 100% { -moz-transform: rotate(-360deg); } } @-webkit-keyframes spin { 100% { -webkit-transform: rotate(-360deg); } } @keyframes spin { 100% { -webkit-transform: rotate(-360deg); transform: rotate(-360deg); } }'
+
   body
     //- Contenido principal del sitio
     app-root
+      .centered
+        img.spinner(src="assets/images/koi_spinner.png", width="240", height="240")
 
     //- Importamos todos los scripts del sitio
     include scripts.pug
