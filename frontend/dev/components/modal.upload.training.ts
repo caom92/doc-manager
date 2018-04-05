@@ -119,7 +119,7 @@ export class TrainingDocumentUploadModalComponent
 
         this.toastManager.showText(
           this.langManager.getServiceMessage(
-            'capture-training',
+            'capture-default',
             response.meta.return_code
           )
         )

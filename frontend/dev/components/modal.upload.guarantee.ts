@@ -117,7 +117,7 @@ export class GuaranteeDocumentUploadModalComponent
 
         this.toastManager.showText(
           this.langManager.getServiceMessage(
-            'capture-lab',
+            'capture-default',
             response.meta.return_code
           )
         )
