@@ -14,6 +14,8 @@ import { GuaranteeDocumentSearchModalComponent } from './modal.search.guarantee'
 import { GuaranteeSearchResultsListComponent } from './list.guarantee'
 import { ProcedureDocumentSearchModalComponent } from './modal.search.procedure'
 import { ProcedureSearchResultsListComponent } from './list.procedure'
+import { TrainingSearchResultsListComponent } from './list.training'
+import { TrainingDocumentSearchModalComponent } from './modal.search.training'
 import { LabDocumentDisplayModalComponent } from './modal.display.lab'
 import { LabSubAreaReassignComponent } from './modal.subarea.lab'
 
@@ -131,6 +133,18 @@ export class SearchComponent
           selectedDocumentTypeID: this.selectedDocument.id
         })
       break
+      
+      case 4: // capacitaciones
+        this.listComponent =
+          this.loadComponent(TrainingSearchResultsListComponent, {
+            parent: this
+          }).instance
+
+        this.modalManager.open(TrainingDocumentSearchModalComponent, {
+          parent: this.listComponent,
+          selectedDocumentTypeID: this.selectedDocument.id
+        })
+      break
     } // switch (this.selectedDocument.name)
   } // onDocumentTypeSelected(): void
 
@@ -138,7 +152,7 @@ export class SearchComponent
     this.modalManager.open(LabSubAreaReassignComponent, {areaID: document.area_id, documentID: document.id, parent: this})
   }
 
-  // TEMP: Actualiza la búsqueda tras una actualización del subarea
+  // TODO: TEMP: Actualiza la búsqueda tras una actualización del subarea
   updateSearch(): void {
     let modal = this.modalManager.open(ProgressModalComponent)
 
@@ -195,6 +209,15 @@ export class SearchComponent
           index: index,
           documentType: this.selectedDocument.name,
           baseFolder: 'procedure',
+          parent: this.listComponent
+        })
+      break
+
+      case 4: // Capacitaciones
+        this.modalManager.open(DefaultDocumentDisplayModalComponent, {
+          index: index,
+          documentType: this.selectedDocument.name,
+          baseFolder: 'training',
           parent: this.listComponent
         })
       break

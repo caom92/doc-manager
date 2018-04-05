@@ -321,6 +321,16 @@ export class LanguageService
             'Ver',
             'Borrar'
           ]
+        },
+        training: {
+          tableHeaders: [
+            'Fecha',
+            'Nombre del Doc.',
+            'Zona',
+            'Sección',
+            'Ver',
+            'Borrar'
+          ]
         }
       },
       report: {
@@ -699,6 +709,16 @@ export class LanguageService
           ]
         },
         procedure: {
+          tableHeaders: [
+            'Date',
+            'Doc. Name',
+            'Zone',
+            'Section',
+            'View',
+            'Delete'
+          ]
+        },
+        training: {
           tableHeaders: [
             'Date',
             'Doc. Name',
