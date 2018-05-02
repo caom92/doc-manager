@@ -1,0 +1,19 @@
+include globals.pug
+
+div.row
+  div.col.s6
+    +button(
+      'button',
+      'add-certificate-product',
+      '{{ langManager.messages.inventory.certificate.addProductButton }}',
+      'mdi mdi-plus'
+    )(
+      '(click)'='onAddSupplierButtonClick()'
+    )
+div.row
+  div.col.s12
+    +table(
+      'langManager.messages.inventory.certificate.labTableHeaders'
+    )
+      tr('*ngFor'='let row of suppliers')
+        td='{{ row.name }}'

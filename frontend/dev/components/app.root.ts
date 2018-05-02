@@ -49,6 +49,11 @@ import { TrainingDocumentSearchModalComponent } from './modal.search.training'
 import { TrainingSearchResultsListComponent } from './list.training'
 import { TrainingInventoryComponent } from './inventory.training'
 import { TrainingSectionInventoryModalComponent } from './modal.inventory.training.section'
+import { CertificateDocumentUploadModalComponent } from './modal.upload.certificate'
+import { CertificateInventoryComponent } from './inventory.certificate'
+import { ProductCertificateInventoryModalComponent } from './modal.inventory.certificate.product'
+import { CertificateDocumentSearchModalComponent } from './modal.search.certificate'
+import { CertificateSearchResultsListComponent } from './list.certificate'
 import { LabDocumentDisplayModalComponent } from './modal.display.lab'
 
 // Importamos los servicios que van a ser necesitados por cada pagina del 
@@ -168,6 +173,11 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     TrainingSearchResultsListComponent,
     TrainingDocumentSearchModalComponent,
     TrainingDocumentUploadModalComponent,
+    CertificateDocumentUploadModalComponent,
+    ProductCertificateInventoryModalComponent,
+    CertificateInventoryComponent,
+    CertificateDocumentSearchModalComponent,
+    CertificateSearchResultsListComponent,
     LabDocumentDisplayModalComponent
   ],
   // declaramos cualquier componente que sera inyectado dinamicamente
@@ -203,6 +213,11 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     TrainingSearchResultsListComponent,
     TrainingDocumentSearchModalComponent,
     TrainingDocumentUploadModalComponent,
+    ProductCertificateInventoryModalComponent,
+    CertificateInventoryComponent,
+    CertificateDocumentUploadModalComponent,
+    CertificateDocumentSearchModalComponent,
+    CertificateSearchResultsListComponent,
     LabDocumentDisplayModalComponent
   ],
   // indicamos cual es el componente raiz

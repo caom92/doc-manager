@@ -16,6 +16,8 @@ import { ProcedureDocumentSearchModalComponent } from './modal.search.procedure'
 import { ProcedureSearchResultsListComponent } from './list.procedure'
 import { TrainingSearchResultsListComponent } from './list.training'
 import { TrainingDocumentSearchModalComponent } from './modal.search.training'
+import { CertificateSearchResultsListComponent } from './list.certificate'
+import { CertificateDocumentSearchModalComponent } from './modal.search.certificate'
 import { LabDocumentDisplayModalComponent } from './modal.display.lab'
 import { LabSubAreaReassignComponent } from './modal.subarea.lab'
 
@@ -145,6 +147,18 @@ export class SearchComponent
           selectedDocumentTypeID: this.selectedDocument.id
         })
       break
+      
+      case 5: // certificados
+        this.listComponent =
+          this.loadComponent(CertificateSearchResultsListComponent, {
+            parent: this
+          }).instance
+
+        this.modalManager.open(CertificateDocumentSearchModalComponent, {
+          parent: this.listComponent,
+          selectedDocumentTypeID: this.selectedDocument.id
+        })
+      break
     } // switch (this.selectedDocument.name)
   } // onDocumentTypeSelected(): void
 
@@ -218,6 +232,15 @@ export class SearchComponent
           index: index,
           documentType: this.selectedDocument.name,
           baseFolder: 'training',
+          parent: this.listComponent
+        })
+      break
+      
+      case 5: // certificados
+        this.modalManager.open(DefaultDocumentDisplayModalComponent, {
+          index: index,
+          documentType: this.selectedDocument.name,
+          baseFolder: 'certificate',
           parent: this.listComponent
         })
       break

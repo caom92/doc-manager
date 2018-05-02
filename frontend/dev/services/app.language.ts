@@ -158,6 +158,10 @@ export class LanguageService
           sectionNameLabel: 'Nombre de la Sección',
           procedureLabel: 'Procedimiento'
         },
+        certificate: {
+          productNameLabel: 'Nombre del Producto',
+          letterLabel: 'Certificado'
+        },
         title: 'Captura de Documento',
         typeLabel: 'Tipo de Documento',
         zoneLabel: 'Zona',
@@ -257,6 +261,14 @@ export class LanguageService
           ],
           sectionTitle: 'Agregar Sección',
           addSectionButton: 'Agregar'
+        },
+        certificate: {
+          addProduct: 'Agregar Producto',
+          labTableHeaders: [
+            'Producto'
+          ],
+          productTitle: 'Agregar Producto',
+          addProductButton: 'Agregar'
         }
       },
       documents: {
@@ -328,6 +340,15 @@ export class LanguageService
             'Nombre del Doc.',
             'Zona',
             'Sección',
+            'Ver',
+            'Borrar'
+          ]
+        },
+        certificate: {
+          tableHeaders: [
+            'Fecha',
+            'Zona',
+            'Producto',
             'Ver',
             'Borrar'
           ]
@@ -555,6 +576,10 @@ export class LanguageService
           sectionNameLabel: 'Section Name',
           procedureLabel: 'Procedure'
         },
+        certificate: {
+          productNameLabel: 'Product Name',
+          letterLabel: 'Certificate'
+        },
         title: 'Document Upload',
         typeLabel: 'Document Type',
         zoneLabel: 'Zone',
@@ -653,6 +678,14 @@ export class LanguageService
           ],
           sectionTitle: 'Add Section',
           addSectionButton: 'Add'
+        },
+        certificate: {
+          addProduct: 'Add Product',
+          labTableHeaders: [
+            'Product'
+          ],
+          productTitle: 'Add Product',
+          addProductButton: 'Add'
         }
       },
       documents: {
@@ -724,6 +757,15 @@ export class LanguageService
             'Doc. Name',
             'Zone',
             'Section',
+            'View',
+            'Delete'
+          ]
+        },
+        certificate: {
+          tableHeaders: [
+            'Date',
+            'Zone',
+            'Product',
             'View',
             'Delete'
           ]
