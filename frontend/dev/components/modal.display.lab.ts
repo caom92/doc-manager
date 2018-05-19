@@ -20,6 +20,7 @@ export class LabDocumentDisplayModalComponent
     globals: GlobalElementsService
   ) {
     super(langManager, sanitizer, server, toastManager, globals)
+    this.isSignable = true
     this.countsPhysicalCopies = true
     this.checkboxLabel = {
       en: 'Has original analysis document?',

@@ -159,7 +159,7 @@ export class LanguageService
           procedureLabel: 'Procedimiento'
         },
         certificate: {
-          productNameLabel: 'Nombre del Producto',
+          productNameLabel: 'Nombre del Permiso o Certificado',
           letterLabel: 'Certificado'
         },
         title: 'Captura de Documento',
@@ -174,6 +174,7 @@ export class LanguageService
         fileLabel: 'Archivo del Documento',
         fileButtonLabel: 'Subir',
         supplierLabel: 'Proveedor',
+        certificateNameLabel: 'Nombre del Permiso o Certificado',
         sectionLabel: 'Sección Correspondiente',
         errors: {
           documentDate: {
@@ -265,9 +266,9 @@ export class LanguageService
         certificate: {
           addProduct: 'Agregar Producto',
           labTableHeaders: [
-            'Producto'
+            'Nombre del Permiso o Certificado'
           ],
-          productTitle: 'Agregar Producto',
+          productTitle: 'Agregar Certificado',
           addProductButton: 'Agregar'
         }
       },
@@ -577,7 +578,7 @@ export class LanguageService
           procedureLabel: 'Procedure'
         },
         certificate: {
-          productNameLabel: 'Product Name',
+          productNameLabel: 'Name of Certificate or Permit',
           letterLabel: 'Certificate'
         },
         title: 'Document Upload',
@@ -591,6 +592,7 @@ export class LanguageService
         fileLabel: 'Document File',
         fileButtonLabel: 'Upload',
         supplierLabel: 'Supplier',
+        certificateNameLabel: 'Name of Certificate or Permit',
         sectionLabel: 'Corresponding Section',
         errors: {
           documentDate: {
@@ -682,9 +684,9 @@ export class LanguageService
         certificate: {
           addProduct: 'Add Product',
           labTableHeaders: [
-            'Product'
+            'Name of Certificate or Permit'
           ],
-          productTitle: 'Add Product',
+          productTitle: 'Add Certificate',
           addProductButton: 'Add'
         }
       },
