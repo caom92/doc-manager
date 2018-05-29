@@ -24,6 +24,10 @@ div.col.s12('*ngIf'='searchResults.length > 0')
         td.table-col-fixed(*ngIf='document.subarea_id == null' class='red-text')
           +link()(class='green-text', '(click)'='parent.onAssignSubProductClicked(document)')
             ='{{ langManager.messages.list.assign }}'
+        td.table-col-fixed(*ngIf='document.signed_by != null')='{{ document.signer }}'
+        td.table-col-fixed(*ngIf='document.signed_by == null')
+          +link()(class='green-text', '(click)'='parent.onSignDocumentRequested(document)')
+            ='{{ langManager.messages.list.sign }}'
         td('*ngIf'='document.has_physical_copy == 1')
           i.mdi.mdi-24px.mdi-check.green-text
         td('*ngIf'='document.has_physical_copy != 1')
