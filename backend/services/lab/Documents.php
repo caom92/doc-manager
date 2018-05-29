@@ -77,6 +77,8 @@ class Documents extends DocumentsTable
         d.file_date AS file_date,
         d.file_path AS file_path,
         d.has_physical_copy AS has_physical_copy,
+        d.signed_by AS signed_by,
+        CONCAT(u.first_name, ' ', u.last_name) AS signer,
         z.foreign_id AS zone_id,
         p.name AS producer_name,
         l.name AS lab_name,
@@ -113,6 +115,9 @@ class Documents extends DocumentsTable
       INNER JOIN
         `documents` AS d
         ON document_id = d.id
+      LEFT JOIN
+        signers AS u
+        ON u.id = d.signed_by
       WHERE
         d.file_date >= :startDate AND d.file_date <= :endDate
         AND d.type_id = :documentTypeID ";

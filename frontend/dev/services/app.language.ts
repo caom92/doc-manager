@@ -68,6 +68,10 @@ export class LanguageService
         title: '¿Seguro que desea borrar este documento?',
         message: 'Está a punto de borrar un documento. Una vez borrado el documento, NO podrá ser recuperado de nuevo.'
       },
+      signConfirmation: {
+        title: '¿Seguro que desea firmar este documento?',
+        message: 'Está a punto de firmar un documento. Una vez firmado, esta acción no se puede deshacer y su nombre quedará registrado como firmante'
+      },
       sideNav: {
         search: 'Buscar',
         upload: 'Capturar',
@@ -289,6 +293,7 @@ export class LanguageService
       list: {
         view: 'Ver',
         assign: 'Asignar Subárea/Subproducto',
+        sign: 'Firmar',
         numPhysicalDocs: 'Número de documentos con copias físicas',
         area: {
           tableHeaders: [
@@ -311,6 +316,7 @@ export class LanguageService
             'Subtipo',
             'Área/Producto',
             'Subárea/Subproducto',
+            'Firma',
             '¿Copia Física?',
             'Ver',
             'Borrar'
@@ -426,6 +432,10 @@ export class LanguageService
       'toggle-physical-copy-lab': {
         0: 'El estado de la copia física se guardó exitosamente'
       },
+      'sign-*': {
+        0: 'Documento firmado exitosamente',
+        1: 'Error al firmar el documento'
+      },
       100: 'No se pudo reconocer el servicio solicitado',
       101: 'Faltó enviar una entrada al servidor',
       102: 'Una entrada enviada al servidor no es un valor numérico',
@@ -487,6 +497,10 @@ export class LanguageService
         title: 'Are you sure you wish to delete this document?',
         message: 'You are about to delete a document. Once deleted, a document CANNOT be recovered.'
       },
+      signConfirmation: {
+        title: 'Are you sure you wish to sign this document?',
+        message: 'You are about to sign a document. Once signed, this action cannot be undone and your name will be registered as the signer'
+      },
       sideNav: {
         search: 'Search',
         upload: 'Upload',
@@ -505,7 +519,7 @@ export class LanguageService
         firstName: 'First name',
         lastName: 'Last name',
       },
-      editPasswordFormLabels: {
+      editPasswordForm: {
         title: 'Change password',
         newPassword: 'New password',
         newPasswordConfirmation: 'Confirm new password',
@@ -707,6 +721,7 @@ export class LanguageService
       list: {
         view: 'View',
         assign: 'Asign Subarea/Subproduct',
+        sign: 'Sign',
         numPhysicalDocs: 'Number of documents with physical copies',
         area: {
           tableHeaders: [
@@ -729,6 +744,7 @@ export class LanguageService
             'Analysis Type',
             'Sub-Type',
             'Area/Product',
+            'Signature',
             'Subarea/Subproduct',
             'View',
             'Delete'
@@ -844,6 +860,10 @@ export class LanguageService
       'toggle-physical-copy-lab': {
         0: 'El estado de la copia física se guardó exitosamente'
       },
+      'sign-*': {
+        0: 'Document was signed successfully',
+        1: 'Failed to sign document'
+      },
       100: 'Unable to recognize the requested service',
       101: 'A server input argument was not send',
       102: 'A server input argument is not a numeric value',
@@ -897,6 +917,10 @@ export class LanguageService
       }
     },
     deleteConfirmation: {
+      title: null,
+      message: null
+    },
+    signConfirmation: {
       title: null,
       message: null
     },

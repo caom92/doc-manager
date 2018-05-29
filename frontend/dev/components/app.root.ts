@@ -20,6 +20,7 @@ import { InventoryComponent } from './app.inventory'
 // Importamos los componentes de los modales
 import { ProgressModalComponent } from './modal.please.wait'
 import { DeleteDocumentConfirmationModalComponent } from './modal.confirmation.delete'
+import { SignDocumentConfirmationModalComponent } from './modal.confirmation.sign'
 import { DefaultDocumentDisplayModalComponent } from './modal.display.default'
 import { LabDocumentUploadModalComponent } from './modal.upload.lab'
 import { LabDocumentSearchModalComponent } from './modal.search.lab'
@@ -143,6 +144,7 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     DynamicComponentContainerDirective,
     LabSearchResultsListComponent,
     DeleteDocumentConfirmationModalComponent,
+    SignDocumentConfirmationModalComponent,
     LogInComponent,
     EditProfileComponent,
     UsersComponent,
@@ -188,6 +190,7 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     LabDocumentSearchModalComponent,
     LabSearchResultsListComponent,
     DeleteDocumentConfirmationModalComponent,
+    SignDocumentConfirmationModalComponent,
     LabDocumentReportModalComponent,
     LabReportResultsComponent,
     LabInventoryComponent,

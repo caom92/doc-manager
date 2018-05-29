@@ -20,6 +20,7 @@ import { CertificateSearchResultsListComponent } from './list.certificate'
 import { CertificateDocumentSearchModalComponent } from './modal.search.certificate'
 import { LabDocumentDisplayModalComponent } from './modal.display.lab'
 import { LabSubAreaReassignComponent } from './modal.subarea.lab'
+import { SignDocumentConfirmationModalComponent } from './modal.confirmation.sign'
 
 // Componente que define el comportamiento de la pagina donde el usuario puede 
 // buscar documentos 
@@ -304,6 +305,43 @@ export class SearchComponent
       } // (response: BackendResponse)
     ) // this.server.delete
   } // onDocumentDeleteClicked()
+
+  onSignDocumentRequested(document: any): void {
+    //this.modalManager.open(LabSubAreaReassignComponent, { areaID: document.area_id, documentID: document.id, parent: this })
+    console.log(document)
+    this.modalManager.open(SignDocumentConfirmationModalComponent, {
+      title: this.langManager.messages.signConfirmation.title,
+      message: this.langManager.messages.signConfirmation.message,
+      parent: this,
+      documentID: document.document_id
+    })
+  }
+
+  onSignDocumentClicked(documentID: number): void {
+    //let modal = this.modalManager.open(ProgressModalComponent)
+
+    let docData = new FormData()
+
+    docData.append('document_id', String(documentID))
+
+    // enviamos los datos al servidor
+    this.server.write(
+      'sign-document',
+      docData,
+      (response: BackendResponse) => {
+        //modal.instance.modalComponent.close()
+        this.updateSearch()
+
+        // notificamos al usuario del resultado de la operacion
+        this.toastManager.showText(
+          this.langManager.getServiceMessage(
+            'sign-*',
+            response.meta.return_code
+          )
+        )
+      }
+    )
+  }
 
   // Esta funcion se invoca cuando el usuario hace clic en el boton de ordenar 
   // los resultados

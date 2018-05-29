@@ -56,6 +56,17 @@ class Documents extends DataBaseTable
     $query->execute([ ':ID' => $id ]);
     return $query->rowCount();
   }
+
+  // Registra el ID del usuario que desea firmar un documento
+  function signDocument($documentID, $signerID) {
+    $query = $this->getStatement(
+      "UPDATE `$this->table` 
+      SET signed_by = :signerID
+      WHERE id = :ID"
+    );
+    $query->execute([ ':ID' => $documentID, ':signerID' => $signerID]);
+    return $query->rowCount();
+  }
 }
 
 ?>

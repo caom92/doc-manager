@@ -95,6 +95,7 @@ $controller = new ServiceProvider(
       $training['services']['GET'] +
       $certificate['services']['GET'],
     'POST' =>
+      $default['services']['POST'] +
       $lab['services']['POST'] +
       $account['services']['POST'] +
       $session['services']['POST'] +
