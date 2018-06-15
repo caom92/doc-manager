@@ -13,7 +13,7 @@ $service = [
     
     $filepath = realpath(
       __DIR__
-      .'/../../documents/guarantee/'
+      .'/../../documents/certificate/'
       .$document['file_path']
     );
 
