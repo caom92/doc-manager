@@ -1,22 +1,21 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { OnInit, Input } from '@angular/core'
 import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
-import { MzModalService, MzBaseModal } from 'ng2-materialize'
-import { ProgressModalComponent } from './modal.please.wait'
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { MzModalService, MzBaseModal } from 'ngx-materialize'
+import { FormBuilder, FormGroup } from '@angular/forms'
 
 // Tipo auxiliar que define los elementos recuperados del servidor que no 
 // posean un padre en la BD
-export type NoParentElement = {
+export interface NoParentElement {
   id: number,
   name: string
 }
 
 // Tipo auxiliar que define los elementos recuperados del servidor que
 // poseen un padre en la BD
-export type SingleParentElement = {
+export interface SingleParentElement {
   id: number,
   name: string,
   parent_id: number
@@ -25,9 +24,8 @@ export type SingleParentElement = {
 // Este componente define el comportamiento base necesario para que el 
 // usuario busque un documento en el sistema
 export class DefaultDocumentSearchModalComponent
-  extends MzBaseModal 
-  implements OnInit
-{
+  extends MzBaseModal implements OnInit {
+
   // El ID del tipo de documento elegido por el usuario
   @Input()
   selectedDocumentTypeID: number = null
@@ -86,7 +84,7 @@ export class DefaultDocumentSearchModalComponent
         {},
         (response: BackendResponse) => {
           // revisamos si el servidor respondio con exito
-          if (response.meta.return_code == 0) {
+          if (response.meta.return_code === 0) {
             // si el servidor respondio con exito, cargamos la respuesta al 
             // objeto de sugerencias de zonas
             this.zones = this.zones.concat(response.data)

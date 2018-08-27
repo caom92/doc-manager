@@ -1,23 +1,22 @@
-import { Component, Input } from '@angular/core'
+import { Input } from '@angular/core'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
-import { SearchComponent } from './app.search'
 
 // El componente que lista los resultados de busqueda de documentos
-export class SearchResultsListComponent
-{
+export class SearchResultsListComponent {
+
   // Bandera que indica si hay resultados de busqueda o no
   @Input()
-  hasSearchResults: boolean = true
+  hasSearchResults = true
 
   // Numero de documentos recuperados del servidor que tienen una copia fisica 
   // registrada
   @Input()
-  numDocsWithPhysicalCopy: number = 0
+  numDocsWithPhysicalCopy = 0
 
   // El componente responsable de la creacion de este componente
   @Input()
-  parent: SearchComponent = null
+  parent: any = null
 
   // La lista de los documentos encontrados
   @Input()

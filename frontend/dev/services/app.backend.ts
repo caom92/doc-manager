@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core'
-import { Http, Response, Headers, RequestOptions, URLSearchParams } from '@angular/http'
-import { Observable } from 'rxjs/Rx'
+import { Http, Response, Headers, RequestOptions } from '@angular/http'
+import { throwError as observableThrowError, Observable, of } from 'rxjs'
+import { catchError as observableCatchError, map } from 'rxjs/operators'
 import { environment } from '../environments/environment'
 
 // El tipo de objeto que es retornado del servidor como respuesta a cualquier 
 // peticion
-export type BackendResponse = {
+export interface BackendResponse {
   meta: {
     message: string
     return_code: number
@@ -18,13 +19,13 @@ type OnSuccessCallback = (response: BackendResponse) => void
 
 // Tipo auxiliar para definir el callback que se invocara cuando la 
 // comunicacion con el servidor haya fallado
-type OnErrorCallback = (error: any, caught: Observable<void>) => Array<any>
+type OnErrorCallback = (error: any) => Observable<Array<any>>
 
 // Servicio que proporciona la interfaz con la cual el backend puede 
 // comunicarse con el backend de la aplicacion
 @Injectable()
-export class BackendService 
-{
+export class BackendService {
+
   // El URL a donde se enviaran las peticiones de servicio al backend de la 
   // aplicacion
   static url = (environment.production) ?
@@ -42,20 +43,18 @@ export class BackendService
     'Accept': 'application/json'  // esperamos recibir un JSON de respuesta
   })
 
-  // La funcion que sera ejecutada en caso de que la comunicacion con el 
-  // servidor falle
-  private static defaultErrorCallback: OnErrorCallback = 
-    (error: any, caught: Observable<void>) => {
-      // simplimente arrojamos una excepcion para que sea capturada en una 
-      // parte mas alta del programa
-      Observable.throw(error)
-      return []
-    }
-
   // El constructor de este servicio
   constructor(private http: Http) {
     // haremos uso de la interfaz HTTP de Angular
   }
+
+  // La funcion que sera ejecutada en caso de que la comunicacion con el 
+  // servidor falle
+  private static defaultErrorCallback: OnErrorCallback = 
+    (error) => {
+      observableThrowError(error)
+      return of([])
+    }
 
   // Envia una solicitud al servidor por el metodo POST
   // [in]   service: el nombre del servicio que sera solicitado al servidor
@@ -81,14 +80,16 @@ export class BackendService
           withCredentials: true
         })
       )
-      .map((response: Response) => {
-        // convertimos el resultado en JSON 
-        let result = JSON.parse(response['_body'].toString())
-
-        // invocamos la funcion de exito especificada por el usuario
-        successCallback(result)
-      })
-      .catch(errorCallback)
+      .pipe(
+        map((response: Response) => {
+          // convertimos el resultado en JSON 
+          const body = '_body'
+          const result = JSON.parse(response[body].toString())
+  
+          // invocamos la funcion de exito especificada por el usuario
+          successCallback(result)
+        }, observableCatchError(errorCallback)) 
+      )
       .subscribe()
   }
 
@@ -115,8 +116,10 @@ export class BackendService
     // los parametros ingresados y adjuntarlos a la URL del servicio 
     // dividiendolos con diagonales
     let params = ''
-    for (let i in data) {
-      params += '/' + data[i]
+    for (const i in data) {
+      if (data[i]) {
+        params += '/' + data[i] 
+      }
     }
 
     this.http
@@ -127,14 +130,16 @@ export class BackendService
           withCredentials: true
         })
       )
-      .map((response: Response) => {
-        // convertimos el resultado en JSON 
-        let result = JSON.parse(response['_body'].toString())
-
-        // invocamos la funcion de exito especificada por el usuario
-        successCallback(result)
-      })
-      .catch(errorCallback)
+      .pipe(
+        map((response: Response) => {
+          // convertimos el resultado en JSON 
+          const body = '_body'
+          const result = JSON.parse(response[body].toString())
+  
+          // invocamos la funcion de exito especificada por el usuario
+          successCallback(result)
+        }, observableCatchError(errorCallback))
+      )
       .subscribe()
   }
 
@@ -156,8 +161,10 @@ export class BackendService
     // se sigue el mismo proceso de desglozamiento de parametros del servicio 
     // seguido en la funcion read() de esta clase
     let params = ''
-    for (let i in data) {
-      params += '/' + data[i]
+    for (const i in data) {
+      if (data[i]) {
+        params += '/' + data[i]
+      }
     }
 
     this.http
@@ -168,14 +175,16 @@ export class BackendService
           withCredentials: true
         })
       )
-      .map((response: Response) => {
-        // convertimos el resultado en JSON 
-        let result = JSON.parse(response['_body'].toString())
-
-        // invocamos la funcion de exito especificada por el usuario
-        successCallback(result)
-      })
-      .catch(errorCallback)
+      .pipe(
+        map((response: Response) => {
+          // convertimos el resultado en JSON 
+          const body = '_body'
+          const result = JSON.parse(response[body].toString())
+  
+          // invocamos la funcion de exito especificada por el usuario
+          successCallback(result)
+        }), observableCatchError(errorCallback)
+      )
       .subscribe()
   }
 }

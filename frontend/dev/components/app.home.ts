@@ -10,8 +10,7 @@ import { LanguageService } from '../services/app.language'
   selector: 'app-root',
   templateUrl: '../templates/app.home.html',
 })
-export class HomeComponent implements OnInit
-{ 
+export class HomeComponent implements OnInit { 
   // El constructor de este componente, inyectando los servicios requeridos
   constructor(
     private server: BackendService,
@@ -25,7 +24,7 @@ export class HomeComponent implements OnInit
   // Esta funcion se ejecuta al iniciar la pagina
   ngOnInit(): void {
     // si no hay ningun idioma definimo, definimos el idioma español por defecto
-    if (localStorage.lang == null) {
+    if (localStorage.getItem('lang') === null) {
       this.langManager.changeLanguage('es')
     }
 
@@ -33,8 +32,8 @@ export class HomeComponent implements OnInit
     this.langManager.initMessages()
 
     // si el usuario no ha iniciado sesion, coloca la bandera como falso
-    if (localStorage.is_logged_in === undefined) {
-      localStorage.is_logged_in = false
+    if (localStorage.getItem('is_logged_in') === undefined) {
+      localStorage.setItem('is_logged_in', (false).toString())
     }
 
     // idealmente, cuando el usuario navega a la pagina, deberiamos revisar el 
@@ -45,16 +44,16 @@ export class HomeComponent implements OnInit
       'check-session', 
       {}, 
       (response: any) => {
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           this.global.hideSpinner()
           if (!response.data) {
             // si el usuario no ha iniciado sesion, desactivamos la bandera y 
             // redireccionamos a la pantalla de inicio de sesion
-            localStorage.is_logged_in = false
+            localStorage.setItem('is_logged_in', (false).toString())
             this.router.go('login')
           } else {
             // de lo contrario, permitimos la navegacion
-            localStorage.is_logged_in = true
+            localStorage.setItem('is_logged_in', (true).toString())
             
             // no olvides desplegar el menu lateral de navegacion
             this.global.displaySideNav()
@@ -84,13 +83,13 @@ export class HomeComponent implements OnInit
       'logout', 
       {}, 
       (response: any) => {
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           // si la sesion fue cerrada correctamente, desactivamos la bandera y 
           // redireccionamos al usuario a la pantalla de inicio de sesion
-          let lang = localStorage.lang
+          const lang = localStorage.getItem('lang')
           localStorage.clear()
-          localStorage.lang = lang
-          localStorage.is_logged_in = false
+          localStorage.setItem('lang', lang)
+          localStorage.setItem('is_logged_in', (false).toString())
           this.router.go('login')
         } else {
           // si hubo un problema con la comunicacion con el servidor, 

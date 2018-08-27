@@ -2,9 +2,9 @@
 import { NgModule } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { UIRouterModule } from "@uirouter/angular"
-import { MaterializeModule } from 'ng2-materialize'
-import { FormsModule, ReactiveFormsModule }   from '@angular/forms'
+import { UIRouterModule } from '@uirouter/angular'
+import { MaterializeModule } from 'ngx-materialize'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { HttpModule } from '@angular/http'
 
 // Importamos los componentes de cada pagina de nuestra aplicacion

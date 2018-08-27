@@ -6,12 +6,13 @@ import { BackendService } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
 
+
 @Component({
   templateUrl: '../templates/modal.display.default.html'
 })
 export class LabDocumentDisplayModalComponent
-  extends DefaultDocumentDisplayModalComponent
-{
+  extends DefaultDocumentDisplayModalComponent {
+
   constructor(
     langManager: LanguageService,
     sanitizer: DomSanitizer,

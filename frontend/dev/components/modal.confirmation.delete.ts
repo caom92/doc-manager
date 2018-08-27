@@ -1,8 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core'
-import { MzBaseModal, MzModalComponent } from 'ng2-materialize'
+import { Component, Input } from '@angular/core'
 import { LanguageService } from '../services/app.language'
 import { ActionConfirmationModalComponent } from './modal.action.confirmation'
-import { SearchComponent } from './app.search'
+
 
 // El componente del modal que pide confirmacion del usuario para borrar un 
 // documento elegido de la lista de resultados
@@ -10,8 +9,8 @@ import { SearchComponent } from './app.search'
   templateUrl: '../templates/modal.action.confirmation.html'
 })
 export class DeleteDocumentConfirmationModalComponent 
-  extends ActionConfirmationModalComponent
-{
+  extends ActionConfirmationModalComponent {
+
   // El indice del documento en el arreglo de los resultados de busqueda
   @Input()
   documentIdx: number = null
@@ -41,4 +40,4 @@ export class DeleteDocumentConfirmationModalComponent
       this.documentIdx
     )
   } // onActionConfirmed(): void
-} // export class DeleteDocumentConfirmation extends ActionConfirmationModalComponent
+} // export class DeleteDocumentConfirmation 

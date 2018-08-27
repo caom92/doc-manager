@@ -10,8 +10,8 @@ import { LanguageService } from '../services/app.language'
 @Component({
   templateUrl: '../templates/app.login.html',
 })
-export class LogInComponent implements OnInit 
-{
+export class LogInComponent implements OnInit {
+
   // Interfaz que representa el contenido y las reglas de validacion del 
   // formulario de captura
   loginForm: FormGroup
@@ -26,24 +26,6 @@ export class LogInComponent implements OnInit
     private globals: GlobalElementsService,
     private langManager: LanguageService
   ) {
-  }
-
-  // Almacena los datos recuperados del servidor al momento de iniciar sesion 
-  // para ser utilizados mas adelante
-  private storeUserData(userData): void {
-    this.globals.userID = userData.user_id
-    this.globals.roleName = userData.role_name
-    this.globals.employeeNum = userData.employee_num
-    this.globals.userFullName = `${userData.first_name} ${userData.last_name}`
-    this.globals.loginName = userData.login_name
-    this.globals.companyName = userData.zone_company
-    this.globals.companyLogo = userData.zone_logo
-    this.globals.companyAddress = userData.zone_address
-
-    if (userData.zone_id !== undefined) {
-      this.globals.zoneID = userData.zone_id
-      this.globals.zoneName = userData.zone_name
-    }
   }
 
   // Esta funcion se invoca cuando el componente es inicializado
@@ -71,17 +53,17 @@ export class LogInComponent implements OnInit
       'check-session', 
       {}, 
       (response: any) => {
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           if (response.data) {
             // si el usuario ya inicio sesion hay que redireccionar al usuario 
             // a la pagina principal
-            localStorage.is_logged_in = true
+            localStorage.setItem('is_logged_in', (true).toString())
             this.globals.displaySideNav()
             this.router.go('edit-profile')
           } else {
             // si el usuario no hay iniciado sesion, permitimos al usuario 
             // entrar a esta pagina
-            localStorage.is_logged_in = false
+            localStorage.setItem('is_logged_in', (false).toString())
           }
         } else {
           // si hubo un problema con la comunicacion con el servidor debemos 
@@ -101,7 +83,7 @@ export class LogInComponent implements OnInit
   onLogInFormSubmit(): void {
     // guardamos los datos ingresados por el usuario en el formulario en una 
     // instancia de FormData
-    let formData = new FormData()
+    const formData = new FormData()
     formData.append('username', this.loginForm.value.username)
     formData.append('password', this.loginForm.value.password)
 
@@ -110,11 +92,11 @@ export class LogInComponent implements OnInit
       'login', 
       formData, 
       (response: any) => {
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           // si el usuario logro iniciar sesion exitosamente, guardamos los 
           // datos retornados por el servidor y activamos la bandera que indica 
           // que iniciamos sesion
-          localStorage.is_logged_in = true
+          localStorage.setItem('is_logged_in', (true).toString())
           this.storeUserData(response.data)
 
           // indicamos al usuario que ha iniciado sesion
@@ -137,4 +119,22 @@ export class LogInComponent implements OnInit
       } // (response: Response)
     ) // this.server.update
   } // onLogInFormSubmit
+
+  // Almacena los datos recuperados del servidor al momento de iniciar sesion 
+  // para ser utilizados mas adelante
+  private storeUserData(userData): void {
+    this.globals.userID = userData.user_id
+    this.globals.roleName = userData.role_name
+    this.globals.employeeNum = userData.employee_num
+    this.globals.userFullName = `${userData.first_name} ${userData.last_name}`
+    this.globals.loginName = userData.login_name
+    this.globals.companyName = userData.zone_company
+    this.globals.companyLogo = userData.zone_logo
+    this.globals.companyAddress = userData.zone_address
+
+    if (userData.zone_id !== undefined) {
+      this.globals.zoneID = userData.zone_id
+      this.globals.zoneName = userData.zone_name
+    }
+  }
 } // class LogInComponent

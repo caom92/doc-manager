@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core'
-import { MzBaseModal, MzModalComponent } from 'ng2-materialize'
+import { Component, OnInit } from '@angular/core'
+import { MzBaseModal } from 'ngx-materialize'
 import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
@@ -7,15 +7,15 @@ import { LanguageService } from '../services/app.language'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { GuaranteeInventoryComponent } from './inventory.guarantee'
 
+
 // Componente que define el comportamiento general de aquellas paginas donde el 
 // usuario agregara un item del inventario de laboratorios
 @Component({
   templateUrl: '../templates/modal.inventory.guarantee.supplier.html'
 })
 export class SupplierGuaranteeInventoryModalComponent 
-  extends MzBaseModal
-  implements OnInit
-{
+  extends MzBaseModal implements OnInit {
+
   // Las opciones de configuracion del modal
   modalOptions = { 
     // el modal no se cerrara aunque el usuario haga clic fuera de el
@@ -27,6 +27,7 @@ export class SupplierGuaranteeInventoryModalComponent
 
   // El componente padre donde el usuario 
   parent: GuaranteeInventoryComponent = null
+
 
   // Constructor del componente donde importaremos los servicios requeridos
   constructor(
@@ -50,7 +51,7 @@ export class SupplierGuaranteeInventoryModalComponent
 
   onFormSubmit(): void {
     // preparamos los datos a enviar al servidor
-    let data = new FormData()
+    const data = new FormData()
     data.append('name', this.captureForm.controls.name.value)
 
     // enviamos el nuevo tipo de analisis capturado al servidor
@@ -67,20 +68,20 @@ export class SupplierGuaranteeInventoryModalComponent
         )
         
         // obtenemos la lista de categorias con el nuevo producto incluido
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           this.server.read(
             'list-suppliers',
             {},
-            (response: BackendResponse) => {
-              if (response.meta.return_code == 0) {
+            (response2: BackendResponse) => {
+              if (response2.meta.return_code === 0) {
                 // actualizamos la lista de categorias mostrada en pantalla
-                this.parent.suppliers = response.data
+                this.parent.suppliers = response2.data
               } else {
                 // si el servidor respondio con un error, notificamos al usuario
                 this.toastManager.showText(
                   this.langManager.getServiceMessage(
                     'list-labs',
-                    response.meta.return_code
+                    response2.meta.return_code
                   )
                 )
               } // if (response.meta.return_code == 0)

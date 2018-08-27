@@ -3,7 +3,7 @@ import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
-import { MzModalService } from 'ng2-materialize'
+import { MzModalService } from 'ngx-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
 import { LabDocumentSearchModalComponent } from './modal.search.lab'
 import { DefaultDocumentDisplayModalComponent } from './modal.display.default'
@@ -23,8 +23,8 @@ import { LabDocumentDisplayModalComponent } from './modal.display.lab'
 })
 export class SearchComponent 
   extends DynamicComponentResolver
-  implements OnInit
-{
+  implements OnInit {
+
   // El tipo de documento elegido por el usuario
   selectedDocument: {
     id: number,
@@ -58,7 +58,7 @@ export class SearchComponent
   // Esta funcion se ejecuta al iniciar la pagina
   ngOnInit(): void {
     // desplegamos el modal de espera
-    let modal = this.modalManager.open(ProgressModalComponent)
+    const modal = this.modalManager.open(ProgressModalComponent)
     
     // enviamos los datos al servidor
     this.server.read(
@@ -66,10 +66,10 @@ export class SearchComponent
       {},
       (response: BackendResponse) => {
         // cuando el servidor responda, cerramos el modal de espera
-        modal.instance.modalComponent.close()
+        modal.instance.modalComponent.closeModal()
         
         // revisamos si el servidor respondio con exito
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           // si asi fue, obtenemos la lista de documentos
           this.documents = response.data
         } else {
@@ -87,11 +87,14 @@ export class SearchComponent
 
   // Esta funcion se invoca cuando el usuario elije un documento de la lista de 
   // seleccion
-  onDocumentTypeSelected(): void {
+  onDocumentTypeSelected(selectedDocument: {
+    id: number,
+    name: string
+  }): void {
     // dependiendo del tipo de documento elegido, se cargara el componente que 
     // le corresponde donde el usuario podra capturar el documento y la info. 
     // relacionada con el
-    switch (this.selectedDocument.id) {
+    switch (selectedDocument.id) {
       case 1:
         this.listComponent = 
           this.loadComponent(LabSearchResultsListComponent, {
@@ -100,7 +103,7 @@ export class SearchComponent
 
         this.modalManager.open(LabDocumentSearchModalComponent, {
           parent: this.listComponent,
-          selectedDocumentTypeID: this.selectedDocument.id
+          selectedDocumentTypeID: selectedDocument.id
         })
       break
 
@@ -112,7 +115,7 @@ export class SearchComponent
 
         this.modalManager.open(GuaranteeDocumentSearchModalComponent, {
           parent: this.listComponent,
-          selectedDocumentTypeID: this.selectedDocument.id
+          selectedDocumentTypeID: selectedDocument.id
         })
       break
 
@@ -124,7 +127,7 @@ export class SearchComponent
 
         this.modalManager.open(ProcedureDocumentSearchModalComponent, {
           parent: this.listComponent,
-          selectedDocumentTypeID: this.selectedDocument.id
+          selectedDocumentTypeID: selectedDocument.id
         })
       break
     } // switch (this.selectedDocument.name)
@@ -189,7 +192,7 @@ export class SearchComponent
     idx: number
   ): void {
     // invocamos el modal de espera
-    let modal = this.modalManager.open(ProgressModalComponent)
+    const modal = this.modalManager.open(ProgressModalComponent)
 
     // enviamos los datos al servidor
     this.server.delete(
@@ -197,7 +200,7 @@ export class SearchComponent
       { document_id: documentID },
       (response: BackendResponse) => {
         // cuando el servidor responda cerramos el modal
-        modal.instance.modalComponent.close()
+        modal.instance.modalComponent.closeModal()
 
         // notificamos al usuario del resultado de la operacion
         this.toastManager.showText(
@@ -208,10 +211,10 @@ export class SearchComponent
         )
 
         // si el resultado fue exitoso, borramos el documento del arreglo
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           // si el documento tenia una copia fisica, hay que actualizar el 
           // conteo
-          if (this.listComponent.searchResults[idx].has_physical_copy == 1) {
+          if (this.listComponent.searchResults[idx].has_physical_copy === 1) {
             this.listComponent.numDocsWithPhysicalCopy--
           }
 

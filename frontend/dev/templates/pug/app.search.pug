@@ -8,16 +8,10 @@ div.row
 
 div.row
   div.col.s12
-    +select(
-      'document-type',
-      'langManager.messages.upload.typeLabel',
-      'langManager.messages.global.selectPlaceholder',
-      'documents', '.name', '',
-      'onDocumentTypeSelected()'
-    )(
-      '[(ngModel)]'='selectedDocument'
-    )
-
+    mz-collection('*ngFor'='let document of documents')
+      mz-collection-item
+        +link()('(click)'='onDocumentTypeSelected(document)')
+          ='document.name'
 div.row(dynamicComponentContainer)
 
 div.row

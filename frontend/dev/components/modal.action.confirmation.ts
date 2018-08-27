@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core'
-import { MzBaseModal, MzModalComponent } from 'ng2-materialize'
+import { Component, Input } from '@angular/core'
+import { MzBaseModal } from 'ngx-materialize'
 import { LanguageService } from '../services/app.language'
 
 // El componente base para el modal que desplegara un mensaje de advertencia y 
@@ -9,8 +9,8 @@ import { LanguageService } from '../services/app.language'
   // exactamente la misma vista
   templateUrl: '../templates/modal.action.confirmation.html'
 })
-export abstract class ActionConfirmationModalComponent extends MzBaseModal
-{
+export abstract class ActionConfirmationModalComponent extends MzBaseModal {
+  
   // Las opciones de configuracion del modal
   modalOptions = {
     // el modal no se cerrara aunque el usuario haga clic fuera de el

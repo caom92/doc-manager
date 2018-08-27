@@ -1,21 +1,22 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
-import { MzModalService, MzBaseModal } from 'ng2-materialize'
+import { MzModalService } from 'ngx-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { DefaultDocumentSearchModalComponent, NoParentElement, SingleParentElement } from './modal.search.default'
+import { FormBuilder, Validators } from '@angular/forms'
+import { 
+  DefaultDocumentSearchModalComponent, NoParentElement 
+} from './modal.search.default'
 
 
 @Component({
   templateUrl: '../templates/modal.search.procedure.html'
 })
 export class ProcedureDocumentSearchModalComponent
-  extends DefaultDocumentSearchModalComponent
-  implements OnInit
-{
+  extends DefaultDocumentSearchModalComponent implements OnInit {
+
   sections: Array<NoParentElement> = [
     this.noParentOptionAll
   ]
@@ -38,7 +39,7 @@ export class ProcedureDocumentSearchModalComponent
       'list-sections',
       {},
       (response: BackendResponse) => {
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           this.sections = this.sections.concat(response.data)
         } else {
           this.toastManager.showText(
@@ -75,7 +76,7 @@ export class ProcedureDocumentSearchModalComponent
   }
 
   onProcedureDocumentSearch(): void {
-    let data = new FormData()
+    const data = new FormData()
     data.append(
       'document_type_id',
       this.selectedDocumentTypeID.toString()
@@ -89,27 +90,27 @@ export class ProcedureDocumentSearchModalComponent
       this.searchForm.controls.endDate.value
     )
 
-    let selectedZone = 
-      <NoParentElement>this.searchForm.controls.zone.value
-    if (selectedZone && selectedZone != this.noParentOptionAll) {
+    const selectedZone = 
+      <NoParentElement> this.searchForm.controls.zone.value
+    if (selectedZone && selectedZone !== this.noParentOptionAll) {
       data.append('zone_id', selectedZone.id.toString())
     }
 
-    let selectedSection =
-      <NoParentElement>this.searchForm.controls.section.value
-    if (selectedSection && selectedSection != this.noParentOptionAll) {
+    const selectedSection =
+      <NoParentElement> this.searchForm.controls.section.value
+    if (selectedSection && selectedSection !== this.noParentOptionAll) {
       data.append('section_id', selectedSection.id.toString())
     }
 
-    let modal = this.modalManager.open(ProgressModalComponent)
+    const modal = this.modalManager.open(ProgressModalComponent)
 
     this.server.write(
       'search-procedure',
       data,
       (response: BackendResponse) => {
-        modal.instance.modalComponent.close()
+        modal.instance.modalComponent.closeModal()
 
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           this.parent.searchResults = response.data.documents
         } else {
           // notificamos al usuario del resultado obtenido

@@ -1,18 +1,18 @@
-import { Component, Input } from '@angular/core'
+import { Input } from '@angular/core'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
-import { ReportComponent } from './app.report'
+
 
 // El componente que lista los resultados de busqueda de documentos
-export class ReportResultsComponent
-{
+export class ReportResultsComponent {
+  
   // Bandera que indica si el reporte se encuentra vacio o no
   @Input()
-  hasData: boolean = false
+  hasData = false
 
   // El componente responsable de la creacion de este componente
   @Input()
-  parent: ReportComponent = null
+  parent: any = null
 
   // La lista de los documentos encontrados
   @Input()

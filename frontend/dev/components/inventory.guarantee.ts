@@ -3,13 +3,17 @@ import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
-import { MzModalService } from 'ng2-materialize'
-import { SupplierGuaranteeInventoryModalComponent } from './modal.inventory.guarantee.supplier'
+import { MzModalService } from 'ngx-materialize'
+import { 
+  SupplierGuaranteeInventoryModalComponent
+} from './modal.inventory.guarantee.supplier'
+
 
 @Component({
   templateUrl: '../templates/inventory.guarantee.html'
 })
 export class GuaranteeInventoryComponent implements OnInit {
+
   suppliers: Array<{
     id: number,
     name: string
@@ -29,7 +33,7 @@ export class GuaranteeInventoryComponent implements OnInit {
       'list-suppliers',
       {},
       (response: BackendResponse) => {
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           this.suppliers = response.data
         } else {
           this.toastManager.showText(

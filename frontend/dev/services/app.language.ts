@@ -1,10 +1,274 @@
 import { Injectable } from '@angular/core'
 
+
 // Este servicio se encarga de administrar los textos que se despliegan en la 
 // pagina en el idioma elegido por el usuario
 @Injectable()
-export class LanguageService
-{
+export class LanguageService {
+
+  // Las interfaces publicas a todos los textos del sistema; el sistema 
+  // desplegara cualquier texto que este almacenado aqui
+  messages = {
+    global: {
+      wait: null,
+      selectPlaceholder: null,
+      submit: null,
+      datePickerConfig: null,
+      erase: null,
+      accept: null,
+      cancel: null
+    },
+    loginForm: {
+      title: null,
+      username: null,
+      password: null,
+      submit: null,
+      goTo: null,
+      errors: {
+        username: {
+          required: null,
+          minlength: null
+        },
+        password: {
+          required: null,
+          minlength: null
+        }
+      }
+    },
+    deleteConfirmation: {
+      title: null,
+      message: null
+    },
+    sideNav: {
+      search: null,
+      upload: null,
+      documents: null,
+      editProfile: null,
+      logout: null,
+      users: null,
+      report: null
+    },
+    userProfile: {
+      title: null,
+      username: null,
+      employeeNum: null,
+      fullName: null,
+      firstName: null,
+      lastName: null,
+    },
+    editPasswordForm: {
+      title: null,
+      newPassword: null,
+      newPasswordConfirmation: null,
+      oldPassword: null,
+      submit: null,
+      error: null,
+      errors: {
+        newPassword: {
+          required: null,
+          minlength: null
+        },
+        newPasswordConfirmation: {
+          required: null,
+          minlength: null
+        },
+        oldPassword: {
+          required: null,
+          minlength: null
+        }
+      }
+    },
+    editUsernameForm: {
+      title: null,
+      newUsername: null,
+      password: null,
+      submit: null,
+      errors: {
+        newUsername: {
+          required: null,
+          minlength: null
+        },
+        password: {
+          required: null,
+          minlength: null
+        }
+      }
+    },
+    usersForm: {
+      titles: [ null, null, null ],
+      tableHeaders: [ null, null, null, null ],
+      active: null,
+      inactive: null,
+      role: null
+    },
+    upload: {
+      lab: {
+        analysisLabel: null,
+        resultLabel: null,
+        labNameLabel: null,
+        typeNameLabel: null,
+        subtype: null,
+        dateLabel: null,
+        documentName: null
+      },
+      guarantee: {
+        supplierNameLabel: null
+      },
+      procedure: {
+        procedureLabel: null
+      },
+      title: null,
+      typeLabel: null,
+      zoneLabel: null,
+      ranchLabel: null,
+      areaLabel: null,
+      producerLabel: null,
+      notesLabel: null,
+      docDateLabel: null,
+      fileLabel: null,
+      fileButtonLabel: null,
+      supplierLabel: null,
+      errors: {
+        documentDate: {
+          required: null
+        },
+        zone: {
+          required: null,
+          minlength: null,
+          maxlength: null
+        },
+        ranch: {
+          required: null,
+          maxlength: null
+        },
+        notes: {
+          maxlength: null
+        }
+      }
+    },
+    search: {
+      title: null,
+      startDateLabel: null,
+      endDateLabel: null,
+      buttonLabel: null,
+      noSearchResults: null
+    },
+    display: {
+      title: null,
+      checkbox: null,
+      lab: {
+        tabs: [ null, null ]
+      }
+    },
+    inventory: {
+      title: null,
+      lab: {
+        categoriesTitle: null,
+        categoriesTab: null,
+        labsTab: null,
+        productionUnitsTab: null,
+        producerTitle: null,
+        tableHeaders: [ null, null, null ],
+        labTableHeaders: [ null ],
+        addTypeButton: null,
+        addSubTypeButton: null,
+        addProductButton: null,
+        addLabButton: null,
+        addProducerButton: null,
+        typeTitle: null,
+        subtypeTitle: null,
+        areaTitle: null,
+        labTitle: null,
+        parentErrors: {
+          required: null
+        },
+        errors: {
+          required: null,
+          maxlength: null
+        }
+      },
+      guarantee: {
+        addSupplier: null,
+        labTableHeaders: [
+          null
+        ]
+      },
+      supplierTitle: null,
+      addSupplierButton: null
+    },
+    documents: {
+      title: null,
+      tableHeaders: [ null ],
+      nameLabel: null,
+      addButtonLabel: null,
+      errors: {
+        name: {
+          required: null,
+          maxlength: null
+        }
+      }
+    },
+    list: {
+      view: null,
+      numPhysicalDocs: null,
+      area: {
+        tableHeaders: [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      lab: {
+        tableHeaders: [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      guarantee: {
+        tableHeaders: [
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      procedure: {
+        tableHeaders: [
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    report: {
+      title: null,
+      lab: {
+        from: null,
+        to: null,
+        docTypeLabel: null,
+        name: null,
+        zone: null,
+        typeLabel: null,
+        producer: null
+      }
+    }
+  }
+
   // La lista de traducciones para todos los textos del sistema
   private translations = {
     es: { // Español
@@ -41,7 +305,7 @@ export class LanguageService
           clear: 'Borrar',
           close: 'Cerrar',
           format: 'dddd, dd mmmm, yyyy',
-          formatSubmit: "yyyy-mm-dd",
+          formatSubmit: 'yyyy-mm-dd',
           selectYears: true,
           selectMonths: true,
         },
@@ -66,7 +330,9 @@ export class LanguageService
       },
       deleteConfirmation: {
         title: '¿Seguro que desea borrar este documento?',
-        message: 'Está a punto de borrar un documento. Una vez borrado el documento, NO podrá ser recuperado de nuevo.'
+        message: 
+          'Está a punto de borrar un documento. Una vez borrado el ' 
+          + 'documento, NO podrá ser recuperado de nuevo.'
       },
       sideNav: {
         search: 'Buscar',
@@ -388,12 +654,20 @@ export class LanguageService
       103: 'Una entrada enviada al servidor esta fuera del intervalo correcto',
       104: 'Una entrada enviada al servidor no es un número entero',
       105: 'Una entrada enviada al servidor no es un número real',
-      106: 'Una entrada enviada al servidor no tiene la longitud de caracteres correcta',
-      107: 'La longitud de caracteres de una entrada enviada al servidor no esta dentro del intervalo apropiado',
+      106: 
+        'Una entrada enviada al servidor no tiene la longitud de ' + 
+        'caracteres correcta',
+      107: 
+        'La longitud de caracteres de una entrada enviada al servidor ' +
+        'no esta dentro del intervalo apropiado',
       108: 'Una entrada enviada al servidor no es una cadena',
-      109: 'Una entrada enviada al servidor no es una cadena de correo electrónico',
+      109: 
+        'Una entrada enviada al servidor no es una cadena de correo ' + 
+        'electrónico',
       110: 'Una entrada enviada al servidor no es un valor lógico',
-      111: 'Una entrada enviada al servidor no es una fecha o el formato es incorrecto',
+      111: 
+        'Una entrada enviada al servidor no es una fecha o el formato es ' +
+        'incorrecto',
       112: 'Una entrada enviada al servidor es un arreglo vacío',
       113: 'Un archivo enviado al servidor no es un documento',
       114: 'Un archivo enviado al servidor no es una imagen',
@@ -416,7 +690,7 @@ export class LanguageService
           closeOnSelect: true,
           closeOnClear: false,
           format: 'dddd, dd mmmm, yyyy',
-          formatSubmit: "yyyy-mm-dd",
+          formatSubmit: 'yyyy-mm-dd',
           selectYears: true,
           selectMonths: true,
         },
@@ -441,7 +715,9 @@ export class LanguageService
       },
       deleteConfirmation: {
         title: 'Are you sure you wish to delete this document?',
-        message: 'You are about to delete a document. Once deleted, a document CANNOT be recovered.'
+        message: 
+          'You are about to delete a document. Once deleted, a document ' +
+          'CANNOT be recovered.'
       },
       sideNav: {
         search: 'Search',
@@ -519,7 +795,7 @@ export class LanguageService
         lab: {
           analysisLabel: 'Analysis Request Document',
           resultLabel: 'Result Document',
-          labNameLabel: "Lab's Name",
+          labNameLabel: 'Lab\'s Name',
           typeNameLabel: 'Analysis Type',
           subtype: 'Analysis Subtype',
           dateLabel: 'Sample Date',
@@ -763,8 +1039,10 @@ export class LanguageService
       103: 'A server input argument is outside the correct interval',
       104: 'A server input argument is not an integer',
       105: 'A server input argument is not a real number',
-      106: "A server input argument doesn't have the proper character length",
-      107: 'The character length of a server input argument is not within the proper interval',
+      106: 'A server input argument doesn\'t have the proper character length',
+      107: 
+        'The character length of a server input argument is not within the ' +
+        'proper interval',
       108: 'A server input argument is not a string',
       109: 'A server input argument is not an email string',
       110: 'A server input argument is not a boolean value',
@@ -780,278 +1058,18 @@ export class LanguageService
     }
   }
 
-  // Las interfaces publicas a todos los textos del sistema; el sistema 
-  // desplegara cualquier texto que este almacenado aqui
-  messages = {
-    global: {
-      wait: null,
-      selectPlaceholder: null,
-      submit: null,
-      datePickerConfig: null,
-      erase: null,
-      accept: null,
-      cancel: null
-    },
-    loginForm: {
-      title: null,
-      username: null,
-      password: null,
-      submit: null,
-      goTo: null,
-      errors: {
-        username: {
-          required: null,
-          minlength: null
-        },
-        password: {
-          required: null,
-          minlength: null
-        }
-      }
-    },
-    deleteConfirmation: {
-      title: null,
-      message: null
-    },
-    sideNav: {
-      search: null,
-      upload: null,
-      documents: null,
-      editProfile: null,
-      logout: null,
-      users: null,
-      report: null
-    },
-    userProfile: {
-      title: null,
-      username: null,
-      employeeNum: null,
-      fullName: null,
-      firstName: null,
-      lastName: null,
-    },
-    editPasswordForm: {
-      title: null,
-      newPassword: null,
-      newPasswordConfirmation: null,
-      oldPassword: null,
-      submit: null,
-      error: null,
-      errors: {
-        newPassword: {
-          required: null,
-          minlength: null
-        },
-        newPasswordConfirmation: {
-          required: null,
-          minlength: null
-        },
-        oldPassword: {
-          required: null,
-          minlength: null
-        }
-      }
-    },
-    editUsernameForm: {
-      title: null,
-      newUsername: null,
-      password: null,
-      submit: null,
-      errors: {
-        newUsername: {
-          required: null,
-          minlength: null
-        },
-        password: {
-          required: null,
-          minlength: null
-        }
-      }
-    },
-    usersForm: {
-      titles: [ null, null, null ],
-      tableHeaders: [ null, null, null, null ],
-      active: null,
-      inactive: null,
-      role: null
-    },
-    upload: {
-      lab: {
-        analysisLabel: null,
-        resultLabel: null,
-        labNameLabel: null,
-        typeNameLabel: null,
-        subtype: null,
-        dateLabel: null,
-        documentName: null
-      },
-      guarantee: {
-        supplierNameLabel: null
-      },
-      procedure: {
-        procedureLabel: null
-      },
-      title: null,
-      typeLabel: null,
-      zoneLabel: null,
-      ranchLabel: null,
-      areaLabel: null,
-      producerLabel: null,
-      notesLabel: null,
-      docDateLabel: null,
-      fileLabel: null,
-      fileButtonLabel: null,
-      supplierLabel: null,
-      errors: {
-        documentDate: {
-          required: null
-        },
-        zone: {
-          required: null,
-          minlength: null,
-          maxlength: null
-        },
-        ranch: {
-          required: null,
-          maxlength: null
-        },
-        notes: {
-          maxlength: null
-        }
-      }
-    },
-    search: {
-      title: null,
-      startDateLabel: null,
-      endDateLabel: null,
-      buttonLabel: null,
-      noSearchResults: null
-    },
-    display: {
-      title: null,
-      checkbox: null,
-      lab: {
-        tabs: [ null, null ]
-      }
-    },
-    inventory: {
-      title: null,
-      lab: {
-        categoriesTitle: null,
-        categoriesTab: null,
-        labsTab: null,
-        productionUnitsTab: null,
-        producerTitle: null,
-        tableHeaders: [ null, null, null ],
-        labTableHeaders: [ null ],
-        addTypeButton: null,
-        addSubTypeButton: null,
-        addProductButton: null,
-        addLabButton: null,
-        addProducerButton: null,
-        typeTitle: null,
-        subtypeTitle: null,
-        areaTitle: null,
-        labTitle: null,
-        parentErrors: {
-          required: null
-        },
-        errors: {
-          required: null,
-          maxlength: null
-        }
-      },
-      guarantee: {
-        addSupplier: null,
-        labTableHeaders: [
-          null
-        ]
-      },
-      supplierTitle: null,
-      addSupplierButton: null
-    },
-    documents: {
-      title: null,
-      tableHeaders: [ null ],
-      nameLabel: null,
-      addButtonLabel: null,
-      errors: {
-        name: {
-          required: null,
-          maxlength: null
-        }
-      }
-    },
-    list: {
-      view: null,
-      numPhysicalDocs: null,
-      area: {
-        tableHeaders: [
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ]
-      },
-      lab: {
-        tableHeaders: [
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ]
-      },
-      guarantee: {
-        tableHeaders: [
-          null,
-          null,
-          null,
-          null,
-          null
-        ]
-      },
-      procedure: {
-        tableHeaders: [
-          null,
-          null,
-          null,
-          null,
-          null
-        ]
-      }
-    },
-    report: {
-      title: null,
-      lab: {
-        from: null,
-        to: null,
-        docTypeLabel: null,
-        name: null,
-        zone: null,
-        typeLabel: null,
-        producer: null
-      }
-    }
-  }
-
   get lang(): string {
-    return localStorage.lang
+    return localStorage.getItem('lang')
   }
 
   // Inicializa todos los textos de la aplicacion con el idioma que este 
   // seleccionado en ese momento, cualquiera que sea
   initMessages(): void {
-    for (let msg in this.messages) {
-      this.messages[msg] = this.translations[localStorage.lang][msg]
+    for (const msg in this.messages) {
+      if (this.messages[msg]) {
+        this.messages[msg] = 
+          this.translations[localStorage.getItem('lang')][msg]
+      }
     }
   }
 
@@ -1059,9 +1077,11 @@ export class LanguageService
   // [in]   lang: el idioma elegido por el usuario, debe ser una opcion de:
   //        'en' o 'es'
   changeLanguage(lang: string): void {
-    localStorage.lang = lang
-    for (let msg in this.messages) {
-      this.messages[msg] = this.translations[lang][msg]
+    localStorage.setItem('lang', lang)
+    for (const msg in this.messages) {
+      if (this.messages[msg]) {
+        this.messages[msg] = this.translations[lang][msg]
+      }
     }
   }
 
@@ -1072,20 +1092,22 @@ export class LanguageService
   // [out]  return: el texto correspondiente al resultado obtenido por el 
   //        servicio especificado en el idioma seleccionado
   getServiceMessage(service: string, code: number): string {
+    const lang = localStorage.getItem('lang')
+
     // inicializamos el almacenamiento temporal para el mensaje resultante
-    let message = (localStorage.lang == 'en') ?
+    let message = (lang === 'en') ?
       'An unknown error occurred' : 'Ocurrió un error desconocido'
     
-    if (this.translations[localStorage.lang][service] !== undefined) {
-      if (this.translations[localStorage.lang][service][code] !== undefined) {
+    if (this.translations[lang][service] !== undefined) {
+      if (this.translations[lang][service][code] !== undefined) {
         // si existe la combinacion de servicio y codigo de resultado 
         // especificados, retornamos ese
-        message = this.translations[localStorage.lang][service][code]
+        message = this.translations[lang][service][code]
       }
-    } else if (this.translations[localStorage.lang][code] !== undefined) {
+    } else if (this.translations[lang][code] !== undefined) {
       // si la combinacion no existe, buscamos el mensaje que corresponda 
       // unicamente el codigo de resultado especificado
-      message = this.translations[localStorage.lang][code]
+      message = this.translations[lang][code]
     }
 
     // retornamos el texto obtenido

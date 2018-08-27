@@ -1,13 +1,14 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
-import { MzModalService, MzBaseModal } from 'ng2-materialize'
+import { MzModalService } from 'ngx-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { DefaultDocumentUploadModalComponent, AutoCompleteObject } from './modal.upload.default'
+import { FormBuilder, Validators } from '@angular/forms'
+import { DefaultDocumentUploadModalComponent } from './modal.upload.default'
 import { NoParentElement, SingleParentElement } from './modal.search.default'
+
 
 // Este componente define el comportamiento de la pagina donde el usuario 
 // capturara un archivo de laboratorio
@@ -15,9 +16,8 @@ import { NoParentElement, SingleParentElement } from './modal.search.default'
   templateUrl: '../templates/modal.upload.lab.html'
 })
 export class LabDocumentUploadModalComponent 
-  extends DefaultDocumentUploadModalComponent
-  implements OnInit
-{
+  extends DefaultDocumentUploadModalComponent implements OnInit {
+
   // La lista de productores a elegir por el usuario 
   producers: Array<SingleParentElement> = []
 
@@ -58,7 +58,7 @@ export class LabDocumentUploadModalComponent
         },
         (response: BackendResponse) => {
           // revisamos si el rancho respondio con exito
-          if (response.meta.return_code == 0) {
+          if (response.meta.return_code === 0) {
             // si asi fue guardamos los productores en el objeto de sugerencias 
             // del campo de productores
             this.producers = response.data
@@ -82,7 +82,7 @@ export class LabDocumentUploadModalComponent
       {},
       (response: BackendResponse) => {
         // revisamos si el servidor respondio con exito
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           // si el servidor respondio con exito, cargamos la respuesta al 
           // objeto de sugerencias de zonas
           this.labs = response.data
@@ -104,7 +104,7 @@ export class LabDocumentUploadModalComponent
       {},
       (response: BackendResponse) => {
         // revisamos si el servidor respondio con exito
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           // si el servidor respondio con exito, cargamos la respuesta al 
           // objeto de sugerencias de zonas
           this.types = response.data
@@ -151,8 +151,8 @@ export class LabDocumentUploadModalComponent
     // la lista de productores
     if (this.uploadForm.controls.zone.valid) {
       // preparamos los datos que seran enviados al servidor
-      let selectedZone = 
-        <NoParentElement>this.uploadForm.controls.zone.value
+      const selectedZone = 
+        <NoParentElement> this.uploadForm.controls.zone.value
 
       // enviamos la peticion al servidor para recuperar los productores de 
       // este rancho
@@ -163,7 +163,7 @@ export class LabDocumentUploadModalComponent
         },
         (response: BackendResponse) => {
           // revisamos si el rancho respondio con exito
-          if (response.meta.return_code == 0) {
+          if (response.meta.return_code === 0) {
             // si asi fue guardamos los productores en el objeto de sugerencias 
             // del campo de productores
             this.producers = response.data
@@ -193,10 +193,10 @@ export class LabDocumentUploadModalComponent
     // la lista de subtipos
     if (this.uploadForm.controls.type.valid) {
       // preparamos los datos que seran enviados al usuario
-      let selectedType = 
-        <NoParentElement>this.uploadForm.controls.type.value
+      const selectedType = 
+        <NoParentElement> this.uploadForm.controls.type.value
 
-      let data = new FormData()
+      const data = new FormData()
       data.append('type', selectedType.id.toString())
 
       // recuperamos los ranchos del servidor
@@ -205,7 +205,7 @@ export class LabDocumentUploadModalComponent
         data,
         (response: BackendResponse) => {
           // revisamos si el servidor respondio con exito
-          if (response.meta.return_code == 0) {
+          if (response.meta.return_code === 0) {
             // si asi fue, ingresamos los subtipos recuperados al objeto de 
             // sugerencias
             this.subtypes = response.data
@@ -231,10 +231,10 @@ export class LabDocumentUploadModalComponent
     // la lista de subtipos
     if (this.uploadForm.controls.subtype.valid) {
       // preparamos los datos que seran enviados al usuario
-      let selectedSubType = 
-        <SingleParentElement>this.uploadForm.controls.subtype.value
+      const selectedSubType = 
+        <SingleParentElement> this.uploadForm.controls.subtype.value
 
-      let data = new FormData()
+      const data = new FormData()
       data.append('subtype', selectedSubType.id.toString())
 
       // recuperamos los ranchos del servidor
@@ -243,7 +243,7 @@ export class LabDocumentUploadModalComponent
         data,
         (response: BackendResponse) => {
           // revisamos si el servidor respondio con exito
-          if (response.meta.return_code == 0) {
+          if (response.meta.return_code === 0) {
             this.areas = response.data
           } else {
             // si el servidor repondio con error, notificamos al usuario
@@ -265,7 +265,7 @@ export class LabDocumentUploadModalComponent
     this.selectedDocumentFile = null
     
     // recuperamos el archivo elegido
-    let files = event.target.files
+    const files = event.target.files
     
     // si el usuario subio un archivo, lo guardamos para su futuro uso
     if (files.length > 0) {
@@ -277,7 +277,7 @@ export class LabDocumentUploadModalComponent
   // documento
   onLabDocumentUpload(): void {
     // preparamos los danew File(tos que seran enviados al servidor
-    let data = new FormData()
+    const data = new FormData()
     data.append('document_type_id', this.selectedDocumentTypeID.toString())
     data.append('capture_date', this.global.getFormattedDate())
     data.append(
@@ -285,22 +285,22 @@ export class LabDocumentUploadModalComponent
       this.uploadForm.controls.documentDate.value
     )
 
-    let selectedProducer = 
-      <SingleParentElement>this.uploadForm.controls.producer.value
+    const selectedProducer = 
+      <SingleParentElement> this.uploadForm.controls.producer.value
     data.append(
       'producer', 
       selectedProducer.id.toString()
     )
 
-    let selectedLab = 
-      <NoParentElement>this.uploadForm.controls.lab.value
+    const selectedLab = 
+      <NoParentElement> this.uploadForm.controls.lab.value
     data.append(
       'lab', 
       selectedLab.id.toString()
     )
 
-    let selectedArea = 
-      <SingleParentElement>this.uploadForm.controls.area.value
+    const selectedArea = 
+      <SingleParentElement> this.uploadForm.controls.area.value
     data.append(
       'area',
       selectedArea.id.toString()
@@ -320,7 +320,7 @@ export class LabDocumentUploadModalComponent
     )
 
     // mostramos el modal de espera
-    let modal = this.modalManager.open(ProgressModalComponent)
+    const modal = this.modalManager.open(ProgressModalComponent)
 
     // enviamos los datos al servidor
     this.server.write(
@@ -328,7 +328,7 @@ export class LabDocumentUploadModalComponent
       data,
       (response: BackendResponse) => {
         // al responder el servidor, cerramos el modal de espera
-        modal.instance.modalComponent.close()
+        modal.instance.modalComponent.closeModal()
 
         // notificamos al usuario del resultado obtenido
         this.toastManager.showText(
@@ -340,10 +340,10 @@ export class LabDocumentUploadModalComponent
 
         // si el servidor respondio con exito, reiniciamos el formulario para 
         // que el usuario capture un nuevo documento
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           this.uploadForm.reset()
         }
       } // (response: BackendResponse)
     ) // this.server.write
   } // onLabDocumentUpload(): void
-} // export class LabDocumentUploadModalComponent extends AreaDocumentUploadModalComponent
+} // export class LabDocumentUploadModalComponent 

@@ -3,7 +3,7 @@ import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
-import { MzModalService } from 'ng2-materialize'
+import { MzModalService } from 'ngx-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
 import { DynamicComponentResolver } from './dynamic.resolver'
 import { LabDocumentReportModalComponent } from './modal.report.lab'
@@ -16,8 +16,8 @@ import { LabReportResultsComponent } from './report.lab'
 })
 export class ReportComponent
   extends DynamicComponentResolver
-  implements OnInit
-{
+  implements OnInit {
+
   // El tipo de documento elegido por el usuario
   selectedDocument: {
     id: number,
@@ -50,7 +50,7 @@ export class ReportComponent
   // Esta funcion se ejecuta al iniciar la pagina
   ngOnInit(): void {
     // desplegamos el modal de espera
-    let modal = this.modalManager.open(ProgressModalComponent)
+    const modal = this.modalManager.open(ProgressModalComponent)
     
     // enviamos los datos al servidor
     this.server.read(
@@ -58,10 +58,10 @@ export class ReportComponent
       {},
       (response: BackendResponse) => {
         // cuando el servidor responda, cerramos el modal de espera
-        modal.instance.modalComponent.close()
+        modal.instance.modalComponent.closeModal()
         
         // revisamos si el servidor respondio con exito
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           // si asi fue, obtenemos la lista de documentos
           this.documents = response.data
         } else {

@@ -1,11 +1,13 @@
-import { LabDefaultInventoryModalComponent } from './modal.inventory.lab.default'
-import { Component, OnInit, Input } from '@angular/core'
-import { MzBaseModal, MzModalComponent } from 'ng2-materialize'
+import { 
+  LabDefaultInventoryModalComponent 
+} from './modal.inventory.lab.default'
+import { Component, OnInit } from '@angular/core'
 import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { FormBuilder, Validators } from '@angular/forms'
+
 
 // Este componente define el comportamiento de la pagina donde el usuario podra 
 // capturar un nuevo subtipo de analisis
@@ -13,9 +15,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms'
   templateUrl: '../templates/modal.inventory.lab.producer.html'
 })
 export class LabProducerInventoryModalComponent
-  extends LabDefaultInventoryModalComponent
-  implements OnInit
-{
+  extends LabDefaultInventoryModalComponent implements OnInit {
+    
   // La lista de tipos de analisis a elegir por el usuario
   zones: Array<{any}> = []
 
@@ -46,7 +47,7 @@ export class LabProducerInventoryModalComponent
       'list-zones',
       {},
       (response: BackendResponse) => {
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           this.zones = response.data
         } else {
           this.toastManager.showText(
@@ -64,7 +65,7 @@ export class LabProducerInventoryModalComponent
   // del formulario de captura para el nuevo subtipo de analisis
   onFormSubmit(): void {
     // preparamos los datos a enviar al servidor
-    let data = new FormData()
+    const data = new FormData()
     data.append('parent_id', this.captureForm.controls.zoneID.value)
     data.append('name', this.captureForm.controls.name.value)
 
@@ -82,22 +83,22 @@ export class LabProducerInventoryModalComponent
         )
         
         // obtenemos la lista de categorias con el nuevo producto incluido
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           this.server.read(
             'list-producers-of-zone',
             {
               zone_id: this.parent.selectedZone.id.toString()
             },
-            (response: BackendResponse) => {
-              if (response.meta.return_code == 0) {
+            (response2: BackendResponse) => {
+              if (response2.meta.return_code === 0) {
                 // actualizamos la lista de categorias mostrada en pantalla
-                this.parent.producers = response.data
+                this.parent.producers = response2.data
               } else {
                 // si el servidor respondio con un error, notificamos al usuario
                 this.toastManager.showText(
                   this.langManager.getServiceMessage(
                     'list-producers-of-zone',
-                    response.meta.return_code
+                    response2.meta.return_code
                   )
                 )
               } // if (response.meta.return_code == 0)

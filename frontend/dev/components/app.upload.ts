@@ -3,7 +3,7 @@ import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
-import { MzModalService } from 'ng2-materialize'
+import { MzModalService } from 'ngx-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
 import { LabDocumentUploadModalComponent } from './modal.upload.lab'
 import { GuaranteeDocumentUploadModalComponent } from './modal.upload.guarantee'
@@ -14,8 +14,8 @@ import { ProcedureDocumentUploadModalComponent } from './modal.upload.procedure'
 @Component({
   templateUrl: '../templates/app.upload.html'
 })
-export class UploadComponent implements OnInit
-{
+export class UploadComponent implements OnInit {
+
   // El tipo de documento elegido por el usuario
   selectedDocument: any = null
 
@@ -35,7 +35,7 @@ export class UploadComponent implements OnInit
   // Esta funcion se ejecuta al iniciar la pagina
   ngOnInit(): void {
     // desplegamos el modal de espera
-    let modal = this.modalManager.open(ProgressModalComponent)
+    const modal = this.modalManager.open(ProgressModalComponent)
 
     // enviamos los datos al servidor
     this.server.read(
@@ -43,10 +43,10 @@ export class UploadComponent implements OnInit
       {},
       (response: BackendResponse) => {
         // cuando el servidor responda, cerramos el modal de espera
-        modal.instance.modalComponent.close()
+        modal.instance.modalComponent.closeModal()
         
         // revisamos si el servidor respondio con exito
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           // si asi fue, obtenemos la lista de documentos
           this.documents = response.data
         } else {

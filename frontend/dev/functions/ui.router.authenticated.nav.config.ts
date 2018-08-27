@@ -1,5 +1,6 @@
 import { Injector } from '@angular/core'
-import { UIRouter, Transition } from "@uirouter/angular"
+import { UIRouter, Transition } from '@uirouter/angular'
+
 
 export function uiRouterAuthenticatedNavConfig(
   router: UIRouter, 
@@ -27,19 +28,19 @@ export function uiRouterAuthenticatedNavConfig(
       // ademas de una copia del estado anterior y una del estado 
       // siguiente
       const stateService = transition.router.stateService
-      let from = transition.$from()
-      let to = transition.$to()
+      const from = transition.$from()
+      const to = transition.$to()
 
       // iniciamos ciertas banderas que nos diran de donde viene y a 
       // donde va el usuario
-      let isComingFromOutside = from.name.length == 0
-      let isGoingToLogIn = to.name == 'login'
+      const isComingFromOutside = from.name.length === 0
+      const isGoingToLogIn = to.name === 'login'
 
       // una funcion que revisa si el usuario ya inicio sesion o no
-      let isLoggedIn = () => {
+      const isLoggedIn = () => {
         return (
-          localStorage.is_logged_in !== undefined 
-          && localStorage.is_logged_in !== 'false'
+          localStorage.getItem('is_logged_in') !== undefined 
+          && localStorage.getItem('is_logged_in') !== 'false'
         )
       }
 

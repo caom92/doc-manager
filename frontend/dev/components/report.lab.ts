@@ -1,52 +1,51 @@
-import { Component, Input, OnInit } from '@angular/core'
+import { Component, Input } from '@angular/core'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
-import { ReportComponent } from './app.report'
 import { ReportResultsComponent } from './report.default'
-import { BackendService, BackendResponse } from '../services/app.backend'
+import { BackendService } from '../services/app.backend'
+
 
 // El componente que lista los resultados de reporte de documentos
 @Component({
   templateUrl: '../templates/report.lab.html'
 })
-export class LabReportResultsComponent extends ReportResultsComponent
-{
+export class LabReportResultsComponent extends ReportResultsComponent {
   // La lista de productores que se van a desplegar como encabezados de la tabla
   @Input()
   tableHeaders: Array<any> = []
 
   // La fecha de inicio en la que se realizo la busqueda
   @Input()
-  startDate: string = ''
+  startDate = ''
 
   // La fecha final en la que se realizo la busqueda
   @Input()
-  endDate: string = ''
+  endDate = ''
 
   // La zona en la que se realizo la busqueda
   @Input()
-  zone: string = ''
+  zone = ''
 
   // El tipo de analisis cuyos datos fueron buscados
   @Input()
-  type: string = ''
+  type = ''
 
   // El subtipo de analisis cuyos datos fueron buscados
   @Input()
-  subtype: string = ''
+  subtype = ''
 
   // El idioma implementado
-  lang: string = localStorage.lang
+  lang = localStorage.getItem('lang')
 
   // Los datos a enviar al servidor para generar el reporte
   content: string = JSON.stringify([{
-    header: '',
     body: '',
-    footer: ''  
+    footer: '',
+    header: ''
   }])
 
   // La hoja de estilo CSS a utilizar para dibujar la tabla en el reporte PDF
-  style: string = 
+  style = 
     `<style>
       table { 
         font-family: arial, 
@@ -82,16 +81,16 @@ export class LabReportResultsComponent extends ReportResultsComponent
   logo: string = this.global.company.logo
 
   // La orientacion de la hoja en el reporte PDF
-  orientation: string = 'L'
+  orientation = 'L'
   
   // El pie de pagina
-  footer: string = ''
+  footer = ''
 
   // El nombre del supervisor que autorizo el reporte
-  supervisor: string = ''
+  supervisor = ''
 
   // La firma del supervisor que autorizo el reporte
-  signature: string = ''
+  signature = ''
 
   // El constructor de este componente, inyectando los servicios requeridos
   constructor(
@@ -106,16 +105,18 @@ export class LabReportResultsComponent extends ReportResultsComponent
   prepareReportHTML(): void {
     // preparamos el almacenamiento temporal donde se guardara el JSON con el 
     // reporte a enviar al servidor
-    let content = []
+    const content = []
 
     // obtenemos la lista de etiquetas a desplegar en el reporte dependiendo 
     // del idioma elegido por el usuario
-    let labels = this.langManager.messages.report.lab
+    const labels = this.langManager.messages.report.lab
 
     // visitamos cada tipo de analisis ...
-    for (let type of this.reportData.types) {
+    for (const type of this.reportData.types) {
       // almacenamiento temporal para el JSON del reporte de este tipo
-      let temp = {
+      const temp = {
+        body: '',
+        footer: `<span></span>`,
         header:
           `<table>
             <tr>
@@ -135,9 +136,7 @@ export class LabReportResultsComponent extends ReportResultsComponent
                 <span>${ type.name }</span>
               </td>
             </tr>
-          </table>`,
-        body: '',
-        footer: `<span></span>`
+          </table>`
       }
 
       // almacenamiento temporal para el cuerpo del reporte
@@ -146,7 +145,7 @@ export class LabReportResultsComponent extends ReportResultsComponent
       // visitamos cada subtipo perteneciente al tipo de esta iteracion
       for (let s = type.start; s < type.start + type.length; ++s) {
         // obtenemos los datos del subtipo de esta iteracion
-        let subtype = this.reportData.subtypes[s]
+        const subtype = this.reportData.subtypes[s]
 
         // inicializamos el encabezado de la tabla
         body += 
@@ -168,7 +167,7 @@ export class LabReportResultsComponent extends ReportResultsComponent
         body += `</tr></thead><tbody>`
 
         // visitamos cada productor de la zona elegida por el usuario
-        for (let producer of this.reportData.producers) {
+        for (const producer of this.reportData.producers) {
           // agregamos el nombre del productor en la 1ra columna de la tabla
           body += `<tr><td>${ producer.name }</td>`
 
@@ -176,7 +175,7 @@ export class LabReportResultsComponent extends ReportResultsComponent
           // actual que concuerde con el area del subtipo de la iteracion actual
           for (let i = subtype.start; i < subtype.start + subtype.length; ++i) {
             // obtenemos el valor del area
-            let value = producer.values[i]
+            const value = producer.values[i]
 
             // pintamos la celda de amarillo si tiene registrado al menos 1 
             // documento

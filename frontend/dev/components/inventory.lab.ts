@@ -4,19 +4,26 @@ import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
 import { LabTypesInventoryModalComponent } from './modal.inventory.lab.type'
-import { LabSubTypesInventoryModalComponent } from './modal.inventory.lab.subtype'
-import { LabProductInventoryModalComponent } from './modal.inventory.lab.product'
+import { 
+  LabSubTypesInventoryModalComponent 
+} from './modal.inventory.lab.subtype'
+import { 
+  LabProductInventoryModalComponent 
+} from './modal.inventory.lab.product'
 import { LabLabInventoryModalComponent } from './modal.inventory.lab.lab'
-import { LabProducerInventoryModalComponent } from './modal.inventory.lab.producer'
-import { MzModalService } from 'ng2-materialize'
+import { 
+  LabProducerInventoryModalComponent 
+} from './modal.inventory.lab.producer'
+import { MzModalService } from 'ngx-materialize'
+
 
 // Componente que define el comportamiento de la pagina donde el usuario 
 // manejara el inventario de laboratorios
 @Component({
   templateUrl: '../templates/inventory.lab.html'
 })
-export class LabInventoryComponent implements OnInit
-{
+export class LabInventoryComponent implements OnInit {
+
   // La lista de categorias recuperada de la base de datos 
   rows: Array<any> = []
 
@@ -42,6 +49,7 @@ export class LabInventoryComponent implements OnInit
   // La zona elegida por el usuario
   selectedZone: any = null
 
+
   // El constructor de este componente, inyectando los servicios requeridos
   constructor(
     private server: BackendService,
@@ -59,7 +67,7 @@ export class LabInventoryComponent implements OnInit
       'list-lab-categories',
       {},
       (response: BackendResponse) => {
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           this.rows = response.data
         } else {
           // si el servidor respondio con un error, notificamos al usuario
@@ -78,7 +86,7 @@ export class LabInventoryComponent implements OnInit
       'list-labs',
       {},
       (response: BackendResponse) => {
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           this.laboratories = response.data
         } else {
           // si el servidor respondio con un error, notificamos al usuario
@@ -96,7 +104,7 @@ export class LabInventoryComponent implements OnInit
       'list-zones',
       {},
       (response: BackendResponse) => {
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           this.zones = response.data
         } else {
           // si el servidor respondio con un error, notificamos al usuario
@@ -114,14 +122,14 @@ export class LabInventoryComponent implements OnInit
   // Esta funcion se ejecuta cuando el usuario selecciona una zona de la
   // lista de seleccion
   onZoneSelected(event: any): void {
-    let zoneID = event.target.value.split(': ')[1]
+    const zoneID = event.target.value.split(': ')[1]
     this.server.read(
       'list-producers-of-zone',
       {
         zone_id: zoneID
       },
       (response: BackendResponse) => {
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           this.producers = response.data
         } else {
           this.toastManager.showText(

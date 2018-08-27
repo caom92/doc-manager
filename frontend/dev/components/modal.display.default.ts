@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core'
-import { MzBaseModal, MzModalComponent } from 'ng2-materialize'
+import { MzBaseModal } from 'ngx-materialize'
 import { LanguageService } from '../services/app.language'
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser'
 import { environment } from '../environments/environment'
@@ -8,19 +8,19 @@ import { ToastService } from '../services/app.toast'
 import { SearchResultsListComponent } from './list.default'
 import { GlobalElementsService } from '../services/app.globals'
 
+
 // El componente del modal que despliega el archivo buscado por el usuario
 @Component({
   templateUrl: '../templates/modal.display.default.html'
 })
 export class DefaultDocumentDisplayModalComponent 
-  extends MzBaseModal 
-  implements OnInit
-{
+  extends MzBaseModal implements OnInit {
+
   // Las opciones de configuracion del modal
   modalOptions = {
   }
 
-  countsPhysicalCopies: boolean = false
+  countsPhysicalCopies = false
 
   checkboxLabel: { en: string, es: string } = {
     en: 'Has a physical copy?',
@@ -59,25 +59,29 @@ export class DefaultDocumentDisplayModalComponent
   ngOnInit(): void {
     this.sanitizedPath = (environment.production) ?
       this.sanitizer.bypassSecurityTrustResourceUrl(
-        `http://documents.jfdc.tech/backend/ViewerJS/#../documents/${ this.baseFolder }/${ this.parent.searchResults[this.index].file_path }`
+        'http://documents.jfdc.tech/backend/ViewerJS/#../documents/'
+        + `${ this.baseFolder }/`
+        + `${ this.parent.searchResults[this.index].file_path }`
       )
       : this.sanitizer.bypassSecurityTrustResourceUrl(
-        `http://localhost/doc-manager/backend/ViewerJS/#../documents/${ this.baseFolder }/${ this.parent.searchResults[this.index].file_path }`
+        'http://localhost/doc-manager/backend/ViewerJS/#../documents/'
+        + `${ this.baseFolder }/`
+        + `${ this.parent.searchResults[this.index].file_path }`
       )
   } // ngOnInit(): void
 
   // Funcion que se invoca cuando el usuario hace clic en la caja para indicar 
   // si el documento tiene una copia fisica
   onPhysicalCopyCheckboxChanged(): void {
-    let document = this.parent.searchResults[this.index]
+    const document = this.parent.searchResults[this.index]
     
-    if (document.has_physical_copy == 1) {
+    if (document.has_physical_copy === 1) {
       this.parent.numDocsWithPhysicalCopy++
     } else {
       this.parent.numDocsWithPhysicalCopy--
     }
 
-    let data = new FormData()
+    const data = new FormData()
     data.append(
       'document_id', 
       document.document_id.toString()

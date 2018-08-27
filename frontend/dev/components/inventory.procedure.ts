@@ -3,17 +3,22 @@ import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
-import { MzModalService } from 'ng2-materialize'
-import { SectionProcedureInventoryModalComponent } from './modal.inventory.procedure.section'
+import { MzModalService } from 'ngx-materialize'
+import { 
+  SectionProcedureInventoryModalComponent 
+} from './modal.inventory.procedure.section'
+
 
 @Component({
   templateUrl: '../templates/inventory.procedure.html'
 })
 export class ProcedureInventoryComponent implements OnInit {
+
   sections: Array<{
     id: number,
     name: string
   }> = []
+
 
   constructor(
     private server: BackendService,

@@ -18,6 +18,8 @@
     "types": [
       "jquery",
       "materialize-css"
-    ]
+    ],
+    "module": "es2015",
+    "baseUrl": "./"
   }
 }

@@ -1,21 +1,21 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
-import { MzModalService, MzBaseModal } from 'ng2-materialize'
+import { MzModalService } from 'ngx-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { FormBuilder, Validators } from '@angular/forms'
 import { NoParentElement, SingleParentElement } from './modal.search.default'
 import { DefaultDocumentReportModalComponent } from './modal.report.default'
+
 
 @Component({
   templateUrl: '../templates/modal.report.lab.html'
 })
 export class LabDocumentReportModalComponent
-  extends DefaultDocumentReportModalComponent
-  implements OnInit
-{
+  extends DefaultDocumentReportModalComponent implements OnInit {
+
   // La lista de analisis de laboratorio a elegir por el usuario
   analysisTypes: Array<NoParentElement> = [
     {
@@ -76,7 +76,7 @@ export class LabDocumentReportModalComponent
       {},
       (response: BackendResponse) => {
         // revisamos si el servidor respondio con exito
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           // si el servidor respondio con exito, cargamos la respuesta al 
           // objeto de sugerencias de zonas
           this.analysisTypes = this.analysisTypes.concat(response.data)
@@ -98,7 +98,7 @@ export class LabDocumentReportModalComponent
 
   // Esta funcion se invoca cuando el usuario selecciona una zona
   onZoneSelected(): void {
-    let selectedZone = <any>this.reportForm.controls.zone.value
+    const selectedZone = <any> this.reportForm.controls.zone.value
     this.parent.company = selectedZone.company_name
     this.parent.address = selectedZone.address
     this.parent.logo = selectedZone.logo_path
@@ -119,11 +119,11 @@ export class LabDocumentReportModalComponent
 
     // si el tipo es valido, mandamos una peticion al servidor para recuperar 
     // la lista de subtipos
-    let selectedType =
-      <NoParentElement>this.reportForm.controls.type.value
+    const selectedType =
+      <NoParentElement> this.reportForm.controls.type.value
     if (selectedType.id) {
       // preparamos los datos que seran enviados al usuario
-      let data = new FormData()
+      const data = new FormData()
       data.append('type', selectedType.id.toString())
 
       // recuperamos los ranchos del servidor
@@ -132,7 +132,7 @@ export class LabDocumentReportModalComponent
         data,
         (response: BackendResponse) => {
           // revisamos si el servidor respondio con exito
-          if (response.meta.return_code == 0) {
+          if (response.meta.return_code === 0) {
             this.subTypes = this.subTypes.concat(response.data)
             this.reportForm.controls.subtype.setValue(this.subTypes[0])
           } else {
@@ -153,16 +153,16 @@ export class LabDocumentReportModalComponent
   // enviado al servidor
   onLabDocumentReport(): void {
     // mostramos el modal de espera
-    let modal = this.modalManager.open(ProgressModalComponent)
+    const modal = this.modalManager.open(ProgressModalComponent)
     
-    let data = new FormData()
+    const data = new FormData()
     data.append('start_date', this.reportForm.controls.startDate.value)
     data.append('end_date', this.reportForm.controls.endDate.value)
     data.append('zone_id', this.reportForm.controls.zone.value.id)
 
-    if (this.reportForm.controls.type.value.name != 'TODOS - ALL') {
+    if (this.reportForm.controls.type.value.name !== 'TODOS - ALL') {
       data.append('type_id', this.reportForm.controls.type.value.id)
-    } else if (this.reportForm.controls.subtype.value.name != 'TODOS - ALL') {
+    } else if (this.reportForm.controls.subtype.value.name !== 'TODOS - ALL') {
       data.append('subtype_id', this.reportForm.controls.subtype.value.id)
     }
 
@@ -172,11 +172,11 @@ export class LabDocumentReportModalComponent
       data,
       (response: BackendResponse) => {
         // al responder el servidor, cerramos el modal de espera
-        modal.instance.modalComponent.close()
+        modal.instance.modalComponent.closeModal()
 
         // si el servidor respondio con exito, reiniciamos el formulario para 
         // que el usuario capture un nuevo documento
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           // this.parent.tableHeaders = response.data.types
           this.parent.reportData = response.data
           this.parent.startDate = this.reportForm.controls.startDate.value

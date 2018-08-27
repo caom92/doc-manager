@@ -3,16 +3,17 @@ import { GlobalElementsService } from '../services/app.globals'
 import { BackendService } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { LanguageService } from '../services/app.language'
-import { MzModalService, MzBaseModal } from 'ng2-materialize'
+import { MzModalService } from 'ngx-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
+
 
 // Este componente describe el comportamiento de la pagina donde el usuario 
 // administra la informacion de los usuarios
 @Component({
   templateUrl: '../templates/app.users.html'
 })
-export class UsersComponent implements OnInit
-{
+export class UsersComponent implements OnInit {
+
   // La lista de usuarios a desplegar en la pantalla
   users = []
 
@@ -30,7 +31,7 @@ export class UsersComponent implements OnInit
   // Esta funcion se invoca cuando el componente es inicializado
   ngOnInit(): void {
     // desplegamos el modal de espera
-    let modal = this.modalManager.open(ProgressModalComponent)
+    const modal = this.modalManager.open(ProgressModalComponent)
 
     // solicitamos al servidor la lista de usuarios
     this.server.read(
@@ -38,10 +39,10 @@ export class UsersComponent implements OnInit
       {},
       (response: any) => {
         // cuando el servidor responda, cerramos el modal de espera
-        modal.instance.modalComponent.close()
+        modal.instance.modalComponent.closeModal()
 
         // revisamos si el servidor respondio con exito
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           // si asi fue, guardamos la lista de usuarios
           this.users = response.data
         } else {
@@ -62,11 +63,11 @@ export class UsersComponent implements OnInit
   // controla la activacion del usuario
   onToggleUserActivation(userIdx: number, isActive: boolean): void {
     // preparamos los datos a enviar al servidor
-    let data = new FormData()
+    const data = new FormData()
     data.append('user_id', this.users[userIdx].id)
     
     // desplegamos el modal de espera
-    let modal = this.modalManager.open(ProgressModalComponent)
+    const modal = this.modalManager.open(ProgressModalComponent)
 
     // solicitamos al servidor invertir la activacion del usuario especificado
     this.server.write(
@@ -74,10 +75,10 @@ export class UsersComponent implements OnInit
       data,
       (response: any) => {
         // cerramos el modal de espera cuando el servidor responda
-        modal.instance.modalComponent.close()
+        modal.instance.modalComponent.closeModal()
 
         // revisamos si el servidor respondio con exito
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           // si asi fue, invertimos la activacion del usuario en la pantalla
           this.users[userIdx].is_active = isActive
         } else {

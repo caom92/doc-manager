@@ -1,11 +1,12 @@
-import { LabDefaultInventoryModalComponent } from './modal.inventory.lab.default'
-import { Component, OnInit, Input } from '@angular/core'
-import { MzBaseModal, MzModalComponent } from 'ng2-materialize'
+import { 
+  LabDefaultInventoryModalComponent 
+} from './modal.inventory.lab.default'
+import { Component, OnInit } from '@angular/core'
 import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { FormBuilder, Validators } from '@angular/forms'
 
 // Componente que define el comportamiento de la pagina donde el usuario 
 // agregara un nuevo producto o area en el inventario de laboratorios
@@ -13,9 +14,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms'
   templateUrl: '../templates/modal.inventory.lab.product.html'
 })
 export class LabProductInventoryModalComponent
-  extends LabDefaultInventoryModalComponent
-  implements OnInit
-{
+  extends LabDefaultInventoryModalComponent implements OnInit {
+
   // Lista de tipos de analisis
   types: Array<{
     id: number,
@@ -56,7 +56,7 @@ export class LabProductInventoryModalComponent
       'list-analysis-types',
       {},
       (response: BackendResponse) => {
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           this.types = response.data
         } else {
           this.toastManager.showText(
@@ -74,9 +74,9 @@ export class LabProductInventoryModalComponent
   // de seleccion de tipos de analisis
   onAnalysisTypeSelected(): void {
     // preparamos los datos a enviar al servidor
-    let selectedType = <any> this.captureForm.controls.typeName.value
+    const selectedType = <any> this.captureForm.controls.typeName.value
 
-    let data = new FormData()
+    const data = new FormData()
     data.append('type', selectedType.id)
 
     // recuperamos la lista de subtipos de analisis correspondientes a ese 
@@ -85,7 +85,7 @@ export class LabProductInventoryModalComponent
       'list-analysis-subtypes-of-type',
       data,
       (response: BackendResponse) => {
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           this.subtypes = response.data
         } else {
           this.langManager.getServiceMessage(
@@ -101,7 +101,7 @@ export class LabProductInventoryModalComponent
   // del formulario de captura para la nueva area o producto
   onFormSubmit(): void {
     // preparamos los datos a enviar al servidor
-    let data = new FormData()
+    const data = new FormData()
     data.append('parent_id', this.captureForm.controls.subTypeID.value)
     data.append('name', this.captureForm.controls.name.value)
 
@@ -120,20 +120,20 @@ export class LabProductInventoryModalComponent
         )
         
         // obtenemos la lista de categorias con el nuevo producto incluido
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           this.server.read(
             'list-lab-categories',
             {},
-            (response: BackendResponse) => {
-              if (response.meta.return_code == 0) {
+            (response2: BackendResponse) => {
+              if (response2.meta.return_code === 0) {
                 // actualizamos la lista de categorias mostrada en pantalla
-                this.parent.rows = response.data
+                this.parent.rows = response2.data
               } else {
                 // si el servidor respondio con un error, notificamos al usuario
                 this.toastManager.showText(
                   this.langManager.getServiceMessage(
                     'list-lab-categories',
-                    response.meta.return_code
+                    response2.meta.return_code
                   )
                 )
               } // if (response.meta.return_code == 0)

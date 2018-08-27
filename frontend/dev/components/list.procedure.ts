@@ -1,7 +1,6 @@
-import { Component, Input } from '@angular/core'
+import { Component } from '@angular/core'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
-import { SearchComponent } from './app.search'
 import { SearchResultsListComponent } from './list.default'
 
 
@@ -9,8 +8,8 @@ import { SearchResultsListComponent } from './list.default'
   templateUrl: '../templates/list.procedure.html'
 })
 export class ProcedureSearchResultsListComponent 
-  extends SearchResultsListComponent
-{
+  extends SearchResultsListComponent {
+
   constructor(
     global: GlobalElementsService,
     langManager: LanguageService

@@ -1,15 +1,15 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { OnInit, Input } from '@angular/core'
 import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
-import { MzModalService, MzBaseModal } from 'ng2-materialize'
-import { ProgressModalComponent } from './modal.please.wait'
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { MzModalService, MzBaseModal } from 'ngx-materialize'
+import { FormBuilder, FormGroup } from '@angular/forms'
+
 
 // Tipo auxiliar que declara la estructura necesaria para implementar 
 // sugerencias de autocompletado en los campos de texto del formulario
-export type AutoCompleteObject = {
+export interface AutoCompleteObject {
   data: {
     [key: string]: string
   },
@@ -19,9 +19,8 @@ export type AutoCompleteObject = {
 // Este componente define el comportamiento basico de la pagina donde el 
 // usuario capturara un archivo de laboratorio
 export class DefaultDocumentUploadModalComponent
-  extends MzBaseModal 
-  implements OnInit
-{
+  extends MzBaseModal implements OnInit {
+
   // El ID del tipo de documento elegido por el usuario
   @Input()
   selectedDocumentTypeID: number = null
@@ -64,7 +63,7 @@ export class DefaultDocumentUploadModalComponent
         {},
         (response: BackendResponse) => {
           // revisamos si el servidor respondio con exito
-          if (response.meta.return_code == 0) {
+          if (response.meta.return_code === 0) {
             // si el servidor respondio con exito, cargamos la respuesta al 
             // objeto de sugerencias de zonas
             this.zones = response.data

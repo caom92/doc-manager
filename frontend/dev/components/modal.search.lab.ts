@@ -1,12 +1,15 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
-import { MzModalService, MzBaseModal } from 'ng2-materialize'
+import { MzModalService } from 'ngx-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { DefaultDocumentSearchModalComponent, NoParentElement, SingleParentElement } from './modal.search.default'
+import { FormBuilder, Validators } from '@angular/forms'
+import { 
+  DefaultDocumentSearchModalComponent, NoParentElement, SingleParentElement 
+} from './modal.search.default'
+
 
 // Este componente define el comportamiento de la pagina donde el usuario puede 
 // visualizar los documentos de laboratorios
@@ -14,9 +17,8 @@ import { DefaultDocumentSearchModalComponent, NoParentElement, SingleParentEleme
   templateUrl: '../templates/modal.search.lab.html'
 })
 export class LabDocumentSearchModalComponent 
-  extends DefaultDocumentSearchModalComponent
-  implements OnInit
-{
+  extends DefaultDocumentSearchModalComponent implements OnInit {
+
   // La lista de productores a elegir por el usuario
   producers: Array<SingleParentElement> = [
     this.singleParentOptionAll
@@ -67,7 +69,7 @@ export class LabDocumentSearchModalComponent
         },
         (response: BackendResponse) => {
           // revisamos si el servidor respondio con exito
-          if (response.meta.return_code == 0) {
+          if (response.meta.return_code === 0) {
             // si asi fue, ingresamos los ranchos recuperados al objeto de 
             // sugerencias de ranchos
             this.producers = this.producers.concat(response.data)
@@ -90,7 +92,7 @@ export class LabDocumentSearchModalComponent
       {},
       (response: BackendResponse) => {
         // revisamos si el servidor respondio con exito
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           // si el servidor respondio con exito, cargamos la respuesta al 
           // objeto de sugerencias de zonas
           this.labs = this.labs.concat(response.data)
@@ -112,7 +114,7 @@ export class LabDocumentSearchModalComponent
       {},
       (response: BackendResponse) => {
         // revisamos si el servidor respondio con exito
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           // si el servidor respondio con exito, cargamos la respuesta al 
           // objeto de sugerencias de zonas
           this.analysisTypes = this.analysisTypes.concat(response.data)
@@ -162,8 +164,8 @@ export class LabDocumentSearchModalComponent
 
     // si la zona es valida, mandamos una peticion al servidor para recuperar 
     // los ranchos de esta zona
-    let selectedZone = 
-      <NoParentElement>this.searchForm.controls.zone.value
+    const selectedZone = 
+      <NoParentElement> this.searchForm.controls.zone.value
     if (selectedZone.id) {
       // recuperamos los productores del servidor
       this.server.read(
@@ -173,7 +175,7 @@ export class LabDocumentSearchModalComponent
         },
         (response: BackendResponse) => {
           // revisamos si el servidor respondio con exito
-          if (response.meta.return_code == 0) {
+          if (response.meta.return_code === 0) {
             // si asi fue, ingresamos los ranchos recuperados al objeto de 
             // sugerencias de ranchos
             this.producers = this.producers.concat(response.data)
@@ -204,11 +206,11 @@ export class LabDocumentSearchModalComponent
 
     // si el tipo es valido, mandamos una peticion al servidor para recuperar 
     // la lista de subtipos
-    let selectedType =
-      <NoParentElement>this.searchForm.controls.type.value
+    const selectedType =
+      <NoParentElement> this.searchForm.controls.type.value
     if (selectedType.id) {
       // preparamos los datos que seran enviados al usuario
-      let data = new FormData()
+      const data = new FormData()
       data.append('type', selectedType.id.toString())
 
       // recuperamos los ranchos del servidor
@@ -217,7 +219,7 @@ export class LabDocumentSearchModalComponent
         data,
         (response: BackendResponse) => {
           // revisamos si el servidor respondio con exito
-          if (response.meta.return_code == 0) {
+          if (response.meta.return_code === 0) {
             this.subTypes = this.subTypes.concat(response.data)
           } else {
             // si el servidor repondio con error, notificamos al usuario
@@ -241,11 +243,11 @@ export class LabDocumentSearchModalComponent
       this.singleParentOptionAll
     ]
 
-    let selectedSubType = 
-      <SingleParentElement>this.searchForm.controls.subtype.value
+    const selectedSubType = 
+      <SingleParentElement> this.searchForm.controls.subtype.value
     if (selectedSubType.id) {
       // preparamos los datos que seran enviados al usuario
-      let data = new FormData()
+      const data = new FormData()
       data.append('subtype', selectedSubType.id.toString())
 
       // recuperamos los ranchos del servidor
@@ -254,7 +256,7 @@ export class LabDocumentSearchModalComponent
         data,
         (response: BackendResponse) => {
           // revisamos si el servidor respondio con exito
-          if (response.meta.return_code == 0) {
+          if (response.meta.return_code === 0) {
             this.areas = this.areas.concat(response.data)
           } else {
             // si el servidor repondio con error, notificamos al usuario
@@ -273,7 +275,7 @@ export class LabDocumentSearchModalComponent
   // Esta funcion se invoca cuando el formulario de captura de documento es 
   // enviado al servidor
   onLabDocumentSearch(): void {
-    let data = new FormData()
+    const data = new FormData()
     data.append(
       'document_type_id',
       this.selectedDocumentTypeID.toString()
@@ -287,44 +289,44 @@ export class LabDocumentSearchModalComponent
       this.searchForm.controls.endDate.value
     )
 
-    let selectedZone = 
-      <NoParentElement>this.searchForm.controls.zone.value
-    if (selectedZone && selectedZone != this.noParentOptionAll) {
+    const selectedZone = 
+      <NoParentElement> this.searchForm.controls.zone.value
+    if (selectedZone && selectedZone !== this.noParentOptionAll) {
       data.append('zone_id', selectedZone.id.toString())
     }
 
-    let selectedProducer = 
-      <SingleParentElement>this.searchForm.controls.producer.value
-    if (selectedProducer && selectedProducer != this.singleParentOptionAll) {
+    const selectedProducer = 
+      <SingleParentElement> this.searchForm.controls.producer.value
+    if (selectedProducer && selectedProducer !== this.singleParentOptionAll) {
       data.append('producer_id', selectedProducer.id.toString())
     }
 
-    let selectedLab =
-      <NoParentElement>this.searchForm.controls.lab.value
-    if (selectedLab && selectedLab != this.noParentOptionAll) {
+    const selectedLab =
+      <NoParentElement> this.searchForm.controls.lab.value
+    if (selectedLab && selectedLab !== this.noParentOptionAll) {
       data.append('lab_id', selectedLab.id.toString())
     }
 
-    let selectedType =
-      <NoParentElement>this.searchForm.controls.type.value
-    if (selectedType && selectedType != this.noParentOptionAll) {
+    const selectedType =
+      <NoParentElement> this.searchForm.controls.type.value
+    if (selectedType && selectedType !== this.noParentOptionAll) {
       data.append('analysis_type_id', selectedType.id.toString())
     }
 
-    let selectedSubType = 
-      <SingleParentElement>this.searchForm.controls.subtype.value
-    if (selectedSubType && selectedSubType != this.singleParentOptionAll) {
+    const selectedSubType = 
+      <SingleParentElement> this.searchForm.controls.subtype.value
+    if (selectedSubType && selectedSubType !== this.singleParentOptionAll) {
       data.append('analysis_subtype_id', selectedSubType.id.toString())
     }
 
-    let selectedArea = 
-      <SingleParentElement>this.searchForm.controls.area.value
-    if (selectedArea && selectedArea != this.singleParentOptionAll) {
+    const selectedArea = 
+      <SingleParentElement> this.searchForm.controls.area.value
+    if (selectedArea && selectedArea !== this.singleParentOptionAll) {
       data.append('area_id', selectedArea.id.toString())
     }
 
     // mostramos el modal de espera
-    let modal = this.modalManager.open(ProgressModalComponent)
+    const modal = this.modalManager.open(ProgressModalComponent)
     
     // enviamos los datos al servidor
     this.server.write(
@@ -332,11 +334,11 @@ export class LabDocumentSearchModalComponent
       data,
       (response: BackendResponse) => {
         // al responder el servidor, cerramos el modal de espera
-        modal.instance.modalComponent.close()
+        modal.instance.modalComponent.closeModal()
 
         // si el servidor respondio con exito, reiniciamos el formulario para 
         // que el usuario capture un nuevo documento
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           this.parent.numDocsWithPhysicalCopy = 
             response.data.num_docs_with_physical_copy
           this.parent.searchResults = response.data.documents

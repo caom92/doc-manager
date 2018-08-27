@@ -1,21 +1,22 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
-import { MzModalService, MzBaseModal } from 'ng2-materialize'
+import { MzModalService } from 'ngx-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { DefaultDocumentSearchModalComponent, NoParentElement, SingleParentElement } from './modal.search.default'
+import { FormBuilder, Validators } from '@angular/forms'
+import { 
+  DefaultDocumentSearchModalComponent, NoParentElement
+} from './modal.search.default'
 
 
 @Component({
   templateUrl: '../templates/modal.search.guarantee.html'
 })
 export class GuaranteeDocumentSearchModalComponent 
-  extends DefaultDocumentSearchModalComponent
-  implements OnInit
-{
+  extends DefaultDocumentSearchModalComponent implements OnInit {
+
   suppliers: Array<NoParentElement> = [
     this.noParentOptionAll
   ]
@@ -38,7 +39,7 @@ export class GuaranteeDocumentSearchModalComponent
       'list-suppliers',
       {},
       (response: BackendResponse) => {
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           this.suppliers = this.suppliers.concat(response.data)
         } else {
           this.toastManager.showText(
@@ -70,7 +71,7 @@ export class GuaranteeDocumentSearchModalComponent
   }
 
   onLetterDocumentSearch(): void {
-    let data = new FormData()
+    const data = new FormData()
     data.append(
       'document_type_id',
       this.selectedDocumentTypeID.toString()
@@ -84,27 +85,27 @@ export class GuaranteeDocumentSearchModalComponent
       this.searchForm.controls.endDate.value
     )
 
-    let selectedZone = 
-      <NoParentElement>this.searchForm.controls.zone.value
-    if (selectedZone && selectedZone != this.noParentOptionAll) {
+    const selectedZone = 
+      <NoParentElement> this.searchForm.controls.zone.value
+    if (selectedZone && selectedZone !== this.noParentOptionAll) {
       data.append('zone_id', selectedZone.id.toString())
     }
 
-    let selectedSupplier =
-      <NoParentElement>this.searchForm.controls.supplier.value
-    if (selectedSupplier && selectedSupplier != this.noParentOptionAll) {
+    const selectedSupplier =
+      <NoParentElement> this.searchForm.controls.supplier.value
+    if (selectedSupplier && selectedSupplier !== this.noParentOptionAll) {
       data.append('supplier_id', selectedSupplier.id.toString())
     }
 
-    let modal = this.modalManager.open(ProgressModalComponent)
+    const modal = this.modalManager.open(ProgressModalComponent)
 
     this.server.write(
       'search-guarantee',
       data,
       (response: BackendResponse) => {
-        modal.instance.modalComponent.close()
+        modal.instance.modalComponent.closeModal()
 
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           this.parent.searchResults = response.data.documents
         } else {
           // notificamos al usuario del resultado obtenido

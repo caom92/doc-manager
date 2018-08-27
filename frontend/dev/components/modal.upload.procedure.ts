@@ -1,12 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
-import { MzModalService, MzBaseModal } from 'ng2-materialize'
+import { MzModalService } from 'ngx-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { DefaultDocumentUploadModalComponent, AutoCompleteObject } from './modal.upload.default'
+import { FormBuilder, Validators } from '@angular/forms'
+import { DefaultDocumentUploadModalComponent } from './modal.upload.default'
 import { NoParentElement, SingleParentElement } from './modal.search.default'
 
 
@@ -14,9 +14,8 @@ import { NoParentElement, SingleParentElement } from './modal.search.default'
   templateUrl: '../templates/modal.upload.procedure.html'
 })
 export class ProcedureDocumentUploadModalComponent 
-  extends DefaultDocumentUploadModalComponent
-  implements OnInit
-{
+  extends DefaultDocumentUploadModalComponent implements OnInit {
+
   sections: Array<SingleParentElement> = []
 
   constructor(
@@ -37,7 +36,7 @@ export class ProcedureDocumentUploadModalComponent
       'list-sections',
       {},
       (response: BackendResponse) => {
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           this.sections = response.data
           console.log(response.data)
         } else {
@@ -74,14 +73,14 @@ export class ProcedureDocumentUploadModalComponent
 
   onProcedureFileSelected(event: any): void {
     this.selectedDocumentFile = null
-    let files = event.target.files
+    const files = event.target.files
     if (files.length > 0) {
       this.selectedDocumentFile = files[0]
     }
   }
 
   onProcedureFileUpload(): void {
-    let data = new FormData()
+    const data = new FormData()
     data.append('document_type_id', this.selectedDocumentTypeID.toString())
     data.append('capture_date', this.global.getFormattedDate())
     data.append(
@@ -89,14 +88,14 @@ export class ProcedureDocumentUploadModalComponent
       this.uploadForm.controls.documentDate.value
     )
 
-    let selectedZone =
-      <NoParentElement>this.uploadForm.controls.zone.value
+    const selectedZone =
+      <NoParentElement> this.uploadForm.controls.zone.value
     data.append('zone', selectedZone.id.toString())
 
     data.append('document_name', this.uploadForm.controls.documentName.value)
 
-    let selectedSection =
-      <NoParentElement>this.uploadForm.controls.section.value
+    const selectedSection =
+      <NoParentElement> this.uploadForm.controls.section.value
     data.append('section_id', selectedSection.id.toString())
 
     if (this.uploadForm.controls.notes.value) {
@@ -112,12 +111,12 @@ export class ProcedureDocumentUploadModalComponent
       this.selectedDocumentFile.name
     )
 
-    let modal = this.modalManager.open(ProgressModalComponent)
+    const modal = this.modalManager.open(ProgressModalComponent)
     this.server.write(
       'capture-procedure',
       data,
       (response: BackendResponse) => {
-        modal.instance.modalComponent.close()
+        modal.instance.modalComponent.closeModal()
 
         this.toastManager.showText(
           this.langManager.getServiceMessage(
@@ -126,7 +125,7 @@ export class ProcedureDocumentUploadModalComponent
           )
         )
 
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           this.uploadForm.reset()
         }
       }

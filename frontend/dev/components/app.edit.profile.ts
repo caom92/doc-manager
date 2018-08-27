@@ -4,7 +4,7 @@ import { BackendService } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { LanguageService } from '../services/app.language'
-import { MzModalService, MzBaseModal } from 'ng2-materialize'
+import { MzModalService } from 'ngx-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
 
 // Componente que define el comportamiento de la pagina de editar perfil de 
@@ -12,8 +12,7 @@ import { ProgressModalComponent } from './modal.please.wait'
 @Component({
   templateUrl: '../templates/app.edit.profile.html'
 })
-export class EditProfileComponent implements OnInit
-{
+export class EditProfileComponent implements OnInit {
   // Interfaz que representa el contenido y las reglas de validacion del 
   // formulario para editar la contraseña
   passwordEditionForm: FormGroup  
@@ -56,9 +55,9 @@ export class EditProfileComponent implements OnInit
         // es necesario comparar los campos de la nueva contraseña y de la 
         // confirmacion de la nueva contraseña para asegurarse de que sean 
         // iguales
-        let password = group.controls['newPassword'].value 
-        let passwordConfirmation = 
-          group.controls['newPasswordConfirmation'].value
+        const password = group.controls.newPassword.value 
+        const passwordConfirmation = 
+          group.controls.newPasswordConfirmation.value
         
         // si no lo son, hay que retornar una bandera de error que activara el 
         // mensaje de error a desplegar
@@ -85,10 +84,10 @@ export class EditProfileComponent implements OnInit
   // del formulario de edicion de contraseña
   onPasswordEditionFormSubmit(): void {
     // desplegamos el modal de progreso
-    let modal = this.modalManager.open(ProgressModalComponent)
+    const modal = this.modalManager.open(ProgressModalComponent)
 
     // recuperamos los datos capturados en el formulario
-    let data = new FormData()
+    const data = new FormData()
     data.append('user_id', this.global.userID.toString())
     data.append('password', this.passwordEditionForm.value.oldPassword)
     data.append('new_password', this.passwordEditionForm.value.newPassword)
@@ -99,7 +98,7 @@ export class EditProfileComponent implements OnInit
       data,
       (response: any) => {
         // cerramos el modal
-        modal.instance.modalComponent.close()
+        modal.instance.modalComponent.closeModal()
 
         // damos retroalimentacion al usuario del resultado de esta opreacion
         this.toastManager.showText(
@@ -116,11 +115,11 @@ export class EditProfileComponent implements OnInit
   // del formulario de edicion de nombre de usuario
   onUsernameEditionFormSubmit(): void {
     // desplegamos el modal de progreso
-    let modal = this.modalManager.open(ProgressModalComponent)
+    const modal = this.modalManager.open(ProgressModalComponent)
 
     // primero recuperamos los datos capturados del formulario
-    let newUsername = this.usernameEditionForm.value.newUsername
-    let data = new FormData()
+    const newUsername = this.usernameEditionForm.value.newUsername
+    const data = new FormData()
     data.append('new_username', newUsername)
     data.append('password', this.usernameEditionForm.value.password)
 
@@ -130,7 +129,7 @@ export class EditProfileComponent implements OnInit
       data,
       (response: any) => {
         // cerramos el modal
-        modal.instance.modalComponent.close()
+        modal.instance.modalComponent.closeModal()
 
         // damos retroalimentacion al usuario del resultado de esta operacion
         this.toastManager.showText(
@@ -141,7 +140,7 @@ export class EditProfileComponent implements OnInit
 
         // si el cambio se realizo con exito en la base de datos, hay que 
         // actualizar la copia que tenemos en memoria local
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           this.global.loginName = newUsername
         }
       } // (response: Response)
