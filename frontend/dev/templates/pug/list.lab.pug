@@ -25,11 +25,11 @@ div.col.s12('*ngIf'='searchResults.length > 0')
         td('*ngIf'='document.has_physical_copy != 1')
           i.mdi.mdi-24px.mdi-close.red-text
         td
-          +link()('(click)'='parent.onDocumentLinkClicked(i)')
+          +link()('(click)'='onDocumentLinkClicked(i)')
             ='{{ langManager.messages.list.view }}'
         td
           +link()(
             class='red-text'
-            '(click)'='parent.onDocumentDeletionRequested("lab", document.id, i)'
+            '(click)'='onDocumentDeletionRequested("lab", document.id, i)'
           )
             ='{{ langManager.messages.global.erase }}'

@@ -7,15 +7,16 @@ import { MzModalService } from 'ngx-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
 import { FormBuilder, Validators } from '@angular/forms'
 import { 
-  DefaultDocumentSearchModalComponent, NoParentElement
+  DefaultDocumentSearchComponent, NoParentElement
 } from './modal.search.default'
+import { StateService } from '@uirouter/core'
 
 
 @Component({
   templateUrl: '../templates/modal.search.guarantee.html'
 })
-export class GuaranteeDocumentSearchModalComponent 
-  extends DefaultDocumentSearchModalComponent implements OnInit {
+export class GuaranteeDocumentSearchComponent 
+  extends DefaultDocumentSearchComponent implements OnInit {
 
   suppliers: Array<NoParentElement> = [
     this.noParentOptionAll
@@ -27,9 +28,13 @@ export class GuaranteeDocumentSearchModalComponent
     global: GlobalElementsService,
     langManager: LanguageService,
     modalManager: MzModalService,
-    formBuilder: FormBuilder
+    formBuilder: FormBuilder,
+    stateService: StateService
   ) {
-    super(server, toastManager, global, langManager, modalManager, formBuilder)
+    super(
+      server, toastManager, global, langManager, modalManager, formBuilder, 
+      stateService
+    )
   }
 
   ngOnInit(): void {
@@ -106,7 +111,7 @@ export class GuaranteeDocumentSearchModalComponent
         modal.instance.modalComponent.closeModal()
 
         if (response.meta.return_code === 0) {
-          this.parent.searchResults = response.data.documents
+          this.searchResults = response.data.documents
         } else {
           // notificamos al usuario del resultado obtenido
           this.toastManager.showText(

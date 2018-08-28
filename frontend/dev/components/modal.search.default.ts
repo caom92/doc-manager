@@ -1,10 +1,12 @@
-import { OnInit, Input } from '@angular/core'
+import { OnInit, Output } from '@angular/core'
 import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
-import { MzModalService, MzBaseModal } from 'ngx-materialize'
+import { MzModalService } from 'ngx-materialize'
 import { FormBuilder, FormGroup } from '@angular/forms'
+import { StateService } from '@uirouter/core'
+
 
 // Tipo auxiliar que define los elementos recuperados del servidor que no 
 // posean un padre en la BD
@@ -23,16 +25,10 @@ export interface SingleParentElement {
 
 // Este componente define el comportamiento base necesario para que el 
 // usuario busque un documento en el sistema
-export class DefaultDocumentSearchModalComponent
-  extends MzBaseModal implements OnInit {
+export class DefaultDocumentSearchComponent implements OnInit {
 
-  // El ID del tipo de documento elegido por el usuario
-  @Input()
-  selectedDocumentTypeID: number = null
-
-  // Las opciones de configuracion del modal
-  modalOptions: any = {
-  }
+  numDocsWithPhysicalCopy = 0
+  searchResults: Array<any> = []
 
   // Valores de la opcion para elegir todas las zonas de la lista de seleccion
   noParentOptionAll: NoParentElement = {
@@ -53,12 +49,12 @@ export class DefaultDocumentSearchModalComponent
     this.noParentOptionAll
   ]
 
-  // El componente que invoco este componente
-  parent: any = null
-
   // Instancia que representa el formulario de captura donde el usuario subira 
   // el documento
   searchForm: FormGroup = null
+
+  // El ID del tipo de documento elegido por el usuario
+  protected selectedDocumentTypeID: number = null
 
   // El constructor de este componente, inyectando los servicios requeridos
   constructor(
@@ -67,14 +63,16 @@ export class DefaultDocumentSearchModalComponent
     protected global: GlobalElementsService,
     protected langManager: LanguageService,
     protected modalManager: MzModalService,
-    protected formBuilder: FormBuilder
+    protected formBuilder: FormBuilder,
+    protected stateService: StateService
   ) {
-    // invocamos el constructor de la clase padre
-    super()
   }
 
   // Esta funcion se ejecuta al iniciar la vista
   ngOnInit(): void {
+    this.selectedDocumentTypeID = 
+      this.stateService.params.selectedDocumentTypeID
+
     if (this.global.roleName !== 'Director') {
       this.zones = [ this.global.zone ]
     } else {

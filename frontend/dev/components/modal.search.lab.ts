@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component } from '@angular/core'
 import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
@@ -7,8 +7,9 @@ import { MzModalService } from 'ngx-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
 import { FormBuilder, Validators } from '@angular/forms'
 import { 
-  DefaultDocumentSearchModalComponent, NoParentElement, SingleParentElement 
+  DefaultDocumentSearchComponent, NoParentElement, SingleParentElement 
 } from './modal.search.default'
+import { StateService } from '@uirouter/core'
 
 
 // Este componente define el comportamiento de la pagina donde el usuario puede 
@@ -16,8 +17,8 @@ import {
 @Component({
   templateUrl: '../templates/modal.search.lab.html'
 })
-export class LabDocumentSearchModalComponent 
-  extends DefaultDocumentSearchModalComponent implements OnInit {
+export class LabDocumentSearchComponent 
+  extends DefaultDocumentSearchComponent {
 
   // La lista de productores a elegir por el usuario
   producers: Array<SingleParentElement> = [
@@ -51,10 +52,14 @@ export class LabDocumentSearchModalComponent
     global: GlobalElementsService,
     langManager: LanguageService,
     modalManager: MzModalService,
-    formBuilder: FormBuilder
+    formBuilder: FormBuilder,
+    stateService: StateService
   ) {
     // invocamos el constructor de la clase padre
-    super(server, toastManager, global, langManager, modalManager, formBuilder)
+    super(
+      server, toastManager, global, langManager, modalManager, formBuilder, 
+      stateService
+    )
   }
 
   // Esta funcion se ejecuta al iniciar la vista
@@ -339,9 +344,9 @@ export class LabDocumentSearchModalComponent
         // si el servidor respondio con exito, reiniciamos el formulario para 
         // que el usuario capture un nuevo documento
         if (response.meta.return_code === 0) {
-          this.parent.numDocsWithPhysicalCopy = 
+          this.numDocsWithPhysicalCopy = 
             response.data.num_docs_with_physical_copy
-          this.parent.searchResults = response.data.documents
+          this.searchResults = response.data.documents
         } else {
           // notificamos al usuario del resultado obtenido
           this.toastManager.showText(

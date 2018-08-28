@@ -22,7 +22,7 @@ import { ProgressModalComponent } from './modal.please.wait'
 import { DeleteDocumentConfirmationModalComponent } from './modal.confirmation.delete'
 import { DefaultDocumentDisplayModalComponent } from './modal.display.default'
 import { LabDocumentUploadModalComponent } from './modal.upload.lab'
-import { LabDocumentSearchModalComponent } from './modal.search.lab'
+import { LabDocumentSearchComponent } from './modal.search.lab'
 import { LabSearchResultsListComponent } from './list.lab'
 import { LabDocumentReportModalComponent } from './modal.report.lab'
 import { LabReportResultsComponent } from './report.lab'
@@ -33,12 +33,12 @@ import { LabProductInventoryModalComponent } from './modal.inventory.lab.product
 import { LabLabInventoryModalComponent } from './modal.inventory.lab.lab'
 import { LabProducerInventoryModalComponent } from './modal.inventory.lab.producer'
 import { GuaranteeDocumentUploadModalComponent } from './modal.upload.guarantee'
-import { GuaranteeDocumentSearchModalComponent } from './modal.search.guarantee'
+import { GuaranteeDocumentSearchComponent } from './modal.search.guarantee'
 import { GuaranteeSearchResultsListComponent } from './list.guarantee'
 import { GuaranteeInventoryComponent } from './inventory.guarantee'
 import { SupplierGuaranteeInventoryModalComponent } from './modal.inventory.guarantee.supplier'
 import { ProcedureDocumentUploadModalComponent } from './modal.upload.procedure'
-import { ProcedureDocumentSearchModalComponent } from './modal.search.procedure'
+import { ProcedureDocumentSearchComponent } from './modal.search.procedure'
 import { ProcedureSearchResultsListComponent } from './list.procedure'
 import { ProcedureInventoryComponent } from './inventory.procedure'
 import { SectionProcedureInventoryModalComponent } from './modal.inventory.procedure.section'
@@ -104,6 +104,21 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
           name: 'inventory',
           url: '/inventory',
           component: InventoryComponent
+        },
+        {
+          name: 'search-lab',
+          url: '/search-lab/{selectedDocumentTypeID}',
+          component: LabDocumentSearchComponent
+        },
+        {
+          name: 'search-guarantee',
+          url: '/search-guarantee/{selectedDocumentTypeID}',
+          component: GuaranteeDocumentSearchComponent
+        },
+        {
+          name: 'search-procedure',
+          url: '/search-procedure/{selectedDocumentTypeID}',
+          component: ProcedureDocumentSearchComponent
         }
       ],
       useHash: true,
@@ -127,7 +142,7 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     SearchComponent,
     DefaultDocumentDisplayModalComponent,
     LabDocumentUploadModalComponent,
-    LabDocumentSearchModalComponent,
+    LabDocumentSearchComponent,
     DynamicComponentContainerDirective,
     LabSearchResultsListComponent,
     DeleteDocumentConfirmationModalComponent,
@@ -145,12 +160,12 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     LabLabInventoryModalComponent,
     LabProducerInventoryModalComponent,
     GuaranteeDocumentUploadModalComponent,
-    GuaranteeDocumentSearchModalComponent,
+    GuaranteeDocumentSearchComponent,
     GuaranteeSearchResultsListComponent,
     GuaranteeInventoryComponent,
     SupplierGuaranteeInventoryModalComponent,
     ProcedureDocumentUploadModalComponent,
-    ProcedureDocumentSearchModalComponent,
+    ProcedureDocumentSearchComponent,
     ProcedureSearchResultsListComponent,
     ProcedureInventoryComponent,
     SectionProcedureInventoryModalComponent,
@@ -161,7 +176,6 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     ProgressModalComponent,
     DefaultDocumentDisplayModalComponent,
     LabDocumentUploadModalComponent,
-    LabDocumentSearchModalComponent,
     LabSearchResultsListComponent,
     DeleteDocumentConfirmationModalComponent,
     LabDocumentReportModalComponent,
@@ -173,12 +187,10 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     LabLabInventoryModalComponent,
     LabProducerInventoryModalComponent,
     GuaranteeDocumentUploadModalComponent,
-    GuaranteeDocumentSearchModalComponent,
     GuaranteeSearchResultsListComponent,
     SupplierGuaranteeInventoryModalComponent,
     GuaranteeInventoryComponent,
     ProcedureDocumentUploadModalComponent,
-    ProcedureDocumentSearchModalComponent,
     ProcedureSearchResultsListComponent,
     SectionProcedureInventoryModalComponent,
     ProcedureInventoryComponent,

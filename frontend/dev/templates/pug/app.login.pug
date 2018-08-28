@@ -9,9 +9,8 @@ div.row
     )
       mz-card(
         '[hoverable]'="'true'"
-        '[textClass]'="'center-align'"
       )
-        mz-card-title
+        mz-card-title: span.center-align
           ='{{ langManager.messages.loginForm.title }}'
         mz-card-content
           +textInput(

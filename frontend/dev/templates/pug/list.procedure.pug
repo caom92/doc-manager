@@ -13,11 +13,11 @@ div.col.s12('*ngIf'='searchResults.length > 0')
         td='{{ document.zone_name }}'
         td='{{ document.section_name }}'
         td
-          +link()('(click)'='parent.onDocumentLinkClicked(i)')
+          +link()('(click)'='onDocumentLinkClicked(i)')
             ='{{ langManager.messages.list.view }}'
         td
           +link()(
             class='red-text'
-            '(click)'='parent.onDocumentDeletionRequested("procedure", document.id, i)'
+            '(click)'='onDocumentDeletionRequested("procedure", document.id, i)'
           )
             ='{{ langManager.messages.global.erase }}'

@@ -1,66 +1,63 @@
 include globals.pug
 
-mz-modal(
-  '[options]'='modalOptions'
-  '[fixedFooter]'='true'
-  '[fullscreen]'='true'
-)
-  mz-modal-header
-    div.container: div.row: div.col.s12
-      ='{{ langManager.messages.search.title }}'
-  mz-modal-content
-    div.container
-      form(
-        '[formGroup]'='searchForm'
-        novalidate
-      )
-        div.row
-          +dateInput(
-            'start-date', 
-            'langManager.messages.search.startDateLabel',
-            'langManager.messages.global.datePickerConfig',
-            'col s12 m6'
-          )(
-            formControlName='startDate'
-            mz-validation
-            required
-            '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
-          )
-          +dateInput(
-            'end-date', 
-            'langManager.messages.search.endDateLabel',
-            'langManager.messages.global.datePickerConfig',
-            'col s12 m6'
-          )(
-            formControlName='endDate'
-            mz-validation
-            required
-            '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
-          )
+div.row: div.col.s12: h4
+  ='{{ langManager.messages.search.title }}'
 
-        div.row
-          div.col.s12.m6
-            +select(
-              'zone', 'langManager.messages.upload.zoneLabel', 'langManager.messages.global.selectPlaceholder',
-              'zones', '.name'
-            )(
-              formControlName='zone'
-            )
-          div.col.s12.m6
-            +select(
-              'section', 'langManager.messages.upload.sectionLabel', 'langManager.messages.global.selectPlaceholder',
-              'sections', '.name'
-            )(
-              formControlName='section'
-            )        
-  mz-modal-footer
-    +button(
-      'search',
-      'search-document',
-      '{{ langManager.messages.search.buttonLabel }}',
-      'mdi mdi-magnify'
+form(
+  '[formGroup]'='searchForm'
+  novalidate
+)
+  div.row
+    +dateInput(
+      'start-date', 
+      'langManager.messages.search.startDateLabel',
+      'langManager.messages.global.datePickerConfig',
+      'col s12 m6'
     )(
-      '[disabled]'='!searchForm.valid'
-      '(click)'='onProcedureDocumentSearch()'
-      mz-modal-close
+      formControlName='startDate'
+      mz-validation
+      required
+      '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
     )
+    +dateInput(
+      'end-date', 
+      'langManager.messages.search.endDateLabel',
+      'langManager.messages.global.datePickerConfig',
+      'col s12 m6'
+    )(
+      formControlName='endDate'
+      mz-validation
+      required
+      '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
+    )
+
+  div.row
+    div.col.s12.m6
+      +select(
+        'zone', 'langManager.messages.upload.zoneLabel', 'langManager.messages.global.selectPlaceholder',
+        'zones', '.name'
+      )(
+        formControlName='zone'
+      )
+    div.col.s12.m6
+      +select(
+        'section', 'langManager.messages.upload.sectionLabel', 'langManager.messages.global.selectPlaceholder',
+        'sections', '.name'
+      )(
+        formControlName='section'
+      )        
+
+div.row: div.col.s12
+  +button(
+    'search',
+    'search-document',
+    '{{ langManager.messages.search.buttonLabel }}',
+    'mdi mdi-magnify'
+  )(
+    '[disabled]'='!searchForm.valid'
+    '(click)'='onProcedureDocumentSearch()'
+  )
+
+list-procedure(
+  '[searchResults]'='searchResults'
+)

@@ -5,25 +5,25 @@ import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
 import { MzModalService } from 'ngx-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
-import { LabDocumentSearchModalComponent } from './modal.search.lab'
+import { LabDocumentSearchComponent } from './modal.search.lab'
 import { DefaultDocumentDisplayModalComponent } from './modal.display.default'
-import { DynamicComponentResolver } from './dynamic.resolver'
+// import { DynamicComponentResolver } from './dynamic.resolver'
 import { LabSearchResultsListComponent } from './list.lab'
 import { DeleteDocumentConfirmationModalComponent } from './modal.confirmation.delete'
-import { GuaranteeDocumentSearchModalComponent } from './modal.search.guarantee'
+import { GuaranteeDocumentSearchComponent } from './modal.search.guarantee'
 import { GuaranteeSearchResultsListComponent } from './list.guarantee'
-import { ProcedureDocumentSearchModalComponent } from './modal.search.procedure'
+import { ProcedureDocumentSearchComponent } from './modal.search.procedure'
 import { ProcedureSearchResultsListComponent } from './list.procedure'
 import { LabDocumentDisplayModalComponent } from './modal.display.lab'
+import { StateService } from '@uirouter/core'
+
 
 // Componente que define el comportamiento de la pagina donde el usuario puede 
 // buscar documentos 
 @Component({
   templateUrl: '../templates/app.search.html'
 })
-export class SearchComponent 
-  extends DynamicComponentResolver
-  implements OnInit {
+export class SearchComponent implements OnInit {
 
   // El tipo de documento elegido por el usuario
   selectedDocument: {
@@ -50,9 +50,10 @@ export class SearchComponent
     private global: GlobalElementsService,
     private langManager: LanguageService,
     private modalManager: MzModalService,
-    factoryResolver: ComponentFactoryResolver
+    private router: StateService
+    // factoryResolver: ComponentFactoryResolver
   ) {
-    super(factoryResolver)
+    // super(factoryResolver)
   }
 
   // Esta funcion se ejecuta al iniciar la pagina
@@ -96,93 +97,39 @@ export class SearchComponent
     // relacionada con el
     switch (selectedDocument.id) {
       case 1:
-        this.listComponent = 
-          this.loadComponent(LabSearchResultsListComponent, {
-            parent: this
-          }).instance
-
-        this.modalManager.open(LabDocumentSearchModalComponent, {
-          parent: this.listComponent,
+        this.router.go(this.router.get('search-lab'), {
           selectedDocumentTypeID: selectedDocument.id
         })
+
+        // this.listComponent = 
+        //   this.loadComponent(LabSearchResultsListComponent, {
+        //     parent: this
+        //   }).instance
       break
 
       case 2:
-        this.listComponent = 
-          this.loadComponent(GuaranteeSearchResultsListComponent, {
-            parent: this
-          }).instance
-
-        this.modalManager.open(GuaranteeDocumentSearchModalComponent, {
-          parent: this.listComponent,
+        this.router.go(this.router.get('search-guarantee'), {
           selectedDocumentTypeID: selectedDocument.id
         })
+
+        // this.listComponent = 
+        //   this.loadComponent(GuaranteeSearchResultsListComponent, {
+        //     parent: this
+        //   }).instance
       break
 
       case 3:
-        this.listComponent = 
-          this.loadComponent(ProcedureSearchResultsListComponent, {
-            parent: this
-          }).instance
-
-        this.modalManager.open(ProcedureDocumentSearchModalComponent, {
-          parent: this.listComponent,
+        this.router.go(this.router.get('search-procedure'), {
           selectedDocumentTypeID: selectedDocument.id
         })
+        
+        // this.listComponent = 
+        //   this.loadComponent(ProcedureSearchResultsListComponent, {
+        //     parent: this
+        //   }).instance
       break
     } // switch (this.selectedDocument.name)
   } // onDocumentTypeSelected(): void
-
-  // Esta funcion se invoca cuando el usuario hace clic en uno de los enlaces 
-  // generados al buscar documentos en la base de datos
-  onDocumentLinkClicked(index: number): void {
-    switch (this.selectedDocument.id) {
-      case 1: // lab
-        this.modalManager.open(LabDocumentDisplayModalComponent, {
-          index: index,
-          documentType: this.selectedDocument.name,
-          baseFolder: 'lab',
-          parent: this.listComponent
-        })
-      break
-
-      case 2: // cartas de garantia
-        this.modalManager.open(DefaultDocumentDisplayModalComponent, {
-          index: index,
-          documentType: this.selectedDocument.name,
-          baseFolder: 'guarantee',
-          parent: this.listComponent
-        })
-      break
-
-      case 3: // SOP
-        this.modalManager.open(DefaultDocumentDisplayModalComponent, {
-          index: index,
-          documentType: this.selectedDocument.name,
-          baseFolder: 'procedure',
-          parent: this.listComponent
-        })
-      break
-    } 
-  } // onDocumentLinkClicked(document: SearchedDocument): void
-
-  // Esta funcion se invoca cuando el usuario hace clic en el boton de 
-  // solicitar el borrado de uno de los documentos
-  onDocumentDeletionRequested(
-    suffix: string, 
-    documentID: number, 
-    idx: number
-  ): void {
-    // desplegamos el modal de confirmacion
-    this.modalManager.open(DeleteDocumentConfirmationModalComponent, {
-      title: this.langManager.messages.deleteConfirmation.title,
-      message: this.langManager.messages.deleteConfirmation.message,
-      parent: this,
-      documentIdx: idx,
-      documentID: documentID,
-      serviceSuffix: suffix
-    })
-  } // onDocumentDeletionRequested()
 
   // Esta funcion se invoca cuando el usuario hace clic en el boton de aceptar 
   // en el modal de confirmacion de borrado

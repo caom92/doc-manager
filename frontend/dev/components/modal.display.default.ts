@@ -5,7 +5,6 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser'
 import { environment } from '../environments/environment'
 import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
-import { SearchResultsListComponent } from './list.default'
 import { GlobalElementsService } from '../services/app.globals'
 
 
@@ -38,7 +37,7 @@ export class DefaultDocumentDisplayModalComponent
 
   // El componente que lista los resultados de
   @Input()
-  parent: SearchResultsListComponent = null
+  parent: any = null
 
   // El URL al documento que sera desplegado
   sanitizedPath: SafeResourceUrl = null

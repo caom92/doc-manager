@@ -12,11 +12,11 @@ div.col.s12('*ngIf'='searchResults.length > 0')
         td='{{ document.zone_name }}'
         td.table-col-fixed='{{ document.supplier_name }}'
         td
-          +link()('(click)'='parent.onDocumentLinkClicked(i)')
+          +link()('(click)'='onDocumentLinkClicked(i)')
             ='{{ langManager.messages.list.view }}'
         td
           +link()(
             class='red-text'
-            '(click)'='parent.onDocumentDeletionRequested("guarantee", document.id, i)'
+            '(click)'='onDocumentDeletionRequested("guarantee", document.id, i)'
           )
             ='{{ langManager.messages.global.erase }}'
