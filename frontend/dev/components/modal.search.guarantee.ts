@@ -40,6 +40,7 @@ export class GuaranteeDocumentSearchComponent
   ngOnInit(): void {
     super.ngOnInit()
 
+    this.numPendingService = 1
     this.server.read(
       'list-suppliers',
       {},
@@ -54,6 +55,8 @@ export class GuaranteeDocumentSearchComponent
             )
           )
         }
+
+        this.finishService()
       }
     )
 
@@ -73,9 +76,18 @@ export class GuaranteeDocumentSearchComponent
       ],
       supplier: [ null ]
     })
+
+    this.setValueOnControlChange('startDate')
+    this.setValueOnControlChange('endDate')
+    this.setIdOnControlChange('supplier')
   }
 
   onLetterDocumentSearch(): void {
+    this.updateUrl()
+    this.searchDocument()
+  }
+
+  searchDocument(): void {
     const data = new FormData()
     data.append(
       'document_type_id',
@@ -123,5 +135,25 @@ export class GuaranteeDocumentSearchComponent
         }
       }
     )
+  }
+
+  protected afterServiceResponses(): void {
+    if (
+      this.stateService.params.startDate !== undefined 
+      && this.stateService.params.endDate !== undefined
+    ) {
+      this.searchForm.controls.startDate.setValue(
+        this.stateService.params.startDate
+      )
+      this.searchForm.controls.endDate.setValue(
+        this.stateService.params.endDate
+      )
+
+      this.setControlValue(
+        'supplier', this.suppliers, this.noParentOptionAll
+      )
+  
+      this.searchDocument()
+    }
   }
 }

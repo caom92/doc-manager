@@ -3,7 +3,6 @@ import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
 import { SearchResultsListComponent } from './list.default'
 import { MzModalService } from 'ngx-materialize'
-import { LabDocumentDisplayModalComponent } from './modal.display.lab'
 
 
 // El componente que lista los resultados de busqueda de documentos

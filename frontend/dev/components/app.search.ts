@@ -1,20 +1,10 @@
-import { Component, OnInit, ComponentFactoryResolver } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
 import { MzModalService } from 'ngx-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
-import { LabDocumentSearchComponent } from './modal.search.lab'
-import { DefaultDocumentDisplayModalComponent } from './modal.display.default'
-// import { DynamicComponentResolver } from './dynamic.resolver'
-import { LabSearchResultsListComponent } from './list.lab'
-import { DeleteDocumentConfirmationModalComponent } from './modal.confirmation.delete'
-import { GuaranteeDocumentSearchComponent } from './modal.search.guarantee'
-import { GuaranteeSearchResultsListComponent } from './list.guarantee'
-import { ProcedureDocumentSearchComponent } from './modal.search.procedure'
-import { ProcedureSearchResultsListComponent } from './list.procedure'
-import { LabDocumentDisplayModalComponent } from './modal.display.lab'
 import { StateService } from '@uirouter/core'
 
 
@@ -95,40 +85,25 @@ export class SearchComponent implements OnInit {
     // dependiendo del tipo de documento elegido, se cargara el componente que 
     // le corresponde donde el usuario podra capturar el documento y la info. 
     // relacionada con el
+    let stateName: string = null
+
     switch (selectedDocument.id) {
       case 1:
-        this.router.go(this.router.get('search-lab'), {
-          selectedDocumentTypeID: selectedDocument.id
-        })
-
-        // this.listComponent = 
-        //   this.loadComponent(LabSearchResultsListComponent, {
-        //     parent: this
-        //   }).instance
+        stateName = 'search-lab'
       break
 
       case 2:
-        this.router.go(this.router.get('search-guarantee'), {
-          selectedDocumentTypeID: selectedDocument.id
-        })
-
-        // this.listComponent = 
-        //   this.loadComponent(GuaranteeSearchResultsListComponent, {
-        //     parent: this
-        //   }).instance
+        stateName = 'search-guarantee'
       break
 
       case 3:
-        this.router.go(this.router.get('search-procedure'), {
-          selectedDocumentTypeID: selectedDocument.id
-        })
-        
-        // this.listComponent = 
-        //   this.loadComponent(ProcedureSearchResultsListComponent, {
-        //     parent: this
-        //   }).instance
+        stateName = 'search-procedure'
       break
     } // switch (this.selectedDocument.name)
+
+    this.router.go(this.router.get(stateName), {
+      selectedDocumentTypeID: selectedDocument.id
+    })
   } // onDocumentTypeSelected(): void
 
   // Esta funcion se invoca cuando el usuario hace clic en el boton de aceptar 

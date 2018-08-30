@@ -40,6 +40,7 @@ export class ProcedureDocumentSearchComponent
   ngOnInit(): void {
     super.ngOnInit()
 
+    this.numPendingService = 1
     this.server.read(
       'list-sections',
       {},
@@ -54,6 +55,8 @@ export class ProcedureDocumentSearchComponent
             )
           )
         }
+
+        this.finishService()
       }
     )
 
@@ -78,9 +81,18 @@ export class ProcedureDocumentSearchComponent
         }
       ]
     })
+
+    this.setValueOnControlChange('startDate')
+    this.setValueOnControlChange('endDate')
+    this.setIdOnControlChange('section')
   }
 
   onProcedureDocumentSearch(): void {
+    this.updateUrl()
+    this.searchDocument()
+  }
+
+  protected searchDocument(): void {
     const data = new FormData()
     data.append(
       'document_type_id',
@@ -128,5 +140,25 @@ export class ProcedureDocumentSearchComponent
         }
       }
     )
+  }
+
+  protected afterServiceResponses(): void {
+    if (
+      this.stateService.params.startDate !== undefined 
+      && this.stateService.params.endDate !== undefined
+    ) {
+      this.searchForm.controls.startDate.setValue(
+        this.stateService.params.startDate
+      )
+      this.searchForm.controls.endDate.setValue(
+        this.stateService.params.endDate
+      )
+      
+      this.setControlValue(
+        'section', this.sections, this.noParentOptionAll
+      )
+
+      this.searchDocument()
+    }
   }
 }

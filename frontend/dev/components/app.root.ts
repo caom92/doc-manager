@@ -107,17 +107,23 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
         },
         {
           name: 'search-lab',
-          url: '/search-lab/{selectedDocumentTypeID}',
+          url: 
+            '/search-lab/{selectedDocumentTypeID}'
+            + '?startDate&endDate&producer&lab&type&subtype&area',
           component: LabDocumentSearchComponent
         },
         {
           name: 'search-guarantee',
-          url: '/search-guarantee/{selectedDocumentTypeID}',
+          url: 
+            '/search-guarantee/{selectedDocumentTypeID}'
+            + '?startDate&endDate&supplier',
           component: GuaranteeDocumentSearchComponent
         },
         {
           name: 'search-procedure',
-          url: '/search-procedure/{selectedDocumentTypeID}',
+          url: 
+            '/search-procedure/{selectedDocumentTypeID}'
+            + '?startDate&endDate&section',
           component: ProcedureDocumentSearchComponent
         }
       ],

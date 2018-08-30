@@ -66,7 +66,10 @@ export class LabDocumentSearchComponent
   ngOnInit(): void {
     super.ngOnInit()
 
+    this.numPendingService = 2
     if (this.global.roleName !== 'Director') {
+      ++this.numPendingService
+
       this.server.read(
         'list-producers-of-zone',
         {
@@ -87,6 +90,8 @@ export class LabDocumentSearchComponent
               )
             )
           } // if (response.meta.return_code == 0)
+
+          this.finishService()
         } // (response: BackendResponse)
       ) // this.server.write
     }
@@ -110,6 +115,8 @@ export class LabDocumentSearchComponent
             )
           )
         } // if (response.meta.return_code == 0)
+
+        this.finishService()
       } // (response: BackendResponse)
     ) // this.server.read
 
@@ -132,6 +139,8 @@ export class LabDocumentSearchComponent
             )
           )
         } // if (response.meta.return_code == 0)
+
+        this.finishService()
       } // (response: BackendResponse)
     ) // this.server.read
 
@@ -156,6 +165,14 @@ export class LabDocumentSearchComponent
       lab: [ null ],
       type: [ null ]
     })
+
+    this.setValueOnControlChange('startDate')
+    this.setValueOnControlChange('endDate')
+    this.setIdOnControlChange('producer')
+    this.setIdOnControlChange('lab')
+    this.setIdOnControlChange('type')
+    this.setIdOnControlChange('subtype')
+    this.setIdOnControlChange('area')
   } // ngOnInit(): void
 
   // Esta funcion se invoca cuando el usuario ingreso el nombre de una zona
@@ -280,6 +297,11 @@ export class LabDocumentSearchComponent
   // Esta funcion se invoca cuando el formulario de captura de documento es 
   // enviado al servidor
   onLabDocumentSearch(): void {
+    this.updateUrl()
+    this.searchDocument()
+  } // onDefaultDocumentUpload(): void
+
+  searchDocument(): void {
     const data = new FormData()
     data.append(
       'document_type_id',
@@ -358,5 +380,29 @@ export class LabDocumentSearchComponent
         }
       } // (response: BackendResponse)
     ) // this.server.write
-  } // onDefaultDocumentUpload(): void
+  }
+
+  protected afterServiceResponses(): void {
+    if (
+      this.stateService.params.startDate !== undefined 
+      && this.stateService.params.endDate !== undefined
+    ) {
+      this.searchForm.controls.startDate.setValue(
+        this.stateService.params.startDate
+      )
+      this.searchForm.controls.endDate.setValue(
+        this.stateService.params.endDate
+      )
+
+      this.setControlValue(
+        'producer', this.producers, this.singleParentOptionAll
+      )
+      this.setControlValue('lab', this.labs, this.noParentOptionAll)
+      this.setControlValue('type', this.analysisTypes, this.noParentOptionAll)
+      this.setControlValue('subtype', this.subTypes, this.singleParentOptionAll)
+      this.setControlValue('area', this.areas, this.singleParentOptionAll)
+  
+      this.searchDocument()
+    }
+  }
 }

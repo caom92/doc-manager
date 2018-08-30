@@ -1,4 +1,4 @@
-import { OnInit, Output } from '@angular/core'
+import { OnInit } from '@angular/core'
 import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
@@ -25,7 +25,7 @@ export interface SingleParentElement {
 
 // Este componente define el comportamiento base necesario para que el 
 // usuario busque un documento en el sistema
-export class DefaultDocumentSearchComponent implements OnInit {
+export abstract class DefaultDocumentSearchComponent implements OnInit {
 
   numDocsWithPhysicalCopy = 0
   searchResults: Array<any> = []
@@ -55,6 +55,10 @@ export class DefaultDocumentSearchComponent implements OnInit {
 
   // El ID del tipo de documento elegido por el usuario
   protected selectedDocumentTypeID: number = null
+
+  protected searchParams = new URLSearchParams()
+
+  protected numPendingService = 0
 
   // El constructor de este componente, inyectando los servicios requeridos
   constructor(
@@ -99,4 +103,52 @@ export class DefaultDocumentSearchComponent implements OnInit {
       ) // this.server.read
     }
   } // ngOnInit(): void
+
+  protected updateUrl(): void {
+    window.history.pushState('', '', 
+      `${ window.location.origin }/#/${ this.stateService.current.name }/`
+      + `${ this.stateService.params.selectedDocumentTypeID }`
+      + `?${ this.searchParams.toString() }`
+    )
+  }
+
+  protected readonly setValueOnControlChange = (control: string) => {
+    this.searchForm.controls[control].valueChanges.subscribe(() => {
+      this.searchParams.set(control, this.searchForm.controls[control].value)
+      console.debug(this.searchParams.get(control))
+    })
+  }
+
+  protected readonly setIdOnControlChange = (control: string) => {
+    this.searchForm.controls[control].valueChanges.subscribe(() => {
+      this.searchParams.set(
+        control, 
+        this.searchForm.controls[control].value.id
+      )
+      console.debug(this.searchParams.get(control))
+    })
+  }
+  
+  protected readonly finishService = () => {
+    --this.numPendingService
+    if (this.numPendingService === 0) {
+      this.afterServiceResponses()
+    }
+  }
+
+  protected setControlValue(param: string, array: Array<any>, value: any) {
+    const params = this.stateService.params
+    let idx = -1
+
+    if (params[param] !== undefined) {
+      idx = array.findIndex((element) => {
+        return element.id === parseInt(params[param])
+      })
+      this.searchForm.controls[param].setValue(array[idx])
+    } else {
+      this.searchForm.controls[param].setValue(value)
+    }
+  }
+
+  protected abstract afterServiceResponses(): void
 }
