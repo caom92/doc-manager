@@ -4,11 +4,6 @@ import { LanguageService } from '../services/app.language'
 
 // El componente base para el modal que desplegara un mensaje de advertencia y 
 // pedira confirmacion del usuario antes de continuar con la accion solicitada
-@Component({
-  // Para todos los componentes hijos de este componente, se puede usar 
-  // exactamente la misma vista
-  templateUrl: '../templates/modal.action.confirmation.html'
-})
 export abstract class ActionConfirmationModalComponent extends MzBaseModal {
   
   // Las opciones de configuracion del modal
