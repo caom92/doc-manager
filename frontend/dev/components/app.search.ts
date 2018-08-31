@@ -6,18 +6,6 @@ import { LanguageService } from '../services/app.language'
 import { MzModalService } from 'ngx-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
 import { StateService } from '@uirouter/core'
-import { DefaultDocumentDisplayModalComponent } from './modal.display.default'
-import { DynamicComponentResolver } from './dynamic.resolver'
-import { LabSearchResultsListComponent } from './list.lab'
-import { DeleteDocumentConfirmationModalComponent } from './modal.confirmation.delete'
-import { GuaranteeSearchResultsListComponent } from './list.guarantee'
-import { ProcedureSearchResultsListComponent } from './list.procedure'
-import { TrainingSearchResultsListComponent } from './list.training'
-import { TrainingDocumentSearchModalComponent } from './modal.search.training'
-import { CertificateSearchResultsListComponent } from './list.certificate'
-import { CertificateDocumentSearchModalComponent } from './modal.search.certificate'
-import { LabDocumentDisplayModalComponent } from './modal.display.lab'
-import { LabSubAreaReassignComponent } from './modal.subarea.lab'
 import { SignDocumentConfirmationModalComponent } from './modal.confirmation.sign'
 
 // Componente que define el comportamiento de la pagina donde el usuario puede 
@@ -120,10 +108,11 @@ export class SearchComponent implements OnInit {
         //     parent: this
         //   }).instance
 
-        // this.modalManager.open(TrainingDocumentSearchModalComponent, {
+        // this.modalManager.open(TrainingDocumentSearchComponent, {
         //   parent: this.listComponent,
         //   selectedDocumentTypeID: this.selectedDocument.id
         // })
+        stateName = 'search-training'
       break
       
       case 5: // certificados
@@ -132,10 +121,11 @@ export class SearchComponent implements OnInit {
         //     parent: this
         //   }).instance
 
-        // this.modalManager.open(CertificateDocumentSearchModalComponent, {
+        // this.modalManager.open(CertificateDocumentSearchComponent, {
         //   parent: this.listComponent,
         //   selectedDocumentTypeID: this.selectedDocument.id
         // })
+        stateName = 'search-certificate'
       break
     } // switch (this.selectedDocument.name)
 
@@ -185,7 +175,8 @@ export class SearchComponent implements OnInit {
   } // onDocumentDeleteClicked()
 
   onSignDocumentRequested(document: any): void {
-    //this.modalManager.open(LabSubAreaReassignComponent, { areaID: document.area_id, documentID: document.id, parent: this })
+    // this.modalManager.open(LabSubAreaReassignComponent, { areaID: 
+    // document.area_id, documentID: document.id, parent: this })
     console.log(document)
     this.modalManager.open(SignDocumentConfirmationModalComponent, {
       title: this.langManager.messages.signConfirmation.title,
@@ -196,9 +187,9 @@ export class SearchComponent implements OnInit {
   }
 
   onSignDocumentClicked(documentID: number): void {
-    //let modal = this.modalManager.open(ProgressModalComponent)
+    // let modal = this.modalManager.open(ProgressModalComponent)
 
-    let docData = new FormData()
+    const docData = new FormData()
 
     docData.append('document_id', String(documentID))
 
@@ -207,7 +198,7 @@ export class SearchComponent implements OnInit {
       'sign-document',
       docData,
       (response: BackendResponse) => {
-        //modal.instance.modalComponent.close()
+        // modal.instance.modalComponent.closeModal()
         this.updateSearch()
 
         // notificamos al usuario del resultado de la operacion
@@ -226,4 +217,34 @@ export class SearchComponent implements OnInit {
   onSortButtonClick(): void {
     this.listComponent.searchResults.reverse()
   } // onSortButtonClick(): void
+
+  // TODO: TEMP: Actualiza la búsqueda tras una actualización del subarea
+  updateSearch(): void {
+    const modal = this.modalManager.open(ProgressModalComponent)
+
+    this.server.write(
+      'search-lab',
+      this.lastSearch,
+      (response: BackendResponse) => {
+        // al responder el servidor, cerramos el modal de espera
+        modal.instance.modalComponent.closeModal()
+
+        // si el servidor respondio con exito, reiniciamos el formulario para 
+        // que el usuario capture un nuevo documento
+        if (response.meta.return_code === 0) {
+          this.listComponent.numDocsWithPhysicalCopy =
+            response.data.num_docs_with_physical_copy
+          this.listComponent.searchResults = response.data.documents
+        } else {
+          // notificamos al usuario del resultado obtenido
+          this.toastManager.showText(
+            this.langManager.getServiceMessage(
+              'search-lab',
+              response.meta.return_code
+            )
+          )
+        }
+      } // (response: BackendResponse)
+    ) // this.server.write
+  }
 } // export class SearchComponent implements OnInit

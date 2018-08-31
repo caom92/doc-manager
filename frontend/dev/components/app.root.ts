@@ -46,14 +46,14 @@ import { ProcedureSearchResultsListComponent } from './list.procedure'
 import { ProcedureInventoryComponent } from './inventory.procedure'
 import { SectionProcedureInventoryModalComponent } from './modal.inventory.procedure.section'
 import { TrainingDocumentUploadModalComponent } from './modal.upload.training'
-import { TrainingDocumentSearchModalComponent } from './modal.search.training'
+import { TrainingDocumentSearchComponent } from './modal.search.training'
 import { TrainingSearchResultsListComponent } from './list.training'
 import { TrainingInventoryComponent } from './inventory.training'
 import { TrainingSectionInventoryModalComponent } from './modal.inventory.training.section'
 import { CertificateDocumentUploadModalComponent } from './modal.upload.certificate'
 import { CertificateInventoryComponent } from './inventory.certificate'
 import { ProductCertificateInventoryModalComponent } from './modal.inventory.certificate.product'
-import { CertificateDocumentSearchModalComponent } from './modal.search.certificate'
+import { CertificateDocumentSearchComponent } from './modal.search.certificate'
 import { CertificateSearchResultsListComponent } from './list.certificate'
 import { LabDocumentDisplayModalComponent } from './modal.display.lab'
 
@@ -138,6 +138,20 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
             '/search-procedure/{selectedDocumentTypeID}'
             + '?startDate&endDate&section',
           component: ProcedureDocumentSearchComponent
+        },
+        {
+          name: 'search-training',
+          url: 
+            '/search-training/{selectedDocumentTypeID}'
+            + '?startDate&endDate&section',
+          component: TrainingDocumentSearchComponent
+        },
+        {
+          name: 'search-certificate',
+          url: 
+            '/search-certificate/{selectedDocumentTypeID}'
+            + '?startDate&endDate&product',
+          component: CertificateDocumentSearchComponent
         }
       ],
       useHash: true,
@@ -194,12 +208,12 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     TrainingInventoryComponent,
     TrainingSectionInventoryModalComponent,
     TrainingSearchResultsListComponent,
-    TrainingDocumentSearchModalComponent,
+    TrainingDocumentSearchComponent,
     TrainingDocumentUploadModalComponent,
     CertificateDocumentUploadModalComponent,
     ProductCertificateInventoryModalComponent,
     CertificateInventoryComponent,
-    CertificateDocumentSearchModalComponent,
+    CertificateDocumentSearchComponent,
     CertificateSearchResultsListComponent,
     LabDocumentDisplayModalComponent
   ],
@@ -232,12 +246,12 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     TrainingInventoryComponent,
     TrainingSectionInventoryModalComponent,
     TrainingSearchResultsListComponent,
-    TrainingDocumentSearchModalComponent,
+    TrainingDocumentSearchComponent,
     TrainingDocumentUploadModalComponent,
     ProductCertificateInventoryModalComponent,
     CertificateInventoryComponent,
     CertificateDocumentUploadModalComponent,
-    CertificateDocumentSearchModalComponent,
+    CertificateDocumentSearchComponent,
     CertificateSearchResultsListComponent,
     LabDocumentDisplayModalComponent
   ],

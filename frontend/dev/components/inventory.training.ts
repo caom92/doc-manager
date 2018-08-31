@@ -3,8 +3,9 @@ import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
-import { MzModalService } from 'ng2-materialize'
+import { MzModalService } from 'ngx-materialize'
 import { TrainingSectionInventoryModalComponent } from './modal.inventory.training.section'
+
 
 @Component({
   templateUrl: '../templates/inventory.training.html'
@@ -29,7 +30,7 @@ export class TrainingInventoryComponent implements OnInit {
       'list-training-sections',
       {},
       (response: BackendResponse) => {
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           this.sections = response.data
         } else {
           this.toastManager.showText(

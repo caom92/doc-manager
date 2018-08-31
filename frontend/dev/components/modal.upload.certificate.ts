@@ -3,7 +3,7 @@ import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
-import { MzModalService, MzBaseModal } from 'ng2-materialize'
+import { MzModalService, MzBaseModal } from 'ngx-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { DefaultDocumentUploadModalComponent, AutoCompleteObject } from './modal.upload.default'
@@ -112,7 +112,7 @@ export class CertificateDocumentUploadModalComponent
       'capture-certificate',
       data,
       (response: BackendResponse) => {
-        modal.instance.modalComponent.close()
+        modal.instance.modalComponent.closeModal()
 
         this.toastManager.showText(
           this.langManager.getServiceMessage(

@@ -1,20 +1,22 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
-import { MzModalService, MzBaseModal } from 'ng2-materialize'
+import { MzModalService } from 'ngx-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { DefaultDocumentSearchModalComponent, NoParentElement, SingleParentElement } from './modal.search.default'
+import { FormBuilder, Validators } from '@angular/forms'
+import { DefaultDocumentSearchComponent, NoParentElement } from './modal.search.default'
+import { StateService } from '@uirouter/core'
 
 
 @Component({
   templateUrl: '../templates/modal.search.certificate.html'
 })
-export class CertificateDocumentSearchModalComponent
-  extends DefaultDocumentSearchModalComponent
+export class CertificateDocumentSearchComponent
+  extends DefaultDocumentSearchComponent
   implements OnInit {
+    
   products: Array<NoParentElement> = [
     this.noParentOptionAll
   ]
@@ -25,19 +27,24 @@ export class CertificateDocumentSearchModalComponent
     global: GlobalElementsService,
     langManager: LanguageService,
     modalManager: MzModalService,
-    formBuilder: FormBuilder
+    formBuilder: FormBuilder,
+    stateService: StateService
   ) {
-    super(server, toastManager, global, langManager, modalManager, formBuilder)
+    super(
+      server, toastManager, global, langManager, modalManager, formBuilder, 
+      stateService
+    )
   }
 
   ngOnInit(): void {
     super.ngOnInit()
 
+    this.numPendingService = 1
     this.server.read(
       'list-certificate-products',
       {},
       (response: BackendResponse) => {
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           this.products = this.products.concat(response.data)
         } else {
           this.toastManager.showText(
@@ -47,6 +54,8 @@ export class CertificateDocumentSearchModalComponent
             )
           )
         }
+
+        this.finishService()
       }
     )
 
@@ -66,10 +75,19 @@ export class CertificateDocumentSearchModalComponent
       ],
       product: [null]
     })
+
+    this.setValueOnControlChange('startDate')
+    this.setValueOnControlChange('endDate')
+    this.setIdOnControlChange('product')
   }
 
   onLetterDocumentSearch(): void {
-    let data = new FormData()
+    this.updateUrl()
+    this.searchDocument()
+  }
+
+  searchDocument(): void {
+    const data = new FormData()
     data.append(
       'document_type_id',
       this.selectedDocumentTypeID.toString()
@@ -83,28 +101,28 @@ export class CertificateDocumentSearchModalComponent
       this.searchForm.controls.endDate.value
     )
 
-    let selectedZone =
-      <NoParentElement>this.searchForm.controls.zone.value
-    if (selectedZone && selectedZone != this.noParentOptionAll) {
+    const selectedZone =
+      <NoParentElement> this.searchForm.controls.zone.value
+    if (selectedZone && selectedZone !== this.noParentOptionAll) {
       data.append('zone_id', selectedZone.id.toString())
     }
 
-    let selectedProduct =
-      <NoParentElement>this.searchForm.controls.product.value
-    if (selectedProduct && selectedProduct != this.noParentOptionAll) {
+    const selectedProduct =
+      <NoParentElement> this.searchForm.controls.product.value
+    if (selectedProduct && selectedProduct !== this.noParentOptionAll) {
       data.append('product_id', selectedProduct.id.toString())
     }
 
-    let modal = this.modalManager.open(ProgressModalComponent)
+    const modal = this.modalManager.open(ProgressModalComponent)
 
     this.server.write(
       'search-certificate',
       data,
       (response: BackendResponse) => {
-        modal.instance.modalComponent.close()
+        modal.instance.modalComponent.closeModal()
 
-        if (response.meta.return_code == 0) {
-          this.parent.searchResults = response.data.documents
+        if (response.meta.return_code === 0) {
+          this.searchResults = response.data.documents
         } else {
           // notificamos al usuario del resultado obtenido
           this.toastManager.showText(
@@ -116,5 +134,25 @@ export class CertificateDocumentSearchModalComponent
         }
       }
     )
+  }
+
+  protected afterServiceResponses(): void {
+    if (
+      this.stateService.params.startDate !== undefined 
+      && this.stateService.params.endDate !== undefined
+    ) {
+      this.searchForm.controls.startDate.setValue(
+        this.stateService.params.startDate
+      )
+      this.searchForm.controls.endDate.setValue(
+        this.stateService.params.endDate
+      )
+
+      this.setControlValue(
+        'product', this.products, this.noParentOptionAll
+      )
+
+      this.searchDocument()
+    }
   }
 }

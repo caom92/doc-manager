@@ -3,7 +3,7 @@ import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
-import { MzModalService } from 'ng2-materialize'
+import { MzModalService } from 'ngx-materialize'
 import { ProductCertificateInventoryModalComponent } from './modal.inventory.certificate.product'
 
 @Component({
@@ -29,7 +29,7 @@ export class CertificateInventoryComponent implements OnInit {
       'list-certificate-products',
       {},
       (response: BackendResponse) => {
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           this.suppliers = response.data
         } else {
           this.toastManager.showText(

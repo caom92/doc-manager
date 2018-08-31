@@ -1,8 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core'
-import { MzBaseModal, MzModalComponent } from 'ng2-materialize'
+import { Component, Input } from '@angular/core'
 import { LanguageService } from '../services/app.language'
 import { ActionConfirmationModalComponent } from './modal.action.confirmation'
-import { SearchComponent } from './app.search'
+
 
 // El componente del modal que pide confirmacion del usuario para borrar un 
 // documento elegido de la lista de resultados
@@ -11,6 +10,7 @@ import { SearchComponent } from './app.search'
 })
 export class SignDocumentConfirmationModalComponent
   extends ActionConfirmationModalComponent {
+    
   // El ID del documento en la BD
   @Input()
   documentID: number = null
@@ -30,4 +30,4 @@ export class SignDocumentConfirmationModalComponent
       this.documentID
     )
   } // onActionConfirmed(): void
-} // export class DeleteDocumentConfirmation extends ActionConfirmationModalComponent
+}

@@ -1,6 +1,6 @@
 import { LabDefaultInventoryModalComponent } from './modal.inventory.lab.default'
 import { Component, OnInit, Input } from '@angular/core'
-import { MzBaseModal, MzModalComponent } from 'ng2-materialize'
+import { MzBaseModal, MzModalComponent } from 'ngx-materialize'
 import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
@@ -15,6 +15,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 export class LabSubProductInventoryModalComponent
   extends LabDefaultInventoryModalComponent
   implements OnInit {
+    
   // Lista de tipos de analisis
   types: Array<{
     id: number,
@@ -62,7 +63,7 @@ export class LabSubProductInventoryModalComponent
       'list-analysis-types',
       {},
       (response: BackendResponse) => {
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           this.types = response.data
         } else {
           this.toastManager.showText(
@@ -80,9 +81,9 @@ export class LabSubProductInventoryModalComponent
   // de seleccion de tipos de analisis
   onAnalysisTypeSelected(): void {
     // preparamos los datos a enviar al servidor
-    let selectedType = <any>this.captureForm.controls.typeName.value
+    const selectedType = <any> this.captureForm.controls.typeName.value
 
-    let data = new FormData()
+    const data = new FormData()
     data.append('type', selectedType.id)
 
     // recuperamos la lista de subtipos de analisis correspondientes a ese 
@@ -91,7 +92,7 @@ export class LabSubProductInventoryModalComponent
       'list-analysis-subtypes-of-type',
       data,
       (response: BackendResponse) => {
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           this.subtypes = response.data
         } else {
           this.langManager.getServiceMessage(
@@ -107,9 +108,9 @@ export class LabSubProductInventoryModalComponent
   // de seleccion de subtipos de analisis
   onAnalysisSubTypeSelected(): void {
     // preparamos los datos a enviar al servidor
-    let selectedSubType = <any>this.captureForm.controls.subTypeID.value
+    const selectedSubType = <any> this.captureForm.controls.subTypeID.value
 
-    let data = new FormData()
+    const data = new FormData()
     data.append('subtype', selectedSubType)
 
     // recuperamos la lista de subtipos de analisis correspondientes a ese 
@@ -118,7 +119,7 @@ export class LabSubProductInventoryModalComponent
       'list-areas-of-subtype',
       data,
       (response: BackendResponse) => {
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           this.areas = response.data
         } else {
           this.langManager.getServiceMessage(
@@ -134,7 +135,7 @@ export class LabSubProductInventoryModalComponent
   // del formulario de captura para la nueva area o producto
   onFormSubmit(): void {
     // preparamos los datos a enviar al servidor
-    let data = new FormData()
+    const data = new FormData()
     data.append('parent_id', this.captureForm.controls.areaID.value)
     data.append('name', this.captureForm.controls.name.value)
 
@@ -153,20 +154,20 @@ export class LabSubProductInventoryModalComponent
         )
 
         // obtenemos la lista de categorias con el nuevo producto incluido
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           this.server.read(
             'list-lab-categories',
             {},
-            (response: BackendResponse) => {
-              if (response.meta.return_code == 0) {
+            (response2: BackendResponse) => {
+              if (response.meta.return_code === 0) {
                 // actualizamos la lista de categorias mostrada en pantalla
-                this.parent.rows = response.data
+                this.parent.rows = response2.data
               } else {
                 // si el servidor respondio con un error, notificamos al usuario
                 this.toastManager.showText(
                   this.langManager.getServiceMessage(
                     'list-lab-categories',
-                    response.meta.return_code
+                    response2.meta.return_code
                   )
                 )
               } // if (response.meta.return_code == 0)

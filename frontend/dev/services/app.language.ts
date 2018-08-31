@@ -39,6 +39,10 @@ export class LanguageService {
       title: null,
       message: null
     },
+    signConfirmation: {
+      title: null,
+      message: null
+    },
     sideNav: {
       search: null,
       upload: null,
@@ -430,17 +434,23 @@ export class LanguageService {
           sectionNameLabel: 'Nombre de la Sección',
           procedureLabel: 'Procedimiento'
         },
+        certificate: {
+          productNameLabel: 'Nombre del Permiso o Certificado',
+          letterLabel: 'Certificado'
+        },
         title: 'Captura de Documento',
         typeLabel: 'Tipo de Documento',
         zoneLabel: 'Zona',
         ranchLabel: 'Rancho',
         areaLabel: 'Área o Producto',
+        subAreaLabel: 'Subárea o Subproducto',
         notesLabel: 'Notas o Comentarios',
         producerLabel: 'Unidad de Producción',
         docDateLabel: 'Fecha del Documento',
         fileLabel: 'Archivo del Documento',
         fileButtonLabel: 'Subir',
         supplierLabel: 'Proveedor',
+        certificateNameLabel: 'Nombre del Permiso o Certificado',
         sectionLabel: 'Sección Correspondiente',
         errors: {
           documentDate: {
@@ -488,7 +498,8 @@ export class LanguageService {
           tableHeaders: [
             'Tipo de Análisis',
             'Subtupo de Análisis',
-            'Área o Producto'
+            'Área o Producto',
+            'Subárea o Subproducto'
           ],
           labTableHeaders: [
             'Nombre'
@@ -496,11 +507,13 @@ export class LanguageService {
           addTypeButton: 'Tipo',
           addSubTypeButton: 'Subtipo',
           addProductButton: 'Producto',
+          addSubProductButton: 'Subproducto',
           addLabButton: 'Agregar Lab',
           addProducerButton: 'Agregar UP',
           typeTitle: 'Agregar Tipo de Análisis',
           subtypeTitle: 'Agregar Subtipo de Análisis',
           areaTitle: 'Agregar Área o Producto',
+          subAreaTitle: 'Agregar Subárea o Subproducto',
           labTitle: 'Agregar Laboratorio',
           parentErrors: {
             required: 'Este campo es requerido'
@@ -525,6 +538,14 @@ export class LanguageService {
           ],
           sectionTitle: 'Agregar Sección',
           addSectionButton: 'Agregar'
+        },
+        certificate: {
+          addProduct: 'Agregar Producto',
+          labTableHeaders: [
+            'Nombre del Permiso o Certificado'
+          ],
+          productTitle: 'Agregar Certificado',
+          addProductButton: 'Agregar'
         }
       },
       documents: {
@@ -543,6 +564,8 @@ export class LanguageService {
       },
       list: {
         view: 'Ver',
+        assign: 'Asignar Subárea/Subproducto',
+        sign: 'Firmar',
         numPhysicalDocs: 'Número de documentos con copias físicas',
         area: {
           tableHeaders: [
@@ -564,6 +587,8 @@ export class LanguageService {
             'Tipo de Análisis',
             'Subtipo',
             'Área/Producto',
+            'Subárea/Subproducto',
+            'Firma',
             '¿Copia Física?',
             'Ver',
             'Borrar'
@@ -590,21 +615,21 @@ export class LanguageService {
         },
         training: {
           tableHeaders: [
-            'Date',
-            'Doc. Name',
-            'Zone',
-            'Section',
-            'View',
-            'Delete'
+            'Fecha',
+            'Nombre del Doc.',
+            'Zona',
+            'Sección',
+            'Ver',
+            'Borrar'
           ]
         },
         certificate: {
           tableHeaders: [
-            'Date',
-            'Zone',
-            'Product',
-            'View',
-            'Delete'
+            'Fecha',
+            'Zona',
+            'Producto',
+            'Ver',
+            'Borrar'
           ]
         }
       },
@@ -656,10 +681,10 @@ export class LanguageService {
         0: 'El área o producto fue agregado exitosamente'
       },
       'add-subarea': {
-        0: 'Subarea or Subproduct was added successfully'
+        0: 'El subárea o subproducto fue agregado exitosamente'
       },
       'edit-lab-subarea': {
-        0: 'Subarea or Subproduct was updated successfully'
+        0: 'La subárea o subproducto fue actualizado exitosamente'
       },
       'add-lab': {
         0: 'El laboratorio fue agregado exitosamente'
@@ -678,6 +703,10 @@ export class LanguageService {
       },
       'toggle-physical-copy-lab': {
         0: 'El estado de la copia física se guardó exitosamente'
+      },
+      'sign-*': {
+        0: 'Documento firmado exitosamente',
+        1: 'Error al firmar el documento'
       },
       100: 'No se pudo reconocer el servicio solicitado',
       101: 'Faltó enviar una entrada al servidor',
@@ -746,9 +775,11 @@ export class LanguageService {
       },
       deleteConfirmation: {
         title: 'Are you sure you wish to delete this document?',
-        message: 
-          'You are about to delete a document. Once deleted, a document ' +
-          'CANNOT be recovered.'
+        message: 'You are about to delete a document. Once deleted, a document CANNOT be recovered.'
+      },
+      signConfirmation: {
+        title: 'Are you sure you wish to sign this document?',
+        message: 'You are about to sign a document. Once signed, this action cannot be undone and your name will be registered as the signer'
       },
       sideNav: {
         search: 'Search',
@@ -840,6 +871,10 @@ export class LanguageService {
           sectionNameLabel: 'Section Name',
           procedureLabel: 'Procedure'
         },
+        certificate: {
+          productNameLabel: 'Name of Certificate or Permit',
+          letterLabel: 'Certificate'
+        },
         title: 'Document Upload',
         typeLabel: 'Document Type',
         zoneLabel: 'Zone',
@@ -851,6 +886,7 @@ export class LanguageService {
         fileLabel: 'Document File',
         fileButtonLabel: 'Upload',
         supplierLabel: 'Supplier',
+        certificateNameLabel: 'Name of Certificate or Permit',
         sectionLabel: 'Corresponding Section',
         errors: {
           documentDate: {
@@ -898,7 +934,8 @@ export class LanguageService {
           tableHeaders: [
             'Analysis Type',
             'Analysis Subtype',
-            'Area/Product'
+            'Area/Product',
+            'Subarea/Subproduct'
           ],
           labTableHeaders: [
             'Name'
@@ -906,11 +943,13 @@ export class LanguageService {
           addTypeButton: 'Type',
           addSubTypeButton: 'Subtype',
           addProductButton: 'Area/Product',
+          addSubProductButton: 'Subproduct',
           addLabButton: 'Add Lab',
           addProducerButton: 'Add PU',
           typeTitle: 'Add Analysis Type',
           subtypeTitle: 'Add Analysis Subtype',
           areaTitle: 'Add Area or Products',
+          subAreaTitle: 'Add Subarea or Subproducts',
           labTitle: 'Add Laboratory',
           parentErrors: {
             required: 'This field is required'
@@ -935,6 +974,14 @@ export class LanguageService {
           ],
           sectionTitle: 'Add Section',
           addSectionButton: 'Add'
+        },
+        certificate: {
+          addProduct: 'Add Product',
+          labTableHeaders: [
+            'Name of Certificate or Permit'
+          ],
+          productTitle: 'Add Certificate',
+          addProductButton: 'Add'
         }
       },
       documents: {
@@ -953,6 +1000,8 @@ export class LanguageService {
       },
       list: {
         view: 'View',
+        assign: 'Asign Subarea/Subproduct',
+        sign: 'Sign',
         numPhysicalDocs: 'Number of documents with physical copies',
         area: {
           tableHeaders: [
@@ -975,6 +1024,8 @@ export class LanguageService {
             'Analysis Type',
             'Sub-Type',
             'Area/Product',
+            'Signature',
+            'Subarea/Subproduct',
             'View',
             'Delete'
           ]
@@ -994,6 +1045,25 @@ export class LanguageService {
             'Doc. Name',
             'Zone',
             'Section',
+            'View',
+            'Delete'
+          ]
+        },
+        training: {
+          tableHeaders: [
+            'Date',
+            'Doc. Name',
+            'Zone',
+            'Section',
+            'View',
+            'Delete'
+          ]
+        },
+        certificate: {
+          tableHeaders: [
+            'Date',
+            'Zone',
+            'Product',
             'View',
             'Delete'
           ]
@@ -1046,6 +1116,12 @@ export class LanguageService {
       'add-product': {
         0: 'Area or Product was added successfully'
       },
+      'add-subarea': {
+        0: 'Subarea or Subproduct was added successfully'
+      },
+      'edit-lab-subarea': {
+        0: 'Subarea or Subproduct was updated successfully'
+      },
       'add-lab': {
         0: 'The lab was added successfully'
       },
@@ -1063,6 +1139,10 @@ export class LanguageService {
       },
       'toggle-physical-copy-lab': {
         0: 'El estado de la copia física se guardó exitosamente'
+      },
+      'sign-*': {
+        0: 'Document was signed successfully',
+        1: 'Failed to sign document'
       },
       100: 'Unable to recognize the requested service',
       101: 'A server input argument was not send',

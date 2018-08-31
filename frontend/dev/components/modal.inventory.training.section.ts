@@ -1,11 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core'
-import { MzBaseModal, MzModalComponent } from 'ng2-materialize'
+import { Component, OnInit } from '@angular/core'
+import { MzBaseModal } from 'ngx-materialize'
 import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { TrainingInventoryComponent } from './inventory.training'
+
 
 // Componente que define el comportamiento general de aquellas paginas donde el 
 // usuario agregara un item del inventario de laboratorios
@@ -15,6 +16,7 @@ import { TrainingInventoryComponent } from './inventory.training'
 export class TrainingSectionInventoryModalComponent
   extends MzBaseModal
   implements OnInit {
+
   // Las opciones de configuracion del modal
   modalOptions = {
     // el modal no se cerrara aunque el usuario haga clic fuera de el
@@ -49,7 +51,7 @@ export class TrainingSectionInventoryModalComponent
 
   onFormSubmit(): void {
     // preparamos los datos a enviar al servidor
-    let data = new FormData()
+    const data = new FormData()
     data.append('name', this.captureForm.controls.name.value)
 
     // enviamos el nuevo tipo de analisis capturado al servidor
@@ -66,12 +68,12 @@ export class TrainingSectionInventoryModalComponent
         )
 
         // obtenemos la lista de categorias con el nuevo producto incluido
-        if (response.meta.return_code == 0) {
+        if (response.meta.return_code === 0) {
           this.server.read(
             'list-training-sections',
             {},
-            (response: BackendResponse) => {
-              if (response.meta.return_code == 0) {
+            (response2: BackendResponse) => {
+              if (response2.meta.return_code === 0) {
                 // actualizamos la lista de categorias mostrada en pantalla
                 this.parent.sections = response.data
               } else {
@@ -79,7 +81,7 @@ export class TrainingSectionInventoryModalComponent
                 this.toastManager.showText(
                   this.langManager.getServiceMessage(
                     'list-training-sections',
-                    response.meta.return_code
+                    response2.meta.return_code
                   )
                 )
               } // if (response.meta.return_code == 0)

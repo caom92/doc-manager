@@ -311,11 +311,11 @@ export class LabDocumentSearchComponent
       this.singleParentOptionAll
     ]
 
-    let selectedArea = 
-      <SingleParentElement>this.searchForm.controls.subtype.value
+    const selectedArea = 
+      <SingleParentElement> this.searchForm.controls.subtype.value
     if (selectedArea.id) {
       // preparamos los datos que seran enviados al usuario
-      let data = new FormData()
+      const data = new FormData()
       data.append('area', selectedArea.id.toString())
 
       // recuperamos los ranchos del servidor
@@ -324,7 +324,7 @@ export class LabDocumentSearchComponent
         data,
         (response: BackendResponse) => {
           // revisamos si el servidor respondio con exito
-          if (response.meta.return_code == 0) {
+          if (response.meta.return_code === 0) {
             this.subareas = this.subareas.concat(response.data)
           } else {
             // si el servidor repondio con error, notificamos al usuario
@@ -398,9 +398,9 @@ export class LabDocumentSearchComponent
       data.append('area_id', selectedArea.id.toString())
     }
 
-    let selectedSubArea =
-      <SingleParentElement>this.searchForm.controls.subarea.value
-    if (selectedSubArea && selectedSubArea != this.singleParentOptionAll) {
+    const selectedSubArea =
+      <SingleParentElement> this.searchForm.controls.subarea.value
+    if (selectedSubArea && selectedSubArea !== this.singleParentOptionAll) {
       data.append('subarea_id', selectedSubArea.id.toString())
     }
 
@@ -433,7 +433,6 @@ export class LabDocumentSearchComponent
         }
       } // (response: BackendResponse)
     ) // this.server.write
-<<<<<<< HEAD
   }
 
   protected afterServiceResponses(): void {
@@ -459,7 +458,4 @@ export class LabDocumentSearchComponent
       this.searchDocument()
     }
   }
-=======
-  } // onDefaultDocumentUpload(): void
->>>>>>> miracle
 }
