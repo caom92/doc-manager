@@ -6,7 +6,7 @@ $service = [
   ],
   'callback' => function($scope, $request) {
     // recuperamos la lista de categories
-    $rows = $scope->docManagerTableFactory->get('Lab\Areas')
+    $rows = $scope->docManagerTableFactory->get('Lab\SubAreas')
       ->selectAll();
 
     // el almacenamiento de la tabla que sera retornada al cliente
@@ -21,6 +21,10 @@ $service = [
       'name' => '',
       'index' => 0
     ];
+    $lastArea = [
+      'name' => '',
+      'index' => 0
+    ];
     
     // visitamos cada renglon recuperado de la BD
     $i = 0;
@@ -28,8 +32,13 @@ $service = [
       // almacenamiento temporal para cada renglon de la tabla a retornar al 
       // cliente
       $tempRow = [
+        'subarea' => [
+          'name' => $row['subarea_name'],
+          'border' => TRUE
+        ],
         'area' => [
-          'name' => $row['area_name'],
+          'name' => NULL,
+          'rowspan' => 1,
           'border' => TRUE
         ],
         'subtype' => [
@@ -55,12 +64,28 @@ $service = [
           // si no ha cambiado, incrementamos el numero de renglones que va a 
           // ocupar
           $tableRows[$lastSubtype['index']]['subtype']['rowspan']++;
+
+          if ($lastArea['name'] == $row['area_name']) {
+            $tableRows[$lastArea['index']]['area']['rowspan']++;
+          } else {
+            // si el área cambio, actualizamos la ultima área
+            $tempRow['area']['name'] = $lastArea['name'] = 
+              $row['area_name'];
+            $lastArea['index'] = $i;
+            $tempRow['area']['border'] = TRUE;
+          }
         } else {
           // si el subtipo cambio, actualizamos el ultimo subtipo
           $tempRow['subtype']['name'] = $lastSubtype['name'] = 
             $row['subtype_name'];
           $lastSubtype['index'] = $i;
           $tempRow['subtype']['border'] = TRUE;
+
+          // y también el área
+          $tempRow['area']['name'] = $lastArea['name'] = 
+            $row['area_name'];
+          $lastArea['index'] = $i;
+          $tempRow['area']['border'] = TRUE;
         } 
       } else {
         // si el tipo ha cambiado, actualizamos el ultimo tipo
@@ -73,6 +98,12 @@ $service = [
           $row['subtype_name'];
         $lastSubtype['index'] = $i;
         $tempRow['subtype']['border'] = TRUE;
+
+        // y también el área
+        $tempRow['area']['name'] = $lastArea['name'] = 
+          $row['area_name'];
+        $lastArea['index'] = $i;
+        $tempRow['area']['border'] = TRUE;
       }
 
       // almacenamos el renglon en la tabla final a enviar al cliente

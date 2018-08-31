@@ -21,6 +21,8 @@ export class DefaultDocumentDisplayModalComponent
 
   countsPhysicalCopies = false
 
+  isSignable: boolean = false
+
   checkboxLabel: { en: string, es: string } = {
     en: 'Has a physical copy?',
     es: '¿Tiene una copia física?'

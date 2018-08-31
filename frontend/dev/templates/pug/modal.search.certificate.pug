@@ -1,0 +1,66 @@
+include globals.pug
+
+mz-modal(
+  '[options]'='modalOptions'
+  '[fixedFooter]'='true'
+  '[fullscreen]'='true'
+)
+  mz-modal-header
+    div.container: div.row: div.col.s12
+      ='{{ langManager.messages.search.title }}'
+  mz-modal-content
+    div.container
+      form(
+        '[formGroup]'='searchForm'
+        novalidate
+      )
+        div.row
+          +dateInput(
+            'start-date', 
+            'langManager.messages.search.startDateLabel',
+            'langManager.messages.global.datePickerConfig',
+            'col s12 m6'
+          )(
+            formControlName='startDate'
+            mz-validation
+            required
+            '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
+          )
+          +dateInput(
+            'end-date', 
+            'langManager.messages.search.endDateLabel',
+            'langManager.messages.global.datePickerConfig',
+            'col s12 m6'
+          )(
+            formControlName='endDate'
+            mz-validation
+            required
+            '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
+          )
+
+        div.row
+          div.col.s12.m6
+            +select(
+              'zone', 'langManager.messages.upload.zoneLabel', 'langManager.messages.global.selectPlaceholder',
+              'zones', '.name'
+            )(
+              formControlName='zone'
+            )
+          div.col.s12.m6
+            +select(
+              'product', 'langManager.messages.upload.supplierLabel', 'langManager.messages.global.selectPlaceholder',
+              'products', '.name'
+            )(
+              formControlName='product'
+            )
+  mz-modal-footer
+    +button(
+      'search',
+      'search-document',
+      '{{ langManager.messages.search.buttonLabel }}',
+      'mdi mdi-magnify'
+    )(
+      '[disabled]'='!searchForm.valid'
+      '(click)'='onLetterDocumentSearch()'
+      mz-modal-close
+    )

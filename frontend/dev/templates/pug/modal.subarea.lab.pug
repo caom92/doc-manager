@@ -1,0 +1,39 @@
+include globals.pug
+
+mz-modal(
+  '[options]'='modalOptions'
+  '[fullscreen]'='"true"'
+)
+  mz-modal-header
+    ='{{ langManager.messages.inventory.lab.subAreaTitle }}'
+  mz-modal-content
+    div.container
+      form(
+        '[formGroup]'='captureForm'
+        novalidate
+      )
+        div.row 
+          div.col.s12
+            +select(
+              'subarea',
+              'langManager.messages.upload.subAreaLabel',
+              'langManager.messages.global.selectPlaceholder',
+              'subareas',
+              '.name', '.id'
+            )(
+              formControlName='subarea'
+              mz-validation
+              required
+              '[errorMessageResource]'='langManager.messages.inventory.lab.parentErrors'
+            )
+  mz-modal-footer
+    +button(
+      'submit',
+      'form-submit',
+      '{{ langManager.messages.global.submit }}',
+      'mdi mdi-send'
+    )(
+      '[disabled]'='captureForm.valid == false'
+      '(click)'='onFormSubmit()'
+      mz-modal-close
+    )

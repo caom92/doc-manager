@@ -38,7 +38,6 @@ export class ProcedureDocumentUploadModalComponent
       (response: BackendResponse) => {
         if (response.meta.return_code === 0) {
           this.sections = response.data
-          console.log(response.data)
         } else {
           this.toastManager.showText(
             this.langManager.getServiceMessage(
@@ -120,7 +119,7 @@ export class ProcedureDocumentUploadModalComponent
 
         this.toastManager.showText(
           this.langManager.getServiceMessage(
-            'capture-lab',
+            'capture-default',
             response.meta.return_code
           )
         )

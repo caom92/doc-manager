@@ -9,6 +9,8 @@ import { DynamicComponentResolver } from './dynamic.resolver'
 import { LabInventoryComponent } from './inventory.lab'
 import { GuaranteeInventoryComponent } from './inventory.guarantee'
 import { ProcedureInventoryComponent } from './inventory.procedure'
+import { TrainingInventoryComponent } from './inventory.training'
+import { CertificateInventoryComponent } from './inventory.certificate'
 
 // Componente que define el comportamiento de la pagina donde se cargara el 
 // inventario dependiendo del tipo de archivo elegido 
@@ -92,6 +94,14 @@ export class InventoryComponent
       case 3:
         this.inventoryComponent = 
           this.loadComponent(ProcedureInventoryComponent, {})
+      break
+      
+      case 4:
+        this.inventoryComponent = this.loadComponent(TrainingInventoryComponent, {})
+      break
+      
+      case 5:
+        this.inventoryComponent = this.loadComponent(CertificateInventoryComponent, {})
       break
     } // switch (this.selectedDocument.name)
   } // onDocumentTypeSelected(): void

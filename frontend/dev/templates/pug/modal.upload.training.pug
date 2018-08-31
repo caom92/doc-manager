@@ -1,0 +1,92 @@
+include globals.pug
+
+mz-modal(
+  '[options]'='modalOptions'
+  '[fixedFooter]'='true'
+  '[fullscreen]'='true'
+)
+  mz-modal-header
+    div.container: div.row: div.col.s12
+      ='{{ langManager.messages.upload.title }}'
+  mz-modal-content
+    div.container
+      form(
+        '[formGroup]'='uploadForm'
+        novalidate
+      )
+        div.row
+          +dateInput(
+            'document-date', 
+            'langManager.messages.upload.docDateLabel',
+            'langManager.messages.global.datePickerConfig',
+            'col s12 m6'
+          )(
+            formControlName='documentDate'
+            mz-validation
+            required
+            '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
+          )
+          div.col.s12.m6
+            +select(
+              'zone', 'langManager.messages.upload.zoneLabel', 'langManager.messages.global.selectPlaceholder',
+              'zones', '.name'
+            )(
+              formControlName='zone'
+              '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
+              mz-validation
+              required
+            )
+
+        div.row
+          div.col.s12.m6
+            +textInput(
+              'document-name',
+              'langManager.messages.upload.lab.documentName'
+            )(
+              required
+              formControlName='documentName',
+              mz-validation
+              '[errorMessageResource]'='langManager.messages.upload.errors.ranch'
+            )
+          div.col.s12.m6
+            +select(
+              'sections', 'langManager.messages.upload.sectionLabel',
+              'langManager.messages.global.selectPlaceholder',
+              'sections', '.name'
+            )(
+              formControlName='section'
+              mz-validation
+              required
+              '[errorMessageResource]'='langManager.messages.upload.errors.documentDate'
+            )
+
+        div.row
+          div.col.s12
+            +textArea(
+              'notes',
+              65535,
+              'langManager.messages.upload.notesLabel'
+            )(
+              formControlName='notes'
+              mz-validation
+              '[errorMessageResource]'='langManager.messages.upload.errors.notes'
+            )
+          div.col.s12
+            +fileInput(
+              'procedure-document',
+              '{{ langManager.messages.upload.procedure.procedureLabel }}',
+              '{{ langManager.messages.upload.fileButtonLabel }}'
+            )(
+              '(change)'='onProcedureFileSelected($event)'
+            )
+  mz-modal-footer
+    +button(
+      'submit',
+      'submit-document',
+      '{{ langManager.messages.global.submit }}',
+      'mdi mdi-send'
+    )(
+      '[disabled]'='!uploadForm.valid || !selectedDocumentFile'
+      '(click)'='onProcedureFileUpload()'
+      mz-modal-close
+    )

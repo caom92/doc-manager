@@ -78,9 +78,9 @@ include globals.pug
       ='{{ langManager.messages.sideNav.inventory }}'
 
 //- Area principal de la pagina
-div.container(
+div(
   '[ngClass]'="{ 'with-sidenav': global.showSideNav }"
-) 
+)
   ui-view('[hidden]'='global.showSpinner')
   div.row('[hidden]'='!global.showSpinner')
     div.col.s12.m12.center-align

@@ -6,7 +6,8 @@ $lab = [
     'Lab\Laboratories' => realpath(__DIR__.'/Laboratories.php'),
     'Lab\AnalysisTypes' => realpath(__DIR__.'/AnalysisTypes.php'),
     'Lab\AnalysisSubTypes' => realpath(__DIR__.'/AnalysisSubTypes.php'),
-    'Lab\Areas' => realpath(__DIR__.'/Areas.php')
+    'Lab\Areas' => realpath(__DIR__.'/Areas.php'),
+    'Lab\SubAreas' => realpath(__DIR__.'/SubAreas.php')
   ],
   'services' => [
     'GET' => [
@@ -19,12 +20,16 @@ $lab = [
         realpath(__DIR__.'/list-analysis-subtypes-of-type.php'),
       'list-areas-of-subtype' =>
         realpath(__DIR__.'/list-areas-of-subtype.php'),
+      'list-subareas-of-area' =>
+        realpath(__DIR__.'/list-subareas-of-area.php'),
       'capture-lab' => realpath(__DIR__.'/capture-lab.php'),
+      'edit-lab-subarea' => realpath(__DIR__.'/edit-lab-subarea.php'),
       'search-lab' => realpath(__DIR__.'/search-lab.php'),
       'add-analysis-type' => realpath(__DIR__.'/add-analysis-type.php'),
       'add-analysis-subtype' => 
         realpath(__DIR__.'/add-analysis-subtype.php'),
       'add-product' => realpath(__DIR__.'/add-product.php'),
+      'add-subarea' => realpath(__DIR__.'/add-subarea.php'),
       'add-lab' => realpath(__DIR__.'/add-lab.php'),
       'add-producer' => realpath(__DIR__.'/add-producer.php'),
       'toggle-physical-copy-lab' => 

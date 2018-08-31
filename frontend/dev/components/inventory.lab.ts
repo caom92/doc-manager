@@ -10,6 +10,7 @@ import {
 import { 
   LabProductInventoryModalComponent 
 } from './modal.inventory.lab.product'
+import { LabSubProductInventoryModalComponent } from './modal.inventory.lab.subproduct'
 import { LabLabInventoryModalComponent } from './modal.inventory.lab.lab'
 import { 
   LabProducerInventoryModalComponent 
@@ -163,6 +164,14 @@ export class LabInventoryComponent implements OnInit {
   // producto o area
   onAddProductButtonClick(): void {
     this.modalManager.open(LabProductInventoryModalComponent, {
+      parent: this
+    })
+  }
+
+  // Funcion que se invoca cuando el usuario hace clic en el boton de agregar 
+  // subproducto o subarea
+  onAddSubProductButtonClick(): void {
+    this.modalManager.open(LabSubProductInventoryModalComponent, {
       parent: this
     })
   }

@@ -6,7 +6,19 @@ import { LanguageService } from '../services/app.language'
 import { MzModalService } from 'ngx-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
 import { StateService } from '@uirouter/core'
-
+import { DefaultDocumentDisplayModalComponent } from './modal.display.default'
+import { DynamicComponentResolver } from './dynamic.resolver'
+import { LabSearchResultsListComponent } from './list.lab'
+import { DeleteDocumentConfirmationModalComponent } from './modal.confirmation.delete'
+import { GuaranteeSearchResultsListComponent } from './list.guarantee'
+import { ProcedureSearchResultsListComponent } from './list.procedure'
+import { TrainingSearchResultsListComponent } from './list.training'
+import { TrainingDocumentSearchModalComponent } from './modal.search.training'
+import { CertificateSearchResultsListComponent } from './list.certificate'
+import { CertificateDocumentSearchModalComponent } from './modal.search.certificate'
+import { LabDocumentDisplayModalComponent } from './modal.display.lab'
+import { LabSubAreaReassignComponent } from './modal.subarea.lab'
+import { SignDocumentConfirmationModalComponent } from './modal.confirmation.sign'
 
 // Componente que define el comportamiento de la pagina donde el usuario puede 
 // buscar documentos 
@@ -32,6 +44,8 @@ export class SearchComponent implements OnInit {
     searchResults: [],
     hasSearchResults: true
   }
+
+  lastSearch: FormData
 
   // El constructor de este componente, inyectando los servicios requeridos
   constructor(
@@ -99,6 +113,30 @@ export class SearchComponent implements OnInit {
       case 3:
         stateName = 'search-procedure'
       break
+      
+      case 4: // capacitaciones
+        // this.listComponent =
+        //   this.loadComponent(TrainingSearchResultsListComponent, {
+        //     parent: this
+        //   }).instance
+
+        // this.modalManager.open(TrainingDocumentSearchModalComponent, {
+        //   parent: this.listComponent,
+        //   selectedDocumentTypeID: this.selectedDocument.id
+        // })
+      break
+      
+      case 5: // certificados
+        // this.listComponent =
+        //   this.loadComponent(CertificateSearchResultsListComponent, {
+        //     parent: this
+        //   }).instance
+
+        // this.modalManager.open(CertificateDocumentSearchModalComponent, {
+        //   parent: this.listComponent,
+        //   selectedDocumentTypeID: this.selectedDocument.id
+        // })
+      break
     } // switch (this.selectedDocument.name)
 
     this.router.go(this.router.get(stateName), {
@@ -145,6 +183,43 @@ export class SearchComponent implements OnInit {
       } // (response: BackendResponse)
     ) // this.server.delete
   } // onDocumentDeleteClicked()
+
+  onSignDocumentRequested(document: any): void {
+    //this.modalManager.open(LabSubAreaReassignComponent, { areaID: document.area_id, documentID: document.id, parent: this })
+    console.log(document)
+    this.modalManager.open(SignDocumentConfirmationModalComponent, {
+      title: this.langManager.messages.signConfirmation.title,
+      message: this.langManager.messages.signConfirmation.message,
+      parent: this,
+      documentID: document.document_id
+    })
+  }
+
+  onSignDocumentClicked(documentID: number): void {
+    //let modal = this.modalManager.open(ProgressModalComponent)
+
+    let docData = new FormData()
+
+    docData.append('document_id', String(documentID))
+
+    // enviamos los datos al servidor
+    this.server.write(
+      'sign-document',
+      docData,
+      (response: BackendResponse) => {
+        //modal.instance.modalComponent.close()
+        this.updateSearch()
+
+        // notificamos al usuario del resultado de la operacion
+        this.toastManager.showText(
+          this.langManager.getServiceMessage(
+            'sign-*',
+            response.meta.return_code
+          )
+        )
+      }
+    )
+  }
 
   // Esta funcion se invoca cuando el usuario hace clic en el boton de ordenar 
   // los resultados

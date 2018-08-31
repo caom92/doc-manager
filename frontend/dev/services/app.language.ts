@@ -334,6 +334,12 @@ export class LanguageService {
           'Está a punto de borrar un documento. Una vez borrado el ' 
           + 'documento, NO podrá ser recuperado de nuevo.'
       },
+      signConfirmation: {
+        title: 'Are you sure you wish to sign this document?',
+        message: 
+          'You are about to sign a document. Once signed, this action cannot '
+          + 'be undone and your name will be registered as the signer'
+      },
       sideNav: {
         search: 'Buscar',
         upload: 'Capturar',
@@ -581,6 +587,25 @@ export class LanguageService {
             'Ver',
             'Borrar'
           ]
+        },
+        training: {
+          tableHeaders: [
+            'Date',
+            'Doc. Name',
+            'Zone',
+            'Section',
+            'View',
+            'Delete'
+          ]
+        },
+        certificate: {
+          tableHeaders: [
+            'Date',
+            'Zone',
+            'Product',
+            'View',
+            'Delete'
+          ]
         }
       },
       report: {
@@ -629,6 +654,12 @@ export class LanguageService {
       },
       'add-product': {
         0: 'El área o producto fue agregado exitosamente'
+      },
+      'add-subarea': {
+        0: 'Subarea or Subproduct was added successfully'
+      },
+      'edit-lab-subarea': {
+        0: 'Subarea or Subproduct was updated successfully'
       },
       'add-lab': {
         0: 'El laboratorio fue agregado exitosamente'

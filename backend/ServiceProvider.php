@@ -117,7 +117,7 @@ class ServiceProvider
         if (CORS_REQUESTS['with_credentials']) {
           // necesitamos asegurarnos de que el cliente proviene 
           // de un origen autorizado, asi que primero obtenemos el origen
-          $currentOrigin = rtrim($_SERVER['HTTP_REFERER'], '/');
+          $currentOrigin = rtrim($_SERVER['HTTP_ORIGIN'], '/');
 
           // inicializamos la bandera que indica si este origen esta 
           // autorizado

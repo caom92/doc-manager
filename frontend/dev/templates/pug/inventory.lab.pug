@@ -8,7 +8,7 @@ mz-tab(
     '[label]'='langManager.messages.inventory.lab.categoriesTab'
   )
     div.row
-      div.col.s12.m4
+      div.col.s12.m3
         +button(
           'button',
           'add-type',
@@ -17,7 +17,7 @@ mz-tab(
         )(
           '(click)'='onAddTypeButtonClick()'
         )
-      div.col.s12.m4
+      div.col.s12.m3
         +button(
           'button',
           'add-subtype',
@@ -26,7 +26,7 @@ mz-tab(
         )(
           '(click)'='onAddSubTypeButtonClick()'
         )
-      div.col.s12.m4
+      div.col.s12.m3
         +button(
           'button',
           'add-product',
@@ -34,6 +34,15 @@ mz-tab(
           'mdi mdi-plus'
         )(
           '(click)'='onAddProductButtonClick()'
+        )
+      div.col.s12.m3
+        +button(
+          'button',
+          'add-product',
+          '{{ langManager.messages.inventory.lab.addSubProductButton }}',
+          'mdi mdi-plus'
+        )(
+          '(click)'='onAddSubProductButtonClick()'
         )
 
       div.col.s12
@@ -51,7 +60,24 @@ mz-tab(
               '[attr.rowspan]'='row.subtype.rowspan'
             )
               ='{{ row.subtype.name }}'
-            td='{{ row.area.name }}'
+            td(
+              '*ngIf'='row.subtype.name == null && row.area.name == null && row.subarea.name == null'
+            )
+            td(
+              '*ngIf'='row.area.name'
+              '[attr.rowspan]'='row.area.rowspan'
+            )
+              ='{{ row.area.name }}'
+            td(
+              '*ngIf'='row.area.name == null && row.subarea.name == null'
+            )
+            td(
+              '*ngIf'='row.subarea.name'
+            )
+              ='{{ row.subarea.name }}'
+            td(
+              '*ngIf'='row.subarea.name == null'
+            )
   mz-tab-item(
     '[label]'='langManager.messages.inventory.lab.labsTab'
   )

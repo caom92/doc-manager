@@ -20,6 +20,7 @@ import { InventoryComponent } from './app.inventory'
 // Importamos los componentes de los modales
 import { ProgressModalComponent } from './modal.please.wait'
 import { DeleteDocumentConfirmationModalComponent } from './modal.confirmation.delete'
+import { SignDocumentConfirmationModalComponent } from './modal.confirmation.sign'
 import { DefaultDocumentDisplayModalComponent } from './modal.display.default'
 import { LabDocumentUploadModalComponent } from './modal.upload.lab'
 import { LabDocumentSearchComponent } from './modal.search.lab'
@@ -30,6 +31,8 @@ import { LabInventoryComponent } from './inventory.lab'
 import { LabTypesInventoryModalComponent } from './modal.inventory.lab.type'
 import { LabSubTypesInventoryModalComponent } from './modal.inventory.lab.subtype'
 import { LabProductInventoryModalComponent } from './modal.inventory.lab.product'
+import { LabSubProductInventoryModalComponent } from './modal.inventory.lab.subproduct'
+import { LabSubAreaReassignComponent } from './modal.subarea.lab'
 import { LabLabInventoryModalComponent } from './modal.inventory.lab.lab'
 import { LabProducerInventoryModalComponent } from './modal.inventory.lab.producer'
 import { GuaranteeDocumentUploadModalComponent } from './modal.upload.guarantee'
@@ -42,6 +45,16 @@ import { ProcedureDocumentSearchComponent } from './modal.search.procedure'
 import { ProcedureSearchResultsListComponent } from './list.procedure'
 import { ProcedureInventoryComponent } from './inventory.procedure'
 import { SectionProcedureInventoryModalComponent } from './modal.inventory.procedure.section'
+import { TrainingDocumentUploadModalComponent } from './modal.upload.training'
+import { TrainingDocumentSearchModalComponent } from './modal.search.training'
+import { TrainingSearchResultsListComponent } from './list.training'
+import { TrainingInventoryComponent } from './inventory.training'
+import { TrainingSectionInventoryModalComponent } from './modal.inventory.training.section'
+import { CertificateDocumentUploadModalComponent } from './modal.upload.certificate'
+import { CertificateInventoryComponent } from './inventory.certificate'
+import { ProductCertificateInventoryModalComponent } from './modal.inventory.certificate.product'
+import { CertificateDocumentSearchModalComponent } from './modal.search.certificate'
+import { CertificateSearchResultsListComponent } from './list.certificate'
 import { LabDocumentDisplayModalComponent } from './modal.display.lab'
 
 // Importamos los servicios que van a ser necesitados por cada pagina del 
@@ -152,6 +165,7 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     DynamicComponentContainerDirective,
     LabSearchResultsListComponent,
     DeleteDocumentConfirmationModalComponent,
+    SignDocumentConfirmationModalComponent,
     LogInComponent,
     EditProfileComponent,
     UsersComponent,
@@ -163,6 +177,8 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     LabTypesInventoryModalComponent,
     LabSubTypesInventoryModalComponent,
     LabProductInventoryModalComponent,
+    LabSubProductInventoryModalComponent,
+    LabSubAreaReassignComponent,
     LabLabInventoryModalComponent,
     LabProducerInventoryModalComponent,
     GuaranteeDocumentUploadModalComponent,
@@ -175,6 +191,16 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     ProcedureSearchResultsListComponent,
     ProcedureInventoryComponent,
     SectionProcedureInventoryModalComponent,
+    TrainingInventoryComponent,
+    TrainingSectionInventoryModalComponent,
+    TrainingSearchResultsListComponent,
+    TrainingDocumentSearchModalComponent,
+    TrainingDocumentUploadModalComponent,
+    CertificateDocumentUploadModalComponent,
+    ProductCertificateInventoryModalComponent,
+    CertificateInventoryComponent,
+    CertificateDocumentSearchModalComponent,
+    CertificateSearchResultsListComponent,
     LabDocumentDisplayModalComponent
   ],
   // declaramos cualquier componente que sera inyectado dinamicamente
@@ -184,12 +210,15 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     LabDocumentUploadModalComponent,
     LabSearchResultsListComponent,
     DeleteDocumentConfirmationModalComponent,
+    SignDocumentConfirmationModalComponent,
     LabDocumentReportModalComponent,
     LabReportResultsComponent,
     LabInventoryComponent,
     LabTypesInventoryModalComponent,
     LabSubTypesInventoryModalComponent,
     LabProductInventoryModalComponent,
+    LabSubProductInventoryModalComponent,
+    LabSubAreaReassignComponent,
     LabLabInventoryModalComponent,
     LabProducerInventoryModalComponent,
     GuaranteeDocumentUploadModalComponent,
@@ -200,6 +229,16 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     ProcedureSearchResultsListComponent,
     SectionProcedureInventoryModalComponent,
     ProcedureInventoryComponent,
+    TrainingInventoryComponent,
+    TrainingSectionInventoryModalComponent,
+    TrainingSearchResultsListComponent,
+    TrainingDocumentSearchModalComponent,
+    TrainingDocumentUploadModalComponent,
+    ProductCertificateInventoryModalComponent,
+    CertificateInventoryComponent,
+    CertificateDocumentUploadModalComponent,
+    CertificateDocumentSearchModalComponent,
+    CertificateSearchResultsListComponent,
     LabDocumentDisplayModalComponent
   ],
   // indicamos cual es el componente raiz
