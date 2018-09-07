@@ -408,10 +408,10 @@ export class LabDocumentSearchComponent
     const modal = this.modalManager.open(ProgressModalComponent)
     
     // enviamos los datos al servidor
-    this.searchPage.lastSearch = data
+    this.searchPage = data
     this.server.write(
       'search-lab',
-      this.searchPage.lastSearch,
+      this.searchPage,
       (response: BackendResponse) => {
         // al responder el servidor, cerramos el modal de espera
         modal.instance.modalComponent.closeModal()
