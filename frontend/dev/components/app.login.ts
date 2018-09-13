@@ -1,10 +1,11 @@
 import { Component, ViewEncapsulation, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { StateService } from '@uirouter/angular'
 import { BackendService } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
+import { Router } from '@angular/router'
+
 
 // Componente que define el comportamiento de la pagina de inicio de sesion
 @Component({
@@ -22,7 +23,7 @@ export class LogInComponent implements OnInit {
     private server: BackendService, 
     private formBuilder: FormBuilder,
     private toastManager: ToastService,
-    private router: StateService,
+    private router: Router,
     private globals: GlobalElementsService,
     private langManager: LanguageService
   ) {
@@ -59,7 +60,7 @@ export class LogInComponent implements OnInit {
             // a la pagina principal
             localStorage.setItem('is_logged_in', (true).toString())
             this.globals.displaySideNav()
-            this.router.go('edit-profile')
+            this.router.navigateByUrl('/edit-profile')
           } else {
             // si el usuario no hay iniciado sesion, permitimos al usuario 
             // entrar a esta pagina
@@ -106,7 +107,7 @@ export class LogInComponent implements OnInit {
             )
           )
           this.globals.displaySideNav()
-          this.router.go('edit-profile')
+          this.router.navigateByUrl('/edit-profile')
         } else {
           // si hubo un problema con la conexion del servidor, desplegamos un 
           // mensaje de error al usuario

@@ -34,10 +34,8 @@ export class BackendService {
       fsm: 'http://manual.jfdc.tech/services/'
     }
     : {
-      // default: 'http://localhost/doc-manager/backend/services/',
-      // fsm: 'http://localhost/espresso/services/'
-      default: 'http://documents.jfdc.tech/backend/services/',
-      fsm: 'http://manual.jfdc.tech/services/'
+      default: 'http://localhost/doc-manager/backend/services/',
+      fsm: 'http://localhost/espresso/services/'
     }
 
   // Los encabezados del paquete HTTP que sera enviado

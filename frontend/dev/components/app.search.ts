@@ -5,8 +5,10 @@ import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
 import { MzModalService } from 'ngx-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
-import { StateService } from '@uirouter/core'
-import { SignDocumentConfirmationModalComponent } from './modal.confirmation.sign'
+import { 
+  SignDocumentConfirmationModalComponent 
+} from './modal.confirmation.sign'
+import { Router } from '@angular/router'
 
 // Componente que define el comportamiento de la pagina donde el usuario puede 
 // buscar documentos 
@@ -27,12 +29,6 @@ export class SearchComponent implements OnInit {
     name: string
   }> = []
 
-  // El componente que actualmente esta listando los resultados de busqueda
-  listComponent: any = {
-    searchResults: [],
-    hasSearchResults: true
-  }
-
   lastSearch: FormData
 
   // El constructor de este componente, inyectando los servicios requeridos
@@ -42,7 +38,7 @@ export class SearchComponent implements OnInit {
     private global: GlobalElementsService,
     private langManager: LanguageService,
     private modalManager: MzModalService,
-    private router: StateService
+    private router: Router
     // factoryResolver: ComponentFactoryResolver
   ) {
     // super(factoryResolver)
@@ -103,81 +99,20 @@ export class SearchComponent implements OnInit {
       break
       
       case 4: // capacitaciones
-        // this.listComponent =
-        //   this.loadComponent(TrainingSearchResultsListComponent, {
-        //     parent: this
-        //   }).instance
-
-        // this.modalManager.open(TrainingDocumentSearchComponent, {
-        //   parent: this.listComponent,
-        //   selectedDocumentTypeID: this.selectedDocument.id
-        // })
         stateName = 'search-training'
       break
       
       case 5: // certificados
-        // this.listComponent =
-        //   this.loadComponent(CertificateSearchResultsListComponent, {
-        //     parent: this
-        //   }).instance
-
-        // this.modalManager.open(CertificateDocumentSearchComponent, {
-        //   parent: this.listComponent,
-        //   selectedDocumentTypeID: this.selectedDocument.id
-        // })
         stateName = 'search-certificate'
       break
     } // switch (this.selectedDocument.name)
 
-    this.router.go(this.router.get(stateName), {
-      selectedDocumentTypeID: selectedDocument.id
-    })
+    this.router.navigateByUrl(`/${ stateName }/${ selectedDocument.id }`)
   } // onDocumentTypeSelected(): void
-
-  // Esta funcion se invoca cuando el usuario hace clic en el boton de aceptar 
-  // en el modal de confirmacion de borrado
-  onDocumentDeleteClicked(
-    suffix: string, 
-    documentID: number, 
-    idx: number
-  ): void {
-    // invocamos el modal de espera
-    const modal = this.modalManager.open(ProgressModalComponent)
-
-    // enviamos los datos al servidor
-    this.server.delete(
-      `delete-${ suffix }`,
-      { document_id: documentID },
-      (response: BackendResponse) => {
-        // cuando el servidor responda cerramos el modal
-        modal.instance.modalComponent.closeModal()
-
-        // notificamos al usuario del resultado de la operacion
-        this.toastManager.showText(
-          this.langManager.getServiceMessage(
-            'delete-*',
-            response.meta.return_code
-          )
-        )
-
-        // si el resultado fue exitoso, borramos el documento del arreglo
-        if (response.meta.return_code === 0) {
-          // si el documento tenia una copia fisica, hay que actualizar el 
-          // conteo
-          if (this.listComponent.searchResults[idx].has_physical_copy === 1) {
-            this.listComponent.numDocsWithPhysicalCopy--
-          }
-
-          this.listComponent.searchResults.splice(idx, 1)
-        }
-      } // (response: BackendResponse)
-    ) // this.server.delete
-  } // onDocumentDeleteClicked()
 
   onSignDocumentRequested(document: any): void {
     // this.modalManager.open(LabSubAreaReassignComponent, { areaID: 
     // document.area_id, documentID: document.id, parent: this })
-    console.log(document)
     this.modalManager.open(SignDocumentConfirmationModalComponent, {
       title: this.langManager.messages.signConfirmation.title,
       message: this.langManager.messages.signConfirmation.message,
@@ -212,39 +147,36 @@ export class SearchComponent implements OnInit {
     )
   }
 
-  // Esta funcion se invoca cuando el usuario hace clic en el boton de ordenar 
-  // los resultados
-  onSortButtonClick(): void {
-    this.listComponent.searchResults.reverse()
-  } // onSortButtonClick(): void
-
   // TODO: TEMP: Actualiza la búsqueda tras una actualización del subarea
   updateSearch(): void {
-    const modal = this.modalManager.open(ProgressModalComponent)
+    // Comente esta funcion porque el comentario de arriba dice que es temporal 
+    // y porque de todas funcion el componente que invoca esta funcion nunca es 
+    // invocado (mira la linea 114 de este archivo)
+    // const modal = this.modalManager.open(ProgressModalComponent)
 
-    this.server.write(
-      'search-lab',
-      this.lastSearch,
-      (response: BackendResponse) => {
-        // al responder el servidor, cerramos el modal de espera
-        modal.instance.modalComponent.closeModal()
+    // this.server.write(
+    //   'search-lab',
+    //   this.lastSearch,
+    //   (response: BackendResponse) => {
+    //     // al responder el servidor, cerramos el modal de espera
+    //     modal.instance.modalComponent.closeModal()
 
-        // si el servidor respondio con exito, reiniciamos el formulario para 
-        // que el usuario capture un nuevo documento
-        if (response.meta.return_code === 0) {
-          this.listComponent.numDocsWithPhysicalCopy =
-            response.data.num_docs_with_physical_copy
-          this.listComponent.searchResults = response.data.documents
-        } else {
-          // notificamos al usuario del resultado obtenido
-          this.toastManager.showText(
-            this.langManager.getServiceMessage(
-              'search-lab',
-              response.meta.return_code
-            )
-          )
-        }
-      } // (response: BackendResponse)
-    ) // this.server.write
+    //     // si el servidor respondio con exito, reiniciamos el formulario
+    //     // para que el usuario capture un nuevo documento
+    //     if (response.meta.return_code === 0) {
+    //       this.listComponent.numDocsWithPhysicalCopy =
+    //         response.data.num_docs_with_physical_copy
+    //       this.listComponent.searchResults = response.data.documents
+    //     } else {
+    //       // notificamos al usuario del resultado obtenido
+    //       this.toastManager.showText(
+    //         this.langManager.getServiceMessage(
+    //           'search-lab',
+    //           response.meta.return_code
+    //         )
+    //       )
+    //     }
+    //   } // (response: BackendResponse)
+    // ) // this.server.write
   }
 } // export class SearchComponent implements OnInit

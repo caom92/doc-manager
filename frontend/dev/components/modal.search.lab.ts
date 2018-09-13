@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
@@ -9,7 +9,7 @@ import { FormBuilder, Validators } from '@angular/forms'
 import { 
   DefaultDocumentSearchComponent, NoParentElement, SingleParentElement 
 } from './modal.search.default'
-import { StateService } from '@uirouter/core'
+import { Router, ActivatedRoute } from '@angular/router'
 
 
 // Este componente define el comportamiento de la pagina donde el usuario puede 
@@ -18,7 +18,8 @@ import { StateService } from '@uirouter/core'
   templateUrl: '../templates/modal.search.lab.html'
 })
 export class LabDocumentSearchComponent 
-  extends DefaultDocumentSearchComponent {
+  extends DefaultDocumentSearchComponent
+  implements OnInit {
 
   // La lista de productores a elegir por el usuario
   producers: Array<SingleParentElement> = [
@@ -61,12 +62,13 @@ export class LabDocumentSearchComponent
     langManager: LanguageService,
     modalManager: MzModalService,
     formBuilder: FormBuilder,
-    stateService: StateService
+    stateService: Router,
+    routeState: ActivatedRoute
   ) {
     // invocamos el constructor de la clase padre
     super(
       server, toastManager, global, langManager, modalManager, formBuilder, 
-      stateService
+      stateService, routeState
     )
   }
 
@@ -436,26 +438,13 @@ export class LabDocumentSearchComponent
   }
 
   protected afterServiceResponses(): void {
-    if (
-      this.stateService.params.startDate !== undefined 
-      && this.stateService.params.endDate !== undefined
-    ) {
-      this.searchForm.controls.startDate.setValue(
-        this.stateService.params.startDate
-      )
-      this.searchForm.controls.endDate.setValue(
-        this.stateService.params.endDate
-      )
-
-      this.setControlValue(
-        'producer', this.producers, this.singleParentOptionAll
-      )
-      this.setControlValue('lab', this.labs, this.noParentOptionAll)
-      this.setControlValue('type', this.analysisTypes, this.noParentOptionAll)
-      this.setControlValue('subtype', this.subTypes, this.singleParentOptionAll)
-      this.setControlValue('area', this.areas, this.singleParentOptionAll)
-  
-      this.searchDocument()
-    }
+    this.setControlValue(
+      'producer', this.producers, this.singleParentOptionAll
+    )
+    this.setControlValue('lab', this.labs, this.noParentOptionAll)
+    this.setControlValue('type', this.analysisTypes, this.noParentOptionAll)
+    this.setControlValue('subtype', this.subTypes, this.singleParentOptionAll)
+    this.setControlValue('area', this.areas, this.singleParentOptionAll)
+    this.searchDocument()
   }
 }

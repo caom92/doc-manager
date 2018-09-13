@@ -12,20 +12,3 @@ div.row
       mz-collection-item('*ngFor'='let document of documents')
         +link()('(click)'='onDocumentTypeSelected(document)')
           ='{{ document.name }}'
-//- div.row(dynamicComponentContainer)
-
-//- div.row
-//-   div.col.s12.center-align(
-//-     '*ngIf'='listComponent.hasSearchResults == false'
-//-   )
-//-     h5
-//-       i.mdi.mdi-alert-octagon.red-text
-//-       = '{{ langManager.messages.search.noSearchResults }}'
-
-//- button.floating-btn(
-//-   mz-button
-//-   '[float]'='true'
-//-   '[large]'='true'
-//-   '(click)'='onSortButtonClick()'
-//- )
-//-   i.mdi.mdi-sort

@@ -9,14 +9,15 @@ import { FormBuilder, Validators } from '@angular/forms'
 import { 
   DefaultDocumentSearchComponent, NoParentElement
 } from './modal.search.default'
-import { StateService } from '@uirouter/core'
+import { Router, ActivatedRoute } from '@angular/router'
 
 
 @Component({
   templateUrl: '../templates/modal.search.guarantee.html'
 })
 export class GuaranteeDocumentSearchComponent 
-  extends DefaultDocumentSearchComponent implements OnInit {
+  extends DefaultDocumentSearchComponent 
+  implements OnInit {
 
   suppliers: Array<NoParentElement> = [
     this.noParentOptionAll
@@ -29,11 +30,12 @@ export class GuaranteeDocumentSearchComponent
     langManager: LanguageService,
     modalManager: MzModalService,
     formBuilder: FormBuilder,
-    stateService: StateService
+    router: Router,
+    routeState: ActivatedRoute
   ) {
     super(
       server, toastManager, global, langManager, modalManager, formBuilder, 
-      stateService
+      router, routeState
     )
   }
 
@@ -138,22 +140,9 @@ export class GuaranteeDocumentSearchComponent
   }
 
   protected afterServiceResponses(): void {
-    if (
-      this.stateService.params.startDate !== undefined 
-      && this.stateService.params.endDate !== undefined
-    ) {
-      this.searchForm.controls.startDate.setValue(
-        this.stateService.params.startDate
-      )
-      this.searchForm.controls.endDate.setValue(
-        this.stateService.params.endDate
-      )
-
-      this.setControlValue(
-        'supplier', this.suppliers, this.noParentOptionAll
-      )
-  
-      this.searchDocument()
-    }
+    this.setControlValue(
+      'supplier', this.suppliers, this.noParentOptionAll
+    )
+    this.searchDocument()
   }
 }

@@ -9,7 +9,7 @@ import { FormBuilder, Validators } from '@angular/forms'
 import { 
   DefaultDocumentSearchComponent, NoParentElement 
 } from './modal.search.default'
-import { StateService } from '@uirouter/core'
+import { Router, ActivatedRoute } from '@angular/router'
 
 
 @Component({
@@ -29,11 +29,12 @@ export class ProcedureDocumentSearchComponent
     langManager: LanguageService,
     modalManager: MzModalService,
     formBuilder: FormBuilder,
-    stateService: StateService
+    stateService: Router,
+    routeState: ActivatedRoute
   ) {
     super(
       server, toastManager, global, langManager, modalManager, formBuilder, 
-      stateService
+      stateService, routeState
     )
   }
 
@@ -143,22 +144,9 @@ export class ProcedureDocumentSearchComponent
   }
 
   protected afterServiceResponses(): void {
-    if (
-      this.stateService.params.startDate !== undefined 
-      && this.stateService.params.endDate !== undefined
-    ) {
-      this.searchForm.controls.startDate.setValue(
-        this.stateService.params.startDate
-      )
-      this.searchForm.controls.endDate.setValue(
-        this.stateService.params.endDate
-      )
-      
-      this.setControlValue(
-        'section', this.sections, this.noParentOptionAll
-      )
-
-      this.searchDocument()
-    }
+    this.setControlValue(
+      'section', this.sections, this.noParentOptionAll
+    )
+    this.searchDocument()
   }
 }

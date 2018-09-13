@@ -1,0 +1,17 @@
+block List
+
+div.row
+  div.col.s12.center-align(
+    '*ngIf'='hasSearchResults == false'
+  )
+    h5
+      i.mdi.mdi-alert-octagon.red-text
+      = '{{ langManager.messages.search.noSearchResults }}'
+
+button.floating-btn(
+  mz-button
+  '[float]'='true'
+  '[large]'='true'
+  '(click)'='onSortButtonClick()'
+)
+  i.mdi.mdi-sort

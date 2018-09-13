@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core'
 import { BackendService } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
-import { StateService } from '@uirouter/angular'
 import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
+import { Router } from '@angular/router'
+
 
 // Componente que define el comportamiento de la pagina de inicio
 @Component({
@@ -15,7 +16,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private server: BackendService,
     private toastManager: ToastService,
-    private router: StateService,
+    private router: Router,
     private global: GlobalElementsService,
     private langManager: LanguageService
   ) {
@@ -50,7 +51,7 @@ export class HomeComponent implements OnInit {
             // si el usuario no ha iniciado sesion, desactivamos la bandera y 
             // redireccionamos a la pantalla de inicio de sesion
             localStorage.setItem('is_logged_in', (false).toString())
-            this.router.go('login')
+            this.router.navigateByUrl('/login')
           } else {
             // de lo contrario, permitimos la navegacion
             localStorage.setItem('is_logged_in', (true).toString())
@@ -90,7 +91,7 @@ export class HomeComponent implements OnInit {
           localStorage.clear()
           localStorage.setItem('lang', lang)
           localStorage.setItem('is_logged_in', (false).toString())
-          this.router.go('login')
+          this.router.navigateByUrl('/login')
         } else {
           // si hubo un problema con la comunicacion con el servidor, 
           // desplegamos un mensaje de error al usuario

@@ -2,10 +2,12 @@
 import { NgModule } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { UIRouterModule } from '@uirouter/angular'
 import { MaterializeModule } from 'ngx-materialize'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { HttpModule } from '@angular/http'
+import { RouterModule } from '@angular/router'
+import { routes, getRouterConfig } from './app.routes'
+import { environment } from '../environments/environment'
 
 // Importamos los componentes de cada pagina de nuestra aplicacion
 import { HomeComponent } from './app.home'
@@ -59,7 +61,6 @@ import { LabDocumentDisplayModalComponent } from './modal.display.lab'
 
 // Importamos los servicios que van a ser necesitados por cada pagina del 
 // sistema
-import { uiRouterAuthenticatedNavConfig } from '../functions/ui.router.authenticated.nav.config'
 import { KeysPipe } from '../pipes/app.keys'
 import { ClickStopPropagationDirective } from '../directives/app.stop.propagation'
 import { GlobalElementsService } from '../services/app.globals'
@@ -67,6 +68,8 @@ import { BackendService } from '../services/app.backend'
 import { LanguageService } from '../services/app.language'
 import { ToastService } from '../services/app.toast'
 import { DynamicComponentContainerDirective } from '../directives/dynamic.container'
+import { AuthenticationNavGuard } from './guard.authentication'
+
 
 // Declaramos el modulo raiz que indica el inicio de nuestra aplicacion
 @NgModule({
@@ -78,92 +81,15 @@ import { DynamicComponentContainerDirective } from '../directives/dynamic.contai
     HttpModule,
     BrowserAnimationsModule,
     MaterializeModule.forRoot(),
-    UIRouterModule.forRoot({
-      // hay que configurar ui-router para poder redireccionar al usuario 
-      // dependiendo si la sesion esta iniciada o no
-      config: uiRouterAuthenticatedNavConfig,
-      states: [
-        {
-          name: 'login',
-          url: '/login',
-          component: LogInComponent
-        },
-        {
-          name: 'upload',
-          url: '/upload',
-          component: UploadComponent
-        },
-        {
-          name: 'search',
-          url: '/search',
-          component: SearchComponent
-        },
-        {
-          name: 'edit-profile',
-          url: '/edit-profile',
-          component: EditProfileComponent
-        },
-        {
-          name: 'users',
-          url: '/users',
-          component: UsersComponent
-        },
-        {
-          name: 'report',
-          url: '/report',
-          component: ReportComponent
-        },
-        {
-          name: 'inventory',
-          url: '/inventory',
-          component: InventoryComponent
-        },
-        {
-          name: 'search-lab',
-          url: 
-            '/search-lab/{selectedDocumentTypeID}'
-            + '?startDate&endDate&producer&lab&type&subtype&area',
-          component: LabDocumentSearchComponent
-        },
-        {
-          name: 'search-guarantee',
-          url: 
-            '/search-guarantee/{selectedDocumentTypeID}'
-            + '?startDate&endDate&supplier',
-          component: GuaranteeDocumentSearchComponent
-        },
-        {
-          name: 'search-procedure',
-          url: 
-            '/search-procedure/{selectedDocumentTypeID}'
-            + '?startDate&endDate&section',
-          component: ProcedureDocumentSearchComponent
-        },
-        {
-          name: 'search-training',
-          url: 
-            '/search-training/{selectedDocumentTypeID}'
-            + '?startDate&endDate&section',
-          component: TrainingDocumentSearchComponent
-        },
-        {
-          name: 'search-certificate',
-          url: 
-            '/search-certificate/{selectedDocumentTypeID}'
-            + '?startDate&endDate&product',
-          component: CertificateDocumentSearchComponent
-        }
-      ],
-      useHash: true,
-      otherwise: '/edit-profile'
-    })
+    RouterModule.forRoot(routes, getRouterConfig(environment.production))
   ],
   // declaramos los servicios globales
   providers: [
     GlobalElementsService,
     BackendService,
     ToastService,
-    LanguageService
+    LanguageService,
+    AuthenticationNavGuard
   ],
   // declaramos los componentes que va a utilizar nuestro sistema
   declarations: [

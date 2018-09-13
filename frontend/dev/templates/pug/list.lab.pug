@@ -1,43 +1,44 @@
-include globals.pug
+extends list.default.pug
 
-//- Despliega la info en forma de tabla
-div.col.s12
-  p 
-    ='{{ langManager.messages.list.numPhysicalDocs }}: {{ numDocsWithPhysicalCopy }}'
-
-div.col.s12('*ngIf'='searchResults.length > 0')
-  div.scrollable-table-container
-    +responsiveTable('langManager.messages.list.lab.tableHeaders')(
-      class='scrollable-table'
-    )
-      tr(
-        '*ngFor'='let document of searchResults; let i = index'
+block List
+  include globals.pug
+  //- Despliega la info en forma de tabla
+  div.col.s12
+    p 
+      ='{{ langManager.messages.list.numPhysicalDocs }}: {{ numDocsWithPhysicalCopy }}'
+  div.col.s12('*ngIf'='searchResults.length > 0')
+    div.scrollable-table-container
+      +responsiveTable('langManager.messages.list.lab.tableHeaders')(
+        class='scrollable-table'
       )
-        td.table-col-fixed='{{ this.global.translateDate(this.document.file_date, this.langManager.lang) }}'
-        td='{{ document.zone_name }}'
-        td.table-col-fixed='{{ document.producer_name }}'
-        td.table-col-fixed='{{ document.lab_name }}'
-        td.table-col-fixed='{{ document.analysis_type_name }}'
-        td.table-col-fixed='{{ document.analysis_subtype_name }}'
-        td.table-col-fixed='{{ document.area_name }}'
-        td.table-col-fixed(*ngIf='document.subarea_id != null')='{{ document.subarea_name }}'
-        td.table-col-fixed(*ngIf='document.subarea_id == null' class='red-text')
-          +link()(class='green-text', '(click)'='parent.onAssignSubProductClicked(document)')
-            ='{{ langManager.messages.list.assign }}'
-        td.table-col-fixed(*ngIf='document.signed_by != null')='{{ document.signer }}'
-        td.table-col-fixed(*ngIf='document.signed_by == null')
-          +link()(class='green-text', '(click)'='parent.onSignDocumentRequested(document)')
-            ='{{ langManager.messages.list.sign }}'
-        td('*ngIf'='document.has_physical_copy == 1')
-          i.mdi.mdi-24px.mdi-check.green-text
-        td('*ngIf'='document.has_physical_copy != 1')
-          i.mdi.mdi-24px.mdi-close.red-text
-        td
-          +link()('(click)'='onDocumentLinkClicked(i)')
-            ='{{ langManager.messages.list.view }}'
-        td
-          +link()(
-            class='red-text'
-            '(click)'='onDocumentDeletionRequested("lab", document.id, i)'
-          )
-            ='{{ langManager.messages.global.erase }}'
+        tr(
+          '*ngFor'='let document of searchResults; let i = index'
+        )
+          td.table-col-fixed='{{ this.global.translateDate(this.document.file_date, this.langManager.lang) }}'
+          td='{{ document.zone_name }}'
+          td.table-col-fixed='{{ document.producer_name }}'
+          td.table-col-fixed='{{ document.lab_name }}'
+          td.table-col-fixed='{{ document.analysis_type_name }}'
+          td.table-col-fixed='{{ document.analysis_subtype_name }}'
+          td.table-col-fixed='{{ document.area_name }}'
+          td.table-col-fixed(*ngIf='document.subarea_id != null')='{{ document.subarea_name }}'
+          td.table-col-fixed(*ngIf='document.subarea_id == null' class='red-text')
+            +link()(class='green-text', '(click)'='parent.onAssignSubProductClicked(document)')
+              ='{{ langManager.messages.list.assign }}'
+          td.table-col-fixed(*ngIf='document.signed_by != null')='{{ document.signer }}'
+          td.table-col-fixed(*ngIf='document.signed_by == null')
+            +link()(class='green-text', '(click)'='parent.onSignDocumentRequested(document)')
+              ='{{ langManager.messages.list.sign }}'
+          td('*ngIf'='document.has_physical_copy == 1')
+            i.mdi.mdi-24px.mdi-check.green-text
+          td('*ngIf'='document.has_physical_copy != 1')
+            i.mdi.mdi-24px.mdi-close.red-text
+          td
+            +link()('(click)'='onDocumentLinkClicked(i)')
+              ='{{ langManager.messages.list.view }}'
+          td
+            +link()(
+              class='red-text'
+              '(click)'='onDocumentDeletionRequested("lab", document.id, i)'
+            )
+              ='{{ langManager.messages.global.erase }}'

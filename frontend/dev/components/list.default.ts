@@ -6,6 +6,9 @@ import {
   DeleteDocumentConfirmationModalComponent 
 } from './modal.confirmation.delete'
 import { DefaultDocumentDisplayModalComponent } from './modal.display.default'
+import { ProgressModalComponent } from './modal.please.wait'
+import { BackendResponse, BackendService } from '../services/app.backend'
+import { ToastService } from '../services/app.toast'
 
 
 // El componente que lista los resultados de busqueda de documentos
@@ -43,7 +46,9 @@ export abstract class SearchResultsListComponent {
   constructor(
     protected global: GlobalElementsService,
     protected langManager: LanguageService,
-    protected modalManager: MzModalService
+    protected modalManager: MzModalService,
+    protected server: BackendService,
+    protected toastManager: ToastService
   ) {
   }
 
@@ -81,4 +86,50 @@ export abstract class SearchResultsListComponent {
       parent: this
     })
   }
+
+  // Esta funcion se invoca cuando el usuario hace clic en el boton de aceptar 
+  // en el modal de confirmacion de borrado
+  onDocumentDeleteClicked(
+    suffix: string, 
+    documentID: number, 
+    idx: number
+  ): void {
+    // invocamos el modal de espera
+    const modal = this.modalManager.open(ProgressModalComponent)
+
+    // enviamos los datos al servidor
+    this.server.delete(
+      `delete-${ suffix }`,
+      { document_id: documentID },
+      (response: BackendResponse) => {
+        // cuando el servidor responda cerramos el modal
+        modal.instance.modalComponent.closeModal()
+
+        // notificamos al usuario del resultado de la operacion
+        this.toastManager.showText(
+          this.langManager.getServiceMessage(
+            'delete-*',
+            response.meta.return_code
+          )
+        )
+
+        // si el resultado fue exitoso, borramos el documento del arreglo
+        if (response.meta.return_code === 0) {
+          // si el documento tenia una copia fisica, hay que actualizar el 
+          // conteo
+          if (this.searchResults[idx].has_physical_copy === 1) {
+            this.numDocsWithPhysicalCopy--
+          }
+
+          this.searchResults.splice(idx, 1)
+        }
+      } // (response: BackendResponse)
+    ) // this.server.delete
+  } // onDocumentDeleteClicked()
+
+  // Esta funcion se invoca cuando el usuario hace clic en el boton de ordenar 
+  // los resultados
+  onSortButtonClick(): void {
+    this.searchResults.reverse()
+  } // onSortButtonClick(): void
 }

@@ -5,7 +5,9 @@ import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
 import { MzModalService } from 'ngx-materialize'
 import { FormBuilder, FormGroup } from '@angular/forms'
-import { StateService } from '@uirouter/core'
+import { 
+  Router, ActivatedRoute, ParamMap 
+} from '@angular/router'
 
 
 // Tipo auxiliar que define los elementos recuperados del servidor que no 
@@ -60,6 +62,8 @@ export abstract class DefaultDocumentSearchComponent implements OnInit {
 
   protected numPendingService = 0
 
+  protected routeParams: ParamMap
+
   // El constructor de este componente, inyectando los servicios requeridos
   constructor(
     protected server: BackendService,
@@ -68,14 +72,18 @@ export abstract class DefaultDocumentSearchComponent implements OnInit {
     protected langManager: LanguageService,
     protected modalManager: MzModalService,
     protected formBuilder: FormBuilder,
-    protected stateService: StateService
+    protected router: Router,
+    protected routeState: ActivatedRoute
   ) {
   }
 
   // Esta funcion se ejecuta al iniciar la vista
   ngOnInit(): void {
-    this.selectedDocumentTypeID = 
-      this.stateService.params.selectedDocumentTypeID
+    this.routeState.paramMap.subscribe((params: ParamMap) => {
+      this.selectedDocumentTypeID = 
+        parseInt(params.get('selectedDocumentTypeID'), 10)
+      this.routeParams = params
+    })
 
     if (this.global.roleName !== 'Director') {
       this.zones = [ this.global.zone ]
@@ -106,8 +114,8 @@ export abstract class DefaultDocumentSearchComponent implements OnInit {
 
   protected updateUrl(): void {
     window.history.pushState('', '', 
-      `${ window.location.origin }/#/${ this.stateService.current.name }/`
-      + `${ this.stateService.params.selectedDocumentTypeID }`
+      `${ window.location.origin }${ window.location.pathname }/`
+      + `${ this.selectedDocumentTypeID }`
       + `?${ this.searchParams.toString() }`
     )
   }
@@ -115,7 +123,6 @@ export abstract class DefaultDocumentSearchComponent implements OnInit {
   protected readonly setValueOnControlChange = (control: string) => {
     this.searchForm.controls[control].valueChanges.subscribe(() => {
       this.searchParams.set(control, this.searchForm.controls[control].value)
-      console.debug(this.searchParams.get(control))
     })
   }
 
@@ -125,24 +132,34 @@ export abstract class DefaultDocumentSearchComponent implements OnInit {
         control, 
         this.searchForm.controls[control].value.id
       )
-      console.debug(this.searchParams.get(control))
     })
   }
   
   protected readonly finishService = () => {
     --this.numPendingService
     if (this.numPendingService === 0) {
-      this.afterServiceResponses()
+      if (
+        this.routeParams.get('startDate') !== null 
+        && this.routeParams.get('endDate') !== null
+      ) {
+        this.searchForm.controls.startDate.setValue(
+          this.routeParams.get('startDate')
+        )
+        this.searchForm.controls.endDate.setValue(
+          this.routeParams.get('endDate')
+        )
+
+        this.afterServiceResponses()
+      }
     }
   }
 
   protected setControlValue(param: string, array: Array<any>, value: any) {
-    const params = this.stateService.params
     let idx = -1
 
-    if (params[param] !== undefined) {
+    if (this.routeParams.get(param) !== undefined) {
       idx = array.findIndex((element) => {
-        return element.id === parseInt(params[param])
+        return element.id === parseInt(this.routeParams.get(param), 10)
       })
       this.searchForm.controls[param].setValue(array[idx])
     } else {

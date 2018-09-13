@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { GlobalElementsService } from '../services/app.globals'
@@ -6,15 +6,18 @@ import { LanguageService } from '../services/app.language'
 import { MzModalService } from 'ngx-materialize'
 import { ProgressModalComponent } from './modal.please.wait'
 import { FormBuilder, Validators } from '@angular/forms'
-import { DefaultDocumentSearchComponent, NoParentElement } from './modal.search.default'
-import { StateService } from '@uirouter/core'
+import { 
+  DefaultDocumentSearchComponent, NoParentElement 
+} from './modal.search.default'
+import { Router, ActivatedRoute } from '@angular/router'
 
 
 @Component({
   templateUrl: '../templates/modal.search.training.html'
 })
 export class TrainingDocumentSearchComponent
-  extends DefaultDocumentSearchComponent {
+  extends DefaultDocumentSearchComponent 
+  implements OnInit {
 
   sections: Array<NoParentElement> = [
     this.noParentOptionAll
@@ -27,11 +30,12 @@ export class TrainingDocumentSearchComponent
     langManager: LanguageService,
     modalManager: MzModalService,
     formBuilder: FormBuilder,
-    stateService: StateService
+    stateService: Router,
+    routeState: ActivatedRoute
   ) {
     super(
       server, toastManager, global, langManager, modalManager, formBuilder, 
-      stateService
+      stateService, routeState
     )
   }
 
@@ -141,22 +145,9 @@ export class TrainingDocumentSearchComponent
   }
 
   protected afterServiceResponses(): void {
-    if (
-      this.stateService.params.startDate !== undefined 
-      && this.stateService.params.endDate !== undefined
-    ) {
-      this.searchForm.controls.startDate.setValue(
-        this.stateService.params.startDate
-      )
-      this.searchForm.controls.endDate.setValue(
-        this.stateService.params.endDate
-      )
-
       this.setControlValue(
         'section', this.sections, this.noParentOptionAll
       )
-  
       this.searchDocument()
-    }
   }
 }

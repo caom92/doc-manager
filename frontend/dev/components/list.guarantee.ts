@@ -3,7 +3,8 @@ import { GlobalElementsService } from '../services/app.globals'
 import { LanguageService } from '../services/app.language'
 import { SearchResultsListComponent } from './list.default'
 import { MzModalService } from 'ngx-materialize'
-import { DefaultDocumentDisplayModalComponent } from './modal.display.default';
+import { BackendService } from '../services/app.backend'
+import { ToastService } from '../services/app.toast'
 
 
 @Component({
@@ -24,8 +25,10 @@ export class GuaranteeSearchResultsListComponent
   constructor(
     global: GlobalElementsService,
     langManager: LanguageService,
-    modalManager: MzModalService
+    modalManager: MzModalService,
+    server: BackendService,
+    toastManager: ToastService
   ) {
-    super(global, langManager, modalManager)
+    super(global, langManager, modalManager, server, toastManager)
   }
 }

@@ -1,22 +1,24 @@
-include globals.pug
+extends list.default.pug
 
-div.col.s12('*ngIf'='searchResults.length > 0')
-  div.scrollable-table-container
-    +responsiveTable('langManager.messages.list.guarantee.tableHeaders')(
-      class='scrollable-table'
-    )
-      tr(
-        '*ngFor'='let document of searchResults; let i = index'
+block List
+  include globals.pug
+  div.col.s12('*ngIf'='searchResults.length > 0')
+    div.scrollable-table-container
+      +responsiveTable('langManager.messages.list.guarantee.tableHeaders')(
+        class='scrollable-table'
       )
-        td.table-col-fixed='{{ this.global.translateDate(this.document.file_date, this.langManager.lang) }}'
-        td='{{ document.zone_name }}'
-        td.table-col-fixed='{{ document.supplier_name }}'
-        td
-          +link()('(click)'='onDocumentLinkClicked(i)')
-            ='{{ langManager.messages.list.view }}'
-        td
-          +link()(
-            class='red-text'
-            '(click)'='onDocumentDeletionRequested("guarantee", document.id, i)'
-          )
-            ='{{ langManager.messages.global.erase }}'
+        tr(
+          '*ngFor'='let document of searchResults; let i = index'
+        )
+          td.table-col-fixed='{{ this.global.translateDate(this.document.file_date, this.langManager.lang) }}'
+          td='{{ document.zone_name }}'
+          td.table-col-fixed='{{ document.supplier_name }}'
+          td
+            +link()('(click)'='onDocumentLinkClicked(i)')
+              ='{{ langManager.messages.list.view }}'
+          td
+            +link()(
+              class='red-text'
+              '(click)'='onDocumentDeletionRequested("guarantee", document.id, i)'
+            )
+              ='{{ langManager.messages.global.erase }}'

@@ -21,7 +21,7 @@ mixin link(destination = 'javascript:void(0)')
 //- [in]  destination (string): el nombre del estado a donde navegara el 
 //-       usuario al hacer clic sobre el enlace
 mixin uiRouterLink(destination)
-  a(uiSref=destination)&attributes(attributes)
+  a(routerLink='/' + destination)&attributes(attributes)
     block
 
 //- Crea una barra de navegacion
