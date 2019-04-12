@@ -14,11 +14,11 @@ block List
           td='{{ document.zone_name }}'
           td.table-col-fixed='{{ document.product_name }}'
           td
-            +link()('(click)'='parent.onDocumentLinkClicked(i)')
+            +link()('(click)'='onDocumentLinkClicked(i)')
               ='{{ langManager.messages.list.view }}'
           td
             +link()(
               class='red-text'
-              '(click)'='parent.onDocumentDeletionRequested("certificate", document.id, i)'
+              '(click)'='onDocumentDeletionRequested("certificate", document.id, i)'
             )
               ='{{ langManager.messages.global.erase }}'

@@ -31,7 +31,7 @@ export class BackendService {
   static url = (environment.production) ?
     {
       default: 'http://documents.jfdc.tech/backend/services/',
-      fsm: 'http://manual.jfdc.tech/services/'
+      fsm: 'http://fsm.jfdc.us/services/'
     }
     : {
       default: 'http://localhost/doc-manager/backend/services/',

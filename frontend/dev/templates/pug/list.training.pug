@@ -15,11 +15,11 @@ block List
           td='{{ document.zone_name }}'
           td='{{ document.section_name }}'
           td
-            +link()('(click)'='parent.onDocumentLinkClicked(i)')
+            +link()('(click)'='onDocumentLinkClicked(i)')
               ='{{ langManager.messages.list.view }}'
           td
             +link()(
               class='red-text'
-              '(click)'='parent.onDocumentDeletionRequested("training", document.id, i)'
+              '(click)'='onDocumentDeletionRequested("training", document.id, i)'
             )
               ='{{ langManager.messages.global.erase }}'

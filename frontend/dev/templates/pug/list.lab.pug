@@ -23,11 +23,11 @@ block List
           td.table-col-fixed='{{ document.area_name }}'
           td.table-col-fixed(*ngIf='document.subarea_id != null')='{{ document.subarea_name }}'
           td.table-col-fixed(*ngIf='document.subarea_id == null' class='red-text')
-            +link()(class='green-text', '(click)'='parent.onAssignSubProductClicked(document)')
+            +link()(class='green-text', '(click)'='onAssignSubProductClicked(document)')
               ='{{ langManager.messages.list.assign }}'
           td.table-col-fixed(*ngIf='document.signed_by != null')='{{ document.signer }}'
           td.table-col-fixed(*ngIf='document.signed_by == null')
-            +link()(class='green-text', '(click)'='parent.onSignDocumentRequested(document)')
+            +link()(class='green-text', '(click)'='onSignDocumentRequested(document)')
               ='{{ langManager.messages.list.sign }}'
           td('*ngIf'='document.has_physical_copy == 1')
             i.mdi.mdi-24px.mdi-check.green-text

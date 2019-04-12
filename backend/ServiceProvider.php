@@ -389,6 +389,8 @@ class ServiceProvider
           // si el argumento no fue enviado desde el cliente y no fue declarado 
           // como opcional, entonces hay que lanzar una excepcion
           throw new Exception("Input argument $attribute is undefined", 101);
+        } else if ($options['type'] === 'files') {
+          $rule = $options['type'];
         } else {
           // si el argumento no fue enviado pero es opcional, podemos brincar 
           // esta validacion y continuar con los otros argumentos
@@ -584,9 +586,6 @@ class ServiceProvider
         }
       },
       'files' => function($scope, $name, $value, $options) {
-        // primero, obtenemos el nombre del archivo
-        $name = $options['name'];
-
         // revisamos que se hayan enviado archivos
         $isFilesSet = isset($_FILES[$name]) 
           && array_key_exists($name, $_FILES);

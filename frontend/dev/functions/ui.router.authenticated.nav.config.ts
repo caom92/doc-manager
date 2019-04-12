@@ -1,4 +1,4 @@
-import { Injector } from '@angular/core'
+/*import { Injector } from '@angular/core'
 import { UIRouter, Transition } from '@uirouter/angular'
 
 
@@ -55,3 +55,4 @@ export function uiRouterAuthenticatedNavConfig(
     }  
   )
 }
+*/

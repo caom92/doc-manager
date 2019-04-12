@@ -15,9 +15,7 @@ export class LabSubAreaReassignComponent
   extends MzBaseModal
   implements OnInit {
 
-  @Input() areaID: number
-  @Input() documentID: number
-  @Input() parent: SearchComponent
+  @Input() document: any
 
   modalOptions = {
     dismissible: true
@@ -45,7 +43,7 @@ export class LabSubAreaReassignComponent
     })
 
     const data = new FormData()
-    data.append('area', String(this.areaID))
+    data.append('area', String(this.document.area_id))
 
     this.server.write(
       'list-subareas-of-area',
@@ -66,7 +64,7 @@ export class LabSubAreaReassignComponent
 
   onFormSubmit(): void {    
     const data = new FormData()
-    data.append('document', String(this.documentID))
+    data.append('document', String(this.document.id))
     data.append('subarea', this.captureForm.controls.subarea.value)
 
     this.server.write(
@@ -74,9 +72,11 @@ export class LabSubAreaReassignComponent
       data,
       (response: BackendResponse) => {
         if (response.meta.return_code === 0) {
-          this.parent.updateSearch()
+          this.document.area_id = response.data.area_id
+          this.document.area_name = response.data.area_name
+          this.document.subarea_id = response.data.subarea_id
+          this.document.subarea_name = response.data.subarea_name
         }
-        // notificamos al usuario del resultado cuando el servidor responda
         this.toastManager.showText(
           this.langManager.getServiceMessage(
             'edit-lab-subarea',

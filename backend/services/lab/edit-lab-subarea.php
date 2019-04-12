@@ -21,6 +21,10 @@ $service = [
       ':subareaID' => $request['subarea'],
       ':documentID' => $request['document']
     ]);
+
+    // recuperamos los datos actualizados
+
+    return $documents->selectAreaSubAreaByID($request['document']);
   }
 ];
 

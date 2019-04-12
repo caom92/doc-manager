@@ -53,6 +53,34 @@ class Documents extends DocumentsTable
     $query->execute($row);
   }
 
+  function selectAreaSubAreaByID($id) {
+    $queryStr = 
+      "SELECT
+        `$this->table`.id AS id,
+        a.name AS area_name,
+        sa.name AS subarea_name,
+        subarea_id
+      FROM
+        `$this->table`
+      INNER JOIN
+        `lab_subareas` AS sa
+        ON sa.id = subarea_id
+      INNER JOIN
+        `lab_areas` AS a
+        ON a.id = sa.parent_id
+      WHERE
+        `$this->table`.id = :id
+      ";
+    
+    $values = [
+      ':id' => $id
+    ];
+
+    $query = $this->getStatement($queryStr);
+    $query->execute($values);
+    return $query->fetchAll()[0];
+  }
+
   // Retorna una lista de todos los documentos que tengan registradas las 
   // caracteristicas especificadas
   // [in]   typeID (uint): el ID del tipo de documento cuyos elementos seran 

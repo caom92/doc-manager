@@ -8,6 +8,7 @@ import { ToastService } from '../services/app.toast'
 
 
 @Component({
+  selector: 'list-certificate',
   templateUrl: '../templates/list.certificate.html'
 })
 export class CertificateSearchResultsListComponent 
