@@ -7,6 +7,7 @@ import { BackendService, BackendResponse } from '../services/app.backend'
 import { ToastService } from '../services/app.toast'
 import { SignDocumentConfirmationModalComponent } from './modal.confirmation.sign'
 import { LabSubAreaReassignComponent } from './modal.subarea.lab'
+import { LabDocumentDisplayModalComponent } from './modal.display.lab'
 
 // El componente que lista los resultados de busqueda de documentos
 @Component({
@@ -32,6 +33,15 @@ export class LabSearchResultsListComponent extends SearchResultsListComponent {
     toastManager: ToastService
   ) {
     super(global, langManager, modalManager, server, toastManager)
+  }
+
+  onDocumentLinkClicked(index: number): void {
+    this.modalManager.open(LabDocumentDisplayModalComponent, {
+      index: index,
+      documentType: this.documentName,
+      baseFolder: this.baseName,
+      parent: this
+    })
   }
 
   onAssignSubProductClicked(document: any): void {
