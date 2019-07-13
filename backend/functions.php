@@ -18,7 +18,7 @@ function saveUploadedFileTo(
   $uid = ''
 ) {
   // primero extraemos el formato del archivo original
-  $format = substr($sourceFileName, strpos($sourceFileName, '.'));
+  $format = substr($sourceFileName, strrpos($sourceFileName, '.'));
 
   // computamos el nuevo nombre del archivo
   $fileName = "{$uid}_".date('Y-m-d_H-i-s')."{$format}";

@@ -1,0 +1,66 @@
+include globals.pug
+
+mz-modal(
+  '[options]'='modalOptions'
+  '[fixedFooter]'='true'
+  '[fullscreen]'='true'
+  '[bottomSheet]'='true'
+)
+  mz-modal-header
+    div.container: div.row: div.col.s12
+      ='{{ langManager.messages.display.title }}'
+  mz-modal-content
+    div.container
+      div.row
+        div.col.s12
+          h6='{{ documentType }} - {{ parent.searchResults[this.index].file_date }}'
+
+      div.row
+        div.col.s12
+          +checkboxInput(
+            'has-physical-copy',
+            'checkboxLabel[globals.lang]'
+          )(
+            '[(ngModel)]'='parent._searchResults[this.index].has_physical_copy'
+            '(change)'='onPhysicalCopyCheckboxChanged()'
+          )
+
+      div.row
+        div.col.s12
+          +textArea(
+            'notes',
+            65535,
+            'langManager.messages.upload.notesLabel'
+          )(
+            '[(ngModel)]'='parent.searchResults[this.index].notes'
+            '[readonly]'='true'
+          )
+      
+      div.row
+        div.col.s12
+          +textArea(
+            'link',
+            65535,
+            'langManager.messages.upload.lab.link'
+          )(
+            '[(ngModel)]'='parent.searchResults[this.index].link'
+            '[readonly]'='true'
+          )
+      
+      div.row
+        div.col.s12.viewerjs-container
+          +viewerJSDoc('sanitizedPath')
+      
+      div.row(*ngIf='parent.searchResults[this.index].image_path != null')
+        div.col.s12
+          img([src]='(environment.production) ? "http://documents.jfdc.tech/backend/images/lab/" + parent.searchResults[this.index].image_path : "http://localhost/doc-manager/backend/images/lab/" + parent.searchResults[this.index].image_path')
+  mz-modal-footer
+    +button(
+      'button',
+      'close-modal',
+      '{{ langManager.messages.global.close }}',
+      'mdi mdi-close-circle-outline'
+    )(
+      class='red'
+      mz-modal-close
+    )

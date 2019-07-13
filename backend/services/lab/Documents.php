@@ -21,17 +21,21 @@ class Documents extends DocumentsTable
     $query = $this->getStatement(
       "INSERT INTO `$this->table` (
         document_id,
+        photo_id,
         producer_id,
         lab_id,
         subarea_id,
-        notes
+        notes,
+        link
       ) 
       VALUES (
         :documentID,
+        :photoID,
         :producerID,
         :labID,
         :subareaID,
-        :notes
+        :notes,
+        :link
       )"
     );
     $query->execute($row);
@@ -104,6 +108,7 @@ class Documents extends DocumentsTable
         d.upload_date AS upload_date,
         d.file_date AS file_date,
         d.file_path AS file_path,
+        i.path AS image_path,
         d.has_physical_copy AS has_physical_copy,
         d.signed_by AS signed_by,
         CONCAT(u.first_name, ' ', u.last_name) AS signer,
@@ -116,7 +121,8 @@ class Documents extends DocumentsTable
         sa.name AS subarea_name,
         area_id,
         subarea_id,
-        notes
+        notes,
+        link
       FROM
         `$this->table`
       LEFT JOIN
@@ -143,6 +149,9 @@ class Documents extends DocumentsTable
       INNER JOIN
         `documents` AS d
         ON document_id = d.id
+      LEFT JOIN
+        `photos` AS i
+        ON photo_id = i.id
       LEFT JOIN
         signers AS u
         ON u.id = d.signed_by

@@ -17,6 +17,7 @@ import { NoParentElement, SingleParentElement } from './modal.search.default'
 })
 export class LabDocumentUploadModalComponent 
   extends DefaultDocumentUploadModalComponent implements OnInit {
+  selectedImageFile: any = null
 
   // La lista de productores a elegir por el usuario 
   producers: Array<SingleParentElement> = []
@@ -141,7 +142,8 @@ export class LabDocumentUploadModalComponent
       producer: [ null, Validators.required ],
       area: [ null, Validators.required ],
       subarea: [ null, Validators.required ],
-      notes: [ null, Validators.maxLength(65535)]
+      notes: [ null, Validators.maxLength(65535)],
+      link: [ null, Validators.maxLength(65535)]
     })
   } // // ngOnInit(): void
 
@@ -312,6 +314,20 @@ export class LabDocumentUploadModalComponent
     }
   }
 
+  onAnalysisImageSelected(event: any): void {
+    // borramos el archivo elegido anteriormente
+    this.selectedImageFile = null
+
+    // recuperamos el archivo elegido
+    const files = event.target.files
+
+    // si el usuario subio un archivo, lo guardamos para su futuro uso
+    if (files.length > 0) {
+      this.selectedImageFile = files[0]
+    }
+  }
+
+
   // Esta funcion se invoca cuando el usuario hace clic en el boton de capturar 
   // documento
   onLabDocumentUpload(): void {
@@ -353,11 +369,26 @@ export class LabDocumentUploadModalComponent
       )
     }
 
+    if (this.uploadForm.controls.link.value) {
+      data.append(
+        'link',
+        this.uploadForm.controls.link.value
+      )
+    }
+
     data.append(
       'analysis_file', 
       this.selectedDocumentFile, 
       this.selectedDocumentFile.name
     )
+
+    if (this.selectedImageFile != null) {
+      data.append(
+        'analysis_image',
+        this.selectedImageFile,
+        this.selectedImageFile.name
+      ) 
+    }
 
     // mostramos el modal de espera
     const modal = this.modalManager.open(ProgressModalComponent)

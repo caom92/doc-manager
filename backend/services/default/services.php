@@ -6,6 +6,7 @@ $default = [
       'Zones' => realpath(__DIR__.'/Zones.php'),
       'Producers' => realpath(__DIR__.'/Producers.php'),
       'Documents' => realpath(__DIR__.'/Documents.php'),
+      'Photos' => realpath(__DIR__.'/Photos.php'),
       'Signers' => realpath(__DIR__.'/Signers.php')
     ],
     'fsm' => [

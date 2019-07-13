@@ -419,6 +419,8 @@ export class LanguageService {
       upload: {
         lab: {
           analysisLabel: 'Solicitud de Estudio',
+          analysisPhotoLabel: 'Fotografía',
+          link: 'Enlace externo',
           resultLabel: 'Resultado de Estudio',
           labNameLabel: 'Nombre del Laboratorio',
           typeNameLabel: 'Tipo de Análisis',
@@ -466,6 +468,9 @@ export class LanguageService {
             maxlength: 'Este campo no debe ser mas de 255 caracteres de largo'
           },
           notes: {
+            maxlength: 'Este campo no debe ser mas de 65535 caracteres de largo'
+          },
+          link: {
             maxlength: 'Este campo no debe ser mas de 65535 caracteres de largo'
           }
         }
@@ -799,7 +804,7 @@ export class LanguageService {
         firstName: 'First name',
         lastName: 'Last name',
       },
-      editPasswordFormLabels: {
+      editPasswordForm: {
         title: 'Change password',
         newPassword: 'New password',
         newPasswordConfirmation: 'Confirm new password',
@@ -856,6 +861,8 @@ export class LanguageService {
       upload: {
         lab: {
           analysisLabel: 'Analysis Request Document',
+          analysisPhotoLabel: 'Analysis Photo',
+          link: 'External URL',
           resultLabel: 'Result Document',
           labNameLabel: 'Lab\'s Name',
           typeNameLabel: 'Analysis Type',
@@ -902,6 +909,9 @@ export class LanguageService {
             maxlength: 'This field must not be longer than 255 characters'
           },
           notes: {
+            maxlength: 'This field must not be longer than 65535 characters'
+          },
+          link: {
             maxlength: 'This field must not be longer than 65535 characters'
           }
         }
